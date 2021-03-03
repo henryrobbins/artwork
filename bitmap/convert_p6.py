@@ -4,7 +4,6 @@ import numpy as np
 
 # Currently only maps to P2 for some number of gradients
 # TODO: Allow for mapping to P3 as well
-# TODO: Fix final black cell bug
 
 # get arguments
 args = sys.argv
@@ -35,4 +34,5 @@ f.write('P2\n')
 f.write("%s %s\n" % (w, h))
 f.write("%s\n" % (n))
 f.write('\n'.join([' '.join(line) for line in new_pic.astype(str).tolist()]))
+f.write('\n')
 f.close()
