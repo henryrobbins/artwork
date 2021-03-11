@@ -1,5 +1,7 @@
 import netpbm
 import numpy as np
+import os
+import time
 from math import ceil
 from typing import List
 
@@ -71,11 +73,29 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
+log = []  # keep track of compilation time and file sizes
 for piece in pieces:
+    then = time.time()
     name = ''.join([op[0] + str(op[1]) for op in piece])
     M_prime = M
     for direction, i in piece:
         M_prime = dissolve_image(M_prime, direction, i)
     k  = ceil(1000 / max(M_prime.shape))
     M_prime = netpbm.enlarge(M_prime, k)
-    netpbm.write('dissolve/beebe_trail_%s.pgm' % (name), M_prime, 8)
+    file_name = 'beebe_trail_%s.pgm' % (name)
+    netpbm.write('dissolve/%s' % (file_name), M_prime, 8)
+
+    t = time.time() - then
+    size = os.stat('dissolve/%s' % (file_name)).st_size
+    log.append({'name':file_name, 't':'%.3f' % t, 'size':'%d' % size})
+
+f = open('dissolve/dissolve.log', 'w')
+f.write('%s | %s | %s \n' % ('file_name'.ljust(25),
+                             'time'.ljust(5),
+                             'size'.ljust(10)))
+f.write('-'*45 + '\n')
+for entry in log:
+    f.write('%s | %s | %s \n' % (entry['name'].ljust(25),
+                                 entry['t'].ljust(5),
+                                 entry['size'].ljust(10)))
+f.close()
