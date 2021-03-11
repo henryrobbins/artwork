@@ -4,6 +4,10 @@ import time
 import numpy as np
 from math import ceil
 
+import sys
+sys.path.insert(1, '../')
+from log import write_log
+
 # COMPILE PIECES | 2021-03-07
 
 # single prints
@@ -48,14 +52,4 @@ for file_name, lb, ub in pieces:
     size = sum(d.stat().st_size for d in os.scandir('mod/%s' % (file_name)))
     log.append({'name':'%s' % (file_name), 't':'%.3f' % t, 'size':'%d' % size})
 
-
-f = open('mod/mod.log', 'w')
-f.write('%s | %s | %s \n' % ('file_name'.ljust(25),
-                             'time'.ljust(5),
-                             'size'.ljust(10)))
-f.write('-'*45 + '\n')
-for entry in log:
-    f.write('%s | %s | %s \n' % (entry['name'].ljust(25),
-                                 entry['t'].ljust(5),
-                                 entry['size'].ljust(10)))
-f.close()
+write_log('mod/mod.log', log)

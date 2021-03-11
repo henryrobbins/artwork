@@ -5,6 +5,10 @@ import time
 from math import ceil
 from typing import List
 
+import sys
+sys.path.insert(1, '../')
+from log import write_log
+
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:
     """Return vector v after one iteration of dissolving."""
@@ -89,13 +93,4 @@ for piece in pieces:
     size = os.stat('dissolve/%s' % (file_name)).st_size
     log.append({'name':file_name, 't':'%.3f' % t, 'size':'%d' % size})
 
-f = open('dissolve/dissolve.log', 'w')
-f.write('%s | %s | %s \n' % ('file_name'.ljust(25),
-                             'time'.ljust(5),
-                             'size'.ljust(10)))
-f.write('-'*45 + '\n')
-for entry in log:
-    f.write('%s | %s | %s \n' % (entry['name'].ljust(25),
-                                 entry['t'].ljust(5),
-                                 entry['size'].ljust(10)))
-f.close()
+write_log('dissolve/dissolve.log', log)
