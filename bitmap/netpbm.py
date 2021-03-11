@@ -1,4 +1,18 @@
+import os
 import numpy as np
+
+
+def convert_from_p6(file:str):
+    """Convert a netpbm file in P6 format to P2 format.
+
+    Args:
+        file_name (str): Name of the file to convert.
+    """
+    file_name = file.split('.')[0]
+    file_ext = file.split('.')[-1]
+    assert file_ext == 'pbm'
+    os.system("convert %s -compress none %s" % (file, file_name + '.pgm'))
+
 
 def read(file_name:str) -> np.ndarray:
     """Read the Netpbm file and return a NumPy matrix.

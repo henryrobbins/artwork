@@ -1,29 +1,10 @@
-import os
-import sys
-import numpy as np
 import netpbm
-
-# get arguments
-args = sys.argv
-base_file = args[1]
-file_name = args[2]
-style = args[3]
-i = int(args[4])
-
-# parse the P3 image file
-pic, w, h, n = netpbm.read(base_file)
-
-if style == 'h':
-    if (i < 0) | (i >= h):
-        raise ValueError("The given i was out of range.")
-elif style == 'v':
-    if (i < 0) | (i >= w):
-        raise ValueError("The given i was out of range.")
-else:
-    raise ValueError("'h' for horizontal or 'v' for vertical.")
+import numpy as np
+from math import ceil
+from typing import List
 
 
-def dissolve_iter(v):
+def dissolve_iter(v:np.ndarray) -> np.ndarray:
     """Return vector v after one iteration of dissolving."""
     n = len(v)
     v_new = []
@@ -48,7 +29,7 @@ def dissolve_iter(v):
     return np.array(v_new)
 
 
-def dissolve(v):
+def dissolve_vector(v:np.ndarray) -> np.ndarray:
     """Return the evolution of v as it dissolves completely."""
     n = len(v)
     v_current = v
@@ -59,12 +40,42 @@ def dissolve(v):
     return np.array(v_hist)
 
 
-if style == 'h':
-    new_pic = np.vstack((pic[:i], dissolve(pic[i])))
-elif style == 'v':
-    new_pic = np.hstack((pic[:,:i], dissolve(pic[:,i]).T))
-else:
-    raise ValueError("'h' for horizontal or 'v' for vertical.")
+def dissolve_image(M:np.ndarray, direction:str, i:int) -> np.ndarray:
+    """Dissolve the image.
 
-# write the new image file
-netpbm.write(file_name, new_pic, n)
+    Args:
+        np.ndarray: NumPy matrix representing the Netpbm file.
+        direction (str): Direction to dissolve the image in {'h','v'}.
+        int (i): Row / column index to dissolve the image from.
+
+    Returns:
+        np.ndarray: NumPy matrix representing the dissolved image.
+    """
+    if direction == 'h':
+        M_prime = np.vstack((M[:i], dissolve_vector(M[i])))
+    elif direction == 'v':
+        M_prime = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
+    return M_prime
+
+
+# COMPILE PIECES | 2021-03-02
+
+netpbm.convert_from_p6('dissolve/beebe_trail.pbm')
+M, w, h, n = netpbm.read('dissolve/beebe_trail.pgm')
+M = netpbm.change_gradient(M, n, 8)
+
+pieces = [[('h',70)],
+          [('h',100)],
+          [('h',140)],
+          [('v',80)],
+          [('h',60),('v',47)],
+          [('h',71),('v',251)]]
+
+for piece in pieces:
+    name = ''.join([op[0] + str(op[1]) for op in piece])
+    M_prime = M
+    for direction, i in piece:
+        M_prime = dissolve_image(M_prime, direction, i)
+    k  = ceil(1000 / max(M_prime.shape))
+    M_prime = netpbm.enlarge(M_prime, k)
+    netpbm.write('dissolve/beebe_trail_%s.pgm' % (name), M_prime, 8)
