@@ -1,6 +1,6 @@
 import numpy as np
 
-def read(file_name:str):
+def read(file_name:str) -> np.ndarray:
     """Read the Netpbm file and return a NumPy matrix.
 
     Args:
@@ -39,15 +39,16 @@ def write(file_name:str, M:np.ndarray, max_val:int):
     f.close()
 
 
-def enlarge(M, k):
-    """Enlarge some NumPy array by the multiplier k.
+def enlarge(M:np.ndarray, k:int) -> np.ndarray:
+    """Enlarge the netpbm image M by the multiplier k.
 
     Args:
-        M (np.ndarray): NumPy array of integers.
-        k (int): Multiplier by which to enlarge the array M.shape
+        M (np.ndarray): NumPy array representing a netpbm image.
+        k (int): Multiplier by which to enlarge the image.
 
     Returns:
-        np.ndarray: The NumyPy array M enlarged by the multiplier k."""
+        np.ndarray: NumyPy array representing the enlarged image.
+    """
     n,m = M.shape
     expanded_rows = np.zeros((n*k,m))
     for i in range(n*k):
@@ -56,3 +57,17 @@ def enlarge(M, k):
     for j in range(m*k):
         expanded[:,j] = expanded_rows[:,j // k]
     return expanded.astype(int)
+
+
+def change_gradient(M:np.ndarray, n_old:int, n_new:int) -> np.ndarray:
+    """Change the max gradient value of the netpbm image M to n.
+
+    Args:
+        M (np.ndarray): NumPy array representing a netpbm image.
+        n_old (int): Old max gradient value.
+        n_new (int): New max gradient value.
+
+    Returns:
+        np.ndarray: NumyPy array representing the adjusted image.
+    """
+    return np.array(list(map(lambda x: x // int(n_old / n_new), M)))
