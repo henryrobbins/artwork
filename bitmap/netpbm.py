@@ -37,3 +37,22 @@ def write(file_name:str, M:np.ndarray, max_val:int):
     f.write('\n'.join([' '.join(line) for line in M.astype(str).tolist()]))
     f.write('\n')
     f.close()
+
+
+def enlarge(M, k):
+    """Enlarge some NumPy array by the multiplier k.
+
+    Args:
+        M (np.ndarray): NumPy array of integers.
+        k (int): Multiplier by which to enlarge the array M.shape
+
+    Returns:
+        np.ndarray: The NumyPy array M enlarged by the multiplier k."""
+    n,m = M.shape
+    expanded_rows = np.zeros((n*k,m))
+    for i in range(n*k):
+        expanded_rows[i] = M[i // k]
+    expanded = np.zeros((n*k, m*k))
+    for j in range(m*k):
+        expanded[:,j] = expanded_rows[:,j // k]
+    return expanded.astype(int)
