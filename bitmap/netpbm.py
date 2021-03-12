@@ -1,8 +1,13 @@
 import os
 import time
 import numpy as np
+from math import ceil
 from collections import namedtuple
 from typing import Tuple, Callable
+
+import sys
+sys.path.insert(1, '../../')
+from log import Log, write_log
 
 Netpbm = namedtuple('Netpbm', ['w', 'h', 'k', 'M'])
 Netpbm.__doc__ = '''\
@@ -95,31 +100,35 @@ def change_gradient(image:Netpbm, k:int) -> Netpbm:
     return Netpbm(w=image.w, h=image.h, k=k, M=M_prime)
 
 
-# def compile(path:str, pbm_path:str, f:Callable, scale:int=-1, **kwargs) -> Tuple:
-#     """Write the netpbm image from path_pbm after applying function f to it.
+def compile(path:str, pbm_path:str, f:Callable, scale:int=-1, **kwargs) -> Log:
+    """Write the netpbm image from path_pbm after applying function f to it.
 
-#     Args:
-#         path (str): Path the netpbm image should be written to.
-#         pbm_path (str): Path of the pbm image.
-#         f (Callable): Function to apply to the netpbm image.
-#         scale (int): Desired dimension (Defaults to -1: no desired dimension).
+    Args:
+        path (str): Path the netpbm image should be written to.
+        pbm_path (str): Path of the pbm image.
+        f (Callable): Function to apply to the netpbm image.
+        scale (int): Desired dimension (Defaults to -1: no desired dimension).
 
-#     Returns:
-#         Tuple: name of created file, time to compile, and size of file.
-#     """
-#     then = time.time()
-#     netpbm.convert_from_p6(pbm_path)
-#     pgm_path = pbm_path[:-3] + '.pgm'
-#     M, w, h, n = netpbm.read(pgm_path)
-#     M_prime = f(M=M, **kwargs)
-#     if scale != -1:
-#         M_prime = netpbm.enlarge(M_prime, ceil(scale / max(M_prime.shape)))
-#     netpbm.write(path, M_prime, k)
+    Returns:
+        Log: log from compiling this file.
+    """
+    then = time.time()
 
+    # read file
+    convert_from_p6(pbm_path)
+    pgm_path = pbm_path[:-3] + 'pgm'
+    image = read(pgm_path)
 
+    # apply function and scale
+    new_image = f(image=image, **kwargs)
+    if scale != -1:
+        m = ceil(scale / max(new_image.M.shape))
+        new_image = enlarge(new_image, m)
 
+    # write file
+    write(path, new_image)
 
-
-#     if not os.path.exists(path):
-#         os.makedirs(path)
-
+    t = time.time() - then
+    size = os.stat(path).st_size
+    name = path.split('/')[-1]
+    return (Log(name=name, time=t, size=size))

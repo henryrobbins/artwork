@@ -1,7 +1,5 @@
 import numpy as np
 import os
-import time
-from math import ceil
 from typing import List
 
 import sys
@@ -47,31 +45,28 @@ def dissolve_vector(v:np.ndarray) -> np.ndarray:
     return np.array(v_hist)
 
 
-def dissolve_image(image:netpbm.Netpbm, direction:str, i:int) -> netpbm.Netpbm:
+def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
     """Dissolve the Netpbm image.
 
     Args:
         image (netpbm.Netpbm): Netpbm image to dissolve.
-        direction (str): Direction to dissolve the image in {'h','v'}.
-        int (i): Row / column index to dissolve the image from.
+        modifications (List): List of modifications ({'h','v'}, int) to apply.
 
     Returns:
         netpbm.Netpbm: NumPy matrix representing the dissolved image.
     """
-    if direction == 'h':
-        M_prime = np.vstack((image.M[:i], dissolve_vector(image.M[i])))
-    elif direction == 'v':
-        M_prime = np.hstack((image.M[:,:i], dissolve_vector(image.M[:,i]).T))
-    M_prime
-    h,w = M_prime.shape
-    return netpbm.Netpbm(w=w, h=h, k=image.k, M=M_prime)
+    image = netpbm.change_gradient(image, 8)
+    for direction, i in modifications:
+        if direction == 'h':
+            M = np.vstack((image.M[:i], dissolve_vector(image.M[i])))
+        elif direction == 'v':
+            M = np.hstack((image.M[:,:i], dissolve_vector(image.M[:,i]).T))
+        h,w = M.shape
+        image = netpbm.Netpbm(w=w, h=h, k=image.k, M=M)
+    return image
 
 
 # COMPILE PIECES | 2021-03-02
-
-netpbm.convert_from_p6('beebe_trail.pbm')
-image = netpbm.read('beebe_trail.pgm')
-image = netpbm.change_gradient(image, 8)
 
 pieces = [[('h',70)],
           [('h',100)],
@@ -80,20 +75,15 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
-log = []  # keep track of compilation time and file sizes
+log = []
 for piece in pieces:
-    then = time.time()
-    name = ''.join([op[0] + str(op[1]) for op in piece])
-    new_image = image
-    for direction, i in piece:
-        new_image = dissolve_image(new_image, direction, i)
-    k  = ceil(1000 / max(new_image.M.shape))
-    new_image = netpbm.enlarge(new_image, k)
-    file_name = 'beebe_trail_%s.pgm' % (name)
-    netpbm.write('%s' % (file_name), new_image)
-
-    t = time.time() - then
-    size = os.stat('%s' % (file_name)).st_size
-    log.append({'name':file_name, 't':'%.3f' % t, 'size':size})
+    modification = ''.join([op[0] + str(op[1]) for op in piece])
+    file_name = 'beebe_trail_%s.pgm' % modification
+    file_log = netpbm.compile(path='./%s' % file_name,
+                              pbm_path='beebe_trail.pbm',
+                              f=dissolve,
+                              scale=1000,
+                              modifications=piece)
+    log.append(file_log)
 
 write_log('dissolve.log', log)
