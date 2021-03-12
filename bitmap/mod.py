@@ -31,7 +31,7 @@ for file_name, k in pieces:
 
     t = time.time() - then
     size = os.stat('mod/%s.pgm' % (name)).st_size
-    log.append({'name':'%s.pgm' % (name), 't':'%.3f' % t, 'size':'%d' % size})
+    log.append({'name':'%s.pgm' % (name), 't':'%.3f' % t, 'size':size})
 
 # animations
 
@@ -50,6 +50,6 @@ for file_name, lb, ub in pieces:
 
     t = time.time() - then
     size = sum(d.stat().st_size for d in os.scandir('mod/%s' % (file_name)))
-    log.append({'name':'%s' % (file_name), 't':'%.3f' % t, 'size':'%d' % size})
+    log.append({'name':'%s' % (file_name), 't':'%.3f' % t, 'size':size})
 
 write_log('mod/mod.log', log)

@@ -91,6 +91,6 @@ for piece in pieces:
 
     t = time.time() - then
     size = os.stat('dissolve/%s' % (file_name)).st_size
-    log.append({'name':file_name, 't':'%.3f' % t, 'size':'%d' % size})
+    log.append({'name':file_name, 't':'%.3f' % t, 'size':size})
 
 write_log('dissolve/dissolve.log', log)
