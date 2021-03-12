@@ -47,29 +47,31 @@ def dissolve_vector(v:np.ndarray) -> np.ndarray:
     return np.array(v_hist)
 
 
-def dissolve_image(M:np.ndarray, direction:str, i:int) -> np.ndarray:
-    """Dissolve the image.
+def dissolve_image(image:netpbm.Netpbm, direction:str, i:int) -> netpbm.Netpbm:
+    """Dissolve the Netpbm image.
 
     Args:
-        np.ndarray: NumPy matrix representing the Netpbm file.
+        image (netpbm.Netpbm): Netpbm image to dissolve.
         direction (str): Direction to dissolve the image in {'h','v'}.
         int (i): Row / column index to dissolve the image from.
 
     Returns:
-        np.ndarray: NumPy matrix representing the dissolved image.
+        netpbm.Netpbm: NumPy matrix representing the dissolved image.
     """
     if direction == 'h':
-        M_prime = np.vstack((M[:i], dissolve_vector(M[i])))
+        M_prime = np.vstack((image.M[:i], dissolve_vector(image.M[i])))
     elif direction == 'v':
-        M_prime = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
-    return M_prime
+        M_prime = np.hstack((image.M[:,:i], dissolve_vector(image.M[:,i]).T))
+    M_prime
+    h,w = M_prime.shape
+    return netpbm.Netpbm(w=w, h=h, k=image.k, M=M_prime)
 
 
 # COMPILE PIECES | 2021-03-02
 
 netpbm.convert_from_p6('beebe_trail.pbm')
-M, w, h, n = netpbm.read('beebe_trail.pgm')
-M = netpbm.change_gradient(M, n, 8)
+image = netpbm.read('beebe_trail.pgm')
+image = netpbm.change_gradient(image, 8)
 
 pieces = [[('h',70)],
           [('h',100)],
@@ -82,13 +84,13 @@ log = []  # keep track of compilation time and file sizes
 for piece in pieces:
     then = time.time()
     name = ''.join([op[0] + str(op[1]) for op in piece])
-    M_prime = M
+    new_image = image
     for direction, i in piece:
-        M_prime = dissolve_image(M_prime, direction, i)
-    k  = ceil(1000 / max(M_prime.shape))
-    M_prime = netpbm.enlarge(M_prime, k)
+        new_image = dissolve_image(new_image, direction, i)
+    k  = ceil(1000 / max(new_image.M.shape))
+    new_image = netpbm.enlarge(new_image, k)
     file_name = 'beebe_trail_%s.pgm' % (name)
-    netpbm.write('%s' % (file_name), M_prime, 8)
+    netpbm.write('%s' % (file_name), new_image)
 
     t = time.time() - then
     size = os.stat('%s' % (file_name)).st_size

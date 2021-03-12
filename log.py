@@ -1,7 +1,6 @@
 import datetime
 from typing import List, Dict
 
-# TODO: Add a function for writing a generic artwork and returning log info
 
 def write_log(path:str, log:List[Dict]):
     """Write the log file at the given path.

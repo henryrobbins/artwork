@@ -1,6 +1,17 @@
 import os
+import time
 import numpy as np
+from collections import namedtuple
+from typing import Tuple, Callable
 
+Netpbm = namedtuple('Netpbm', ['w', 'h', 'k', 'M'])
+Netpbm.__doc__ = '''\
+Netpbm image.
+
+- w (int): Width of the netpbm image.
+- h (int): Height of the netpbm image.
+- k (int): Maximum value of gradients.
+- M (np.ndarray): h by w NumPy matrix of pixels.'''
 
 def convert_from_p6(file:str):
     """Convert a netpbm file in P6 format to P2 format.
@@ -14,74 +25,101 @@ def convert_from_p6(file:str):
     os.system("convert %s -compress none %s" % (file, file_name + '.pgm'))
 
 
-def read(file_name:str) -> np.ndarray:
+def read(file_name:str) -> Netpbm:
     """Read the Netpbm file and return a NumPy matrix.
 
     Args:
         file_name (str): Name of the Netpbm file.
 
     Returns:
-        np.ndarray: NumPy matrix representing the Netpbm file.
-        int: width of the Netpbm file.
-        int: height of the Netpbm file.
-        int: maximum value of greys between black and white.
+        Netpbm: Netpbm image.
     """
     lines = open(file_name).readlines()
     assert lines[0][:-1] == 'P2'
     w,h = [int(i) for i in lines[1][:-1].split(' ')]
-    max_val = int(lines[2][:-1])
+    k = int(lines[2][:-1])
     M = np.array([line.strip('\n ').split(' ') for line in lines[3:]])
     M = M.astype(int)
     assert (h,w) == M.shape
-    return M, w, h, max_val
+    return Netpbm(w=w, h=h, k=k, M=M)
 
 
-def write(file_name:str, M:np.ndarray, max_val:int):
+def write(file_name:str, image:Netpbm):
     """Write the Netpbm file given the associated matrix of nunbers.
 
     Args:
         file_name (str): Name of the Netpbm file to be written.
-        M (np.ndarray): NumPy array of integers.
+        image (Netpbm): Netpbm image to write.
     """
     f = open(file_name, "w")
     f.write('P2\n')
-    h,w = M.shape
-    f.write("%s %s\n" % (w, h))
-    f.write("%s\n" % (max_val))
-    f.write('\n'.join([' '.join(line) for line in M.astype(str).tolist()]))
+    f.write("%s %s\n" % (image.w, image.h))
+    f.write("%s\n" % (image.k))
+    f.write('\n'.join([' '.join(line) for line in image.M.astype(str).tolist()]))
     f.write('\n')
     f.close()
 
 
-def enlarge(M:np.ndarray, k:int) -> np.ndarray:
-    """Enlarge the netpbm image M by the multiplier k.
+def enlarge(image:Netpbm, k:int) -> Netpbm:
+    """Enlarge the netpbm image by the multiplier k.
 
     Args:
-        M (np.ndarray): NumPy array representing a netpbm image.
-        k (int): Multiplier by which to enlarge the image.
+        image (Netpbm): Netpbm image to enlarge.
 
     Returns:
-        np.ndarray: NumyPy array representing the enlarged image.
+       Netpbm: Enlarged Netpbm image.
     """
-    n,m = M.shape
+    n,m = image.M.shape
     expanded_rows = np.zeros((n*k,m))
     for i in range(n*k):
-        expanded_rows[i] = M[i // k]
+        expanded_rows[i] = image.M[i // k]
     expanded = np.zeros((n*k, m*k))
     for j in range(m*k):
         expanded[:,j] = expanded_rows[:,j // k]
-    return expanded.astype(int)
+    M_prime = expanded.astype(int)
+    h,w = M_prime.shape
+    return Netpbm(w=w, h=h, k=image.k, M=M_prime)
 
 
-def change_gradient(M:np.ndarray, n_old:int, n_new:int) -> np.ndarray:
+def change_gradient(image:Netpbm, k:int) -> Netpbm:
     """Change the max gradient value of the netpbm image M to n.
 
     Args:
-        M (np.ndarray): NumPy array representing a netpbm image.
-        n_old (int): Old max gradient value.
-        n_new (int): New max gradient value.
+        image (Netpbm): Netpbm image to change gradient for.
+        k (int): New max gradient value.
 
     Returns:
-        np.ndarray: NumyPy array representing the adjusted image.
+       Netpbm: Netpbm image with changed gradient.
     """
-    return np.array(list(map(lambda x: x // int(n_old / n_new), M)))
+    M_prime = np.array(list(map(lambda x: x // int(image.k / k), image.M)))
+    return Netpbm(w=image.w, h=image.h, k=k, M=M_prime)
+
+
+# def compile(path:str, pbm_path:str, f:Callable, scale:int=-1, **kwargs) -> Tuple:
+#     """Write the netpbm image from path_pbm after applying function f to it.
+
+#     Args:
+#         path (str): Path the netpbm image should be written to.
+#         pbm_path (str): Path of the pbm image.
+#         f (Callable): Function to apply to the netpbm image.
+#         scale (int): Desired dimension (Defaults to -1: no desired dimension).
+
+#     Returns:
+#         Tuple: name of created file, time to compile, and size of file.
+#     """
+#     then = time.time()
+#     netpbm.convert_from_p6(pbm_path)
+#     pgm_path = pbm_path[:-3] + '.pgm'
+#     M, w, h, n = netpbm.read(pgm_path)
+#     M_prime = f(M=M, **kwargs)
+#     if scale != -1:
+#         M_prime = netpbm.enlarge(M_prime, ceil(scale / max(M_prime.shape)))
+#     netpbm.write(path, M_prime, k)
+
+
+
+
+
+#     if not os.path.exists(path):
+#         os.makedirs(path)
+
