@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Dict
 
 # TODO: Add a function for writing a generic artwork and returning log info
@@ -24,6 +25,7 @@ def write_log(path:str, log:List[Dict]):
     size_w = max(max(len(l['size']) for l in log) + 1, len('size'))
 
     f = open(path, 'w')
+    f.write('%s\n' % str(datetime.datetime.now()))
     f.write('%s | %s | %s \n' % ('file_name'.ljust(file_name_w),
                                 'time (s)'.ljust(time_w),
                                 'size'.ljust(size_w)))

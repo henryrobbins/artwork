@@ -1,4 +1,3 @@
-import netpbm
 import numpy as np
 import os
 import time
@@ -7,6 +6,8 @@ from typing import List
 
 import sys
 sys.path.insert(1, '../')
+import netpbm
+sys.path.insert(1, '../../')
 from log import write_log
 
 
@@ -66,8 +67,8 @@ def dissolve_image(M:np.ndarray, direction:str, i:int) -> np.ndarray:
 
 # COMPILE PIECES | 2021-03-02
 
-netpbm.convert_from_p6('dissolve/beebe_trail.pbm')
-M, w, h, n = netpbm.read('dissolve/beebe_trail.pgm')
+netpbm.convert_from_p6('beebe_trail.pbm')
+M, w, h, n = netpbm.read('beebe_trail.pgm')
 M = netpbm.change_gradient(M, n, 8)
 
 pieces = [[('h',70)],
@@ -87,10 +88,10 @@ for piece in pieces:
     k  = ceil(1000 / max(M_prime.shape))
     M_prime = netpbm.enlarge(M_prime, k)
     file_name = 'beebe_trail_%s.pgm' % (name)
-    netpbm.write('dissolve/%s' % (file_name), M_prime, 8)
+    netpbm.write('%s' % (file_name), M_prime, 8)
 
     t = time.time() - then
-    size = os.stat('dissolve/%s' % (file_name)).st_size
+    size = os.stat('%s' % (file_name)).st_size
     log.append({'name':file_name, 't':'%.3f' % t, 'size':size})
 
-write_log('dissolve/dissolve.log', log)
+write_log('dissolve.log', log)
