@@ -10,7 +10,7 @@ sys.path.insert(1, '../../')
 from log import write_log
 
 
-def mod_image(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
+def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
     """Return the Netpbm image mod k.
 
     Args:
@@ -37,36 +37,26 @@ pieces = [('road_day', 8),
           ('water_cup', 7)]     # photo taken by Ella Clemons (3/7/2021)
 
 log = []  # keep track of compilation time and file sizes
-for file_name, k in pieces:
-    then = time.time()
-    name = "%s_mod_%d" % (file_name, k)
-    netpbm.convert_from_p6('%s.pbm' % (file_name))
-    image = netpbm.read('%s.pgm' % (file_name))
-    image = mod_image(image, k)
-    image = netpbm.enlarge(image, ceil(1000 / max(image.M.shape)))
-    netpbm.write('%s.pgm' % (name), image)
-
-    t = time.time() - then
-    size = os.stat('%s.pgm' % (name)).st_size
-    log.append({'name':'%s.pgm' % (name), 't':'%.3f' % t, 'size':size})
+for name, k in pieces:
+    file_name = "%s_mod_%d.pgm" % (name, k)
+    file_log = netpbm.compile(path=file_name,
+                              pbm_path='%s.pbm' % name,
+                              f=mod, k=k,
+                              scale=1000)
+    log.append(file_log)
 
 # animations
 
 pieces = [('faces',1,150)]      # photo taken by Ella Clemons (3/7/2021)
 
-for file_name, lb, ub in pieces:
-    if not os.path.isdir('%s' % file_name):
-        os.mkdir('%s' % file_name)
-    then = time.time()
+for name, lb, ub in pieces:
+    if not os.path.isdir(name):
+        os.mkdir(name)
     for k in range(lb,ub+1):
-        name = "%s_mod_%s" % (file_name, str(k).zfill(3))
-        netpbm.convert_from_p6('%s.pbm' % (file_name))
-        image = netpbm.read('%s.pgm' % (file_name))
-        image = mod_image(image, k)
-        netpbm.write('%s/%s.pgm' % (file_name, name), image)
-
-    t = time.time() - then
-    size = sum(d.stat().st_size for d in os.scandir('%s' % (file_name)))
-    log.append({'name':'%s' % (file_name), 't':'%.3f' % t, 'size':size})
+        file_name = "%s_mod_%s.pgm" % (name, str(k).zfill(3))
+        file_log = netpbm.compile(path='%s/%s' % (name, file_name),
+                                  pbm_path='%s.pbm' % name,
+                                  f=mod, k=k)
+        log.append(file_log)
 
 write_log('mod.log', log)

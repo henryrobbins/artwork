@@ -79,7 +79,7 @@ log = []
 for piece in pieces:
     modification = ''.join([op[0] + str(op[1]) for op in piece])
     file_name = 'beebe_trail_%s.pgm' % modification
-    file_log = netpbm.compile(path='./%s' % file_name,
+    file_log = netpbm.compile(path=file_name,
                               pbm_path='beebe_trail.pbm',
                               f=dissolve,
                               scale=1000,
