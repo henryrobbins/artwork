@@ -1,3 +1,6 @@
+![banner](banner.png)
+*water_cup_mod_7*
+
 # Archive of Works
 
 To compile the complete archive of work, use the following commands.
