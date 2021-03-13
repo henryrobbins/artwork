@@ -3,9 +3,10 @@ import os
 from typing import List
 
 import sys
-sys.path.insert(1, '../')
-import netpbm
-sys.path.insert(1, '../../')
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
+root = os.path.dirname(os.path.dirname(SOURCE_DIR))
+sys.path.insert(0,root)
+from bitmap import netpbm
 from log import write_log
 
 
@@ -78,12 +79,10 @@ pieces = [[('h',70)],
 log = []
 for piece in pieces:
     modification = ''.join([op[0] + str(op[1]) for op in piece])
-    file_name = 'beebe_trail_%s.pgm' % modification
-    file_log = netpbm.compile(path=file_name,
-                              pbm_path='beebe_trail.pbm',
-                              f=dissolve,
-                              scale=1000,
-                              modifications=piece)
+    file_path = '%s/beebe_trail_%s.pgm' % (SOURCE_DIR, modification)
+    pbm_path = '%s/%s' % (SOURCE_DIR, 'beebe_trail.pbm')
+    file_log = netpbm.compile(path=file_path, pbm_path=pbm_path,
+                              f=dissolve, scale=1000, modifications=piece)
     log.append(file_log)
 
-write_log('dissolve.log', log)
+write_log('%s/%s' % (SOURCE_DIR, 'dissolve.log'), log)

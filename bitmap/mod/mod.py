@@ -4,10 +4,11 @@ import numpy as np
 from math import ceil
 
 import sys
-sys.path.insert(1, '../')
-import netpbm
-sys.path.insert(1, '../../')
-from log import write_log
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
+root = os.path.dirname(os.path.dirname(SOURCE_DIR))
+sys.path.insert(0,root)
+from bitmap import netpbm
+from log import write_log, collapse_log
 
 
 def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
@@ -38,11 +39,10 @@ pieces = [('road_day', 8),
 
 log = []  # keep track of compilation time and file sizes
 for name, k in pieces:
-    file_name = "%s_mod_%d.pgm" % (name, k)
-    file_log = netpbm.compile(path=file_name,
-                              pbm_path='%s.pbm' % name,
-                              f=mod, k=k,
-                              scale=1000)
+    file_path = "%s/%s_mod_%d.pgm" % (SOURCE_DIR, name, k)
+    pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
+    file_log = netpbm.compile(path=file_path, pbm_path=pbm_path,
+                              f=mod, k=k, scale=1000)
     log.append(file_log)
 
 # animations
@@ -50,13 +50,15 @@ for name, k in pieces:
 pieces = [('faces',1,150)]      # photo taken by Ella Clemons (3/7/2021)
 
 for name, lb, ub in pieces:
-    if not os.path.isdir(name):
-        os.mkdir(name)
+    tmp_logs = []
+    if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
+        os.mkdir("%s/%s" % (SOURCE_DIR, name))
     for k in range(lb,ub+1):
-        file_name = "%s_mod_%s.pgm" % (name, str(k).zfill(3))
-        file_log = netpbm.compile(path='%s/%s' % (name, file_name),
-                                  pbm_path='%s.pbm' % name,
+        file_path = "%s/%s/%s_mod_%s.pgm" % (SOURCE_DIR, name, name, str(k).zfill(3))
+        pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
+        file_log = netpbm.compile(path=file_path, pbm_path=pbm_path,
                                   f=mod, k=k)
-        log.append(file_log)
+        tmp_logs.append(file_log)
+    log.append(collapse_log(name, tmp_logs))
 
-write_log('mod.log', log)
+write_log('%s/%s' % (SOURCE_DIR, 'mod.log'), log)

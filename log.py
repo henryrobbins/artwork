@@ -1,4 +1,5 @@
 import datetime
+import pickle
 from collections import namedtuple
 from typing import List, Dict
 
@@ -11,15 +12,14 @@ Log from compiling an image.
 - size (int): Size of the compiled file (in bytes).'''
 
 
-def write_log(path:str, log:List[Dict]):
+def write_log(path:str, logs:List[Log]):
     """Write the log file at the given path.
 
     Args:
-        path (str): Path where the log file should be written.
-        log (List[Dict]): Dictionary for each item in the log.
+        path (str): Path to write the log file to.
+        logs (List[Log]): List of logs to include in the file.
     """
-
-    names, times, sizes = zip(*log)
+    names, times, sizes = zip(*logs)
 
     def size_string(size):
         s = size
@@ -49,3 +49,22 @@ def write_log(path:str, log:List[Dict]):
                                      log[1].ljust(time_w),
                                      log[2].ljust(size_w)))
     f.close()
+
+    pickle_path = '/'.join(path.split('/')[:-1]) + '/log.pickle'
+    with open(pickle_path, 'wb') as handle:
+        pickle.dump(logs, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def collapse_log(name:str, logs:List[Log]) -> Log:
+    """Collapse the list of logs into a single log with the given name.
+
+    Args:
+        name (str): Name of the collapsed log.
+        logs (List[Log]): List of logs to be collapsed.
+
+    Returns:
+        Log: Collapsed log.
+    """
+    time = sum(log.time for log in logs)
+    size = sum(log.size for log in logs)
+    return Log(name=name, time=time, size=size)

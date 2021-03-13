@@ -6,8 +6,10 @@ from collections import namedtuple
 from typing import Tuple, Callable
 
 import sys
-sys.path.insert(1, '../../')
-from log import Log, write_log
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
+root = os.path.dirname(os.path.dirname(SOURCE_DIR))
+sys.path.insert(0,root)
+from log import Log, write_log, collapse_log
 
 Netpbm = namedtuple('Netpbm', ['w', 'h', 'k', 'M'])
 Netpbm.__doc__ = '''\
