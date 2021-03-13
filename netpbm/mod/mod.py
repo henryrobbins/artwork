@@ -7,7 +7,7 @@ import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
-from bitmap import netpbm
+from netpbm import netpbm
 from log import write_log, collapse_log
 
 
