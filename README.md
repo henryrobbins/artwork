@@ -1,5 +1,16 @@
 # Archive of Works
 
+To compile the complete archive of work, use the following commands.
+
+```
+git clone git@github.com:henryrobbins/art-3699.git
+cd art-3699
+python compile.py
+```
+
+Instructions for compiling specific works can be found in the corresponding
+README. If no instructions are found, there is no work to compile.
+
 | Title | Date | Work | Description |
 |-------|------|------|-------------|
 | spin | 2021-02-08 | [spin](spin) | [README.md](spin/README.md) |

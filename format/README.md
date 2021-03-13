@@ -9,6 +9,7 @@ optimal line break locations. Once the optimal solution is found, the
 visualization loops. Pressing CTRL+C terminates the program. An example call is
 given below.
 
-```# visualize the optimal splitting of short_text.txt to lines of length 45
+```
+# visualize the optimal splitting of short_text.txt to lines of length 45
 python format.py short_text.txt 45
 ```

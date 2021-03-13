@@ -13,3 +13,15 @@ beebe_trail subseries, this same plan was implemented programatically. A vector
 chosen from the image to dissolve. In some images, consecutive dissolves are
 applied. For example, beebe_trail_h60v47 is acheived by first dissolving down
 from row 60 and then dissolving to the left from column 47.
+
+To compile this work, use the following commands.
+
+```
+# repo not yet cloned
+git clone git@github.com:henryrobbins/art-3699.git
+cd art-3699
+python netpbm/dissolve/dissolve.py
+
+# repo already cloned
+python netpbm/dissolve/dissolve.py
+```
