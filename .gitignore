@@ -143,3 +143,16 @@ dmypy.json
 .pytype/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# netpbm templates
+netpbm/templates
+
+# log files
+*.log
+*log.pickle
+
+# compiled works
+netpbm/dissolve/beebe_trail*.pgm
+netpbm/mod/faces
+netpbm/mod/faces.gif
+netpbm/mod/*.pgm
