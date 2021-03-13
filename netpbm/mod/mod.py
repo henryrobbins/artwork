@@ -31,13 +31,13 @@ def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
 # single prints
 
 pieces = [('road_day', 8),
-          ('sky', 8),           # photo taken by Ella Clemons (2/24/2021)
-          ('faces', 12),        # photo taken by Ella Clemons (3/7/2021)
+          ('sky', 8),
+          ('faces', 12),
           ('beebe_trail', 8),
-          ('stomp', 25),        # photo taken by Ella Clemons (3/7/2021)
-          ('water_cup', 7)]     # photo taken by Ella Clemons (3/7/2021)
+          ('stomp', 25),
+          ('water_cup', 7)]
 
-log = []  # keep track of compilation time and file sizes
+log = []
 for name, k in pieces:
     file_path = "%s/%s_mod_%d.pgm" % (SOURCE_DIR, name, k)
     pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
@@ -47,7 +47,7 @@ for name, k in pieces:
 
 # animations
 
-pieces = [('faces',1,150)]      # photo taken by Ella Clemons (3/7/2021)
+pieces = [('faces',1,150)]
 
 for name, lb, ub in pieces:
     tmp_logs = []
