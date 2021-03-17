@@ -23,6 +23,7 @@ README. If no instructions are found, there is no work to compile.
 | polyominoes | 2021-02-26 | [polyominoes.pbm](netpbm/polyominoes.pbm) | [README.md](netpbm/README.md) |
 | dissolve | 2021-03-02 | [dissolve](netpbm/dissolve) | [README.md](netpbm/dissolve/README.md) |
 | mod | 2021-03-07 | [mod](netpbm/mod) | [README.md](netpbm/mod/README.md) |
+| drunk_walk | 2021-03-17 | [drunk_walk](netpbm/drunk_walk) | [README.md](netpbm/drunk_walk/README.md) |
 
 ## License
 

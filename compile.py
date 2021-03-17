@@ -8,7 +8,8 @@ LOGS = []
 # =============== Python Works ===============
 
 python_works = ['netpbm/dissolve',
-                'netpbm/mod']
+                'netpbm/mod',
+                'netpbm/drunk_walk']
 
 for path in python_works:
     name = path.split('/')[-1]
