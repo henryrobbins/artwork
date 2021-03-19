@@ -3,7 +3,7 @@ import time
 import numpy as np
 from math import ceil
 from collections import namedtuple
-from typing import Tuple, Callable
+from typing import List, Tuple, Callable
 
 import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,16 +20,18 @@ Netpbm image.
 - k (int): Maximum value of gradients.
 - M (np.ndarray): h by w NumPy matrix of pixels.'''
 
-def convert_from_p6(file:str):
+def convert_from_p6(path:str) -> str:
     """Convert a netpbm file in P6 format to P2 format.
 
     Args:
-        file_name (str): Name of the file to convert.
+        path (str): Path to the file to convert.
+
+    Return:
+        str: Path to the resulting file.
     """
-    file_name = file.split('.')[0]
-    file_ext = file.split('.')[-1]
-    assert file_ext == 'pbm'
-    os.system("convert %s -compress none %s" % (file, file_name + '.pgm'))
+    pgm_path = path[:-3] + 'pgm'
+    os.system("convert %s -compress none %s" % (path, pgm_path))
+    return pgm_path
 
 
 def read(file_name:str) -> Netpbm:
@@ -58,13 +60,13 @@ def write(file_name:str, image:Netpbm):
         file_name (str): Name of the Netpbm file to be written.
         image (Netpbm): Netpbm image to write.
     """
-    f = open(file_name, "w")
-    f.write('P2\n')
-    f.write("%s %s\n" % (image.w, image.h))
-    f.write("%s\n" % (image.k))
-    f.write('\n'.join([' '.join(line) for line in image.M.astype(str).tolist()]))
-    f.write('\n')
-    f.close()
+    with open(file_name, "w") as f:
+        f.write('P2\n')
+        f.write("%s %s\n" % (image.w, image.h))
+        f.write("%s\n" % (image.k))
+        lines = image.M.astype(str).tolist()
+        f.write('\n'.join([' '.join(line) for line in lines]))
+        f.write('\n')
 
 
 def enlarge(image:Netpbm, k:int) -> Netpbm:
@@ -102,33 +104,83 @@ def change_gradient(image:Netpbm, k:int) -> Netpbm:
     return Netpbm(w=image.w, h=image.h, k=k, M=M_prime)
 
 
-def compile(path:str, pbm_path:str, f:Callable, scale:int=-1, **kwargs) -> Log:
-    """Write the netpbm image from path_pbm after applying function f to it.
+def image_grid(images:List[Netpbm], w:int, h:int, b:int) -> Netpbm:
+    """Create a w * h grid of images with a border of width b.
 
     Args:
-        path (str): Path the netpbm image should be written to.
-        pbm_path (str): Path of the pbm image.
+        images (List[Netpbm]): images to be put in the grid (same dimensions).
+        w (int): number of images in each row of the grid.
+        h (int): number of images in each column of the grid.
+        b (int): width of the border/margin.
+
+    Returns:
+        Netpbm: grid layout of the images.
+    """
+    n,m = images[0].M.shape
+    k = images[0].k
+    h_border = k*np.ones((b, w*m + (w+1)*b))
+    v_border = k*np.ones((n, b))
+    grid_layout = h_border
+    p = 0
+    for i in range(h):
+        row = v_border
+        for j in range(w):
+            row = np.hstack((row, images[p].M))
+            row = np.hstack((row, v_border))
+            p += 1
+        grid_layout = np.vstack((grid_layout, row))
+        grid_layout = np.vstack((grid_layout, h_border))
+    return Netpbm(w=w*m + (w+1)*b,
+                  h=h*n + (h+1)*b,
+                  k=k, M=grid_layout.astype(int))
+
+
+def transform(in_path:str, out_path:str, f:Callable,
+              scale:int=-1, **kwargs) -> Log:
+    """Apply f to the image at in_path and write result to out_path.
+
+    Args:
+        in_path (str): Path of the image to be transformed.
+        out_path (str): Path the transformed image is written to.
         f (Callable): Function to apply to the netpbm image.
-        scale (int): Desired dimension (Defaults to -1: no desired dimension).
+        scale (int): Scale the image to this dimension. Defaults to -1.
 
     Returns:
         Log: log from compiling this file.
     """
     then = time.time()
 
-    # read file
-    convert_from_p6(pbm_path)
-    pgm_path = pbm_path[:-3] + 'pgm'
-    image = read(pgm_path)
-
-    # apply function and scale
+    image = read(convert_from_p6(in_path))
     new_image = f(image=image, **kwargs)
     if scale != -1:
         m = ceil(scale / max(new_image.M.shape))
         new_image = enlarge(new_image, m)
+    write(out_path, new_image)
 
-    # write file
-    write(path, new_image)
+    t = time.time() - then
+    size = os.stat(out_path).st_size
+    name = out_path.split('/')[-1]
+    return (Log(name=name, time=t, size=size))
+
+
+def generate(path:str, f:Callable, scale:int=-1, **kwargs) -> Log:
+    """Generate a Netpbm image using f and write the image to the path.
+
+    Args:
+        path (str): Path to write the generated Netpbm image to.
+        f (Callable): Function used to generate the image.
+        scale (int): Scale the image to this dimension. Defaults to -1.
+
+    Returns:
+        Log: log from compiling this file.
+    """
+    then = time.time()
+
+    image = f(**kwargs)
+    if scale != -1:
+        m = ceil(scale / max(image.M.shape))
+        image = enlarge(image, m)
+    write(path, image)
 
     t = time.time() - then
     size = os.stat(path).st_size
