@@ -157,3 +157,4 @@ netpbm/mod/faces
 netpbm/mod/faces.gif
 netpbm/mod/*.pgm
 netpbm/drunk_walk/*.pgm
+netpbm/partition/*.pgm

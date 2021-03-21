@@ -24,6 +24,7 @@ README. If no instructions are found, there is no work to compile.
 | dissolve | 2021-03-02 | [dissolve](netpbm/dissolve) | [README.md](netpbm/dissolve/README.md) |
 | mod | 2021-03-07 | [mod](netpbm/mod) | [README.md](netpbm/mod/README.md) |
 | drunk_walk | 2021-03-17 | [drunk_walk](netpbm/drunk_walk) | [README.md](netpbm/drunk_walk/README.md) |
+| partition | 2021-03-20 | [partition](netpbm/partition) | [README.md](netpbm/partition/README.md) |
 
 ## License
 
