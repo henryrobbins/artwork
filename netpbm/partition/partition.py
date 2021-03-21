@@ -47,7 +47,8 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
 pieces = [('road_day', 8, 30),
           ('sky', 8, 30),
           ('tree', 8, 30),
-          ('beebe_day', 8, 30)]
+          ('beebe_day', 8, 30),
+          ('waterfall', 8, 30)]
 
 log = []
 for name, k, b in pieces:

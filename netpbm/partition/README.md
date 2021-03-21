@@ -9,6 +9,7 @@ pixels and background in the color of the corresponding gradient.
 
 In some cases, unedited photos were taken by another photographer.
 - sky: Ella Clemons (2021-02-24)
+- waterfall: River Chavez (2021-03-20)
 
 To compile this work, use the following commands.
 
