@@ -48,7 +48,13 @@ pieces = [('road_day', 8, 30),
           ('sky', 8, 30),
           ('tree', 8, 30),
           ('beebe_day', 8, 30),
-          ('waterfall', 8, 30)]
+          ('waterfall', 8, 30),
+          ('risley', 8, 30),
+          ('creek', 8, 30),
+          ('fallen_tree', 8, 30),
+          ('old_man', 8, 30),
+          ('wading', 8, 30),
+          ('island', 8, 30)]
 
 log = []
 for name, k, b in pieces:

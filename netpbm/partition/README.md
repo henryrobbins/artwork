@@ -10,6 +10,12 @@ pixels and background in the color of the corresponding gradient.
 In some cases, unedited photos were taken by another photographer.
 - sky: Ella Clemons (2021-02-24)
 - waterfall: River Chavez (2021-03-20)
+- risley: River Chavez (2021-03-21)
+- creek: River Chavez (2021-03-21)
+- fallen_tree: River Chavez (2021-03-21)
+- old_man: River Chavez (2021-03-21)
+- wading: River Chavez (2021-03-21)
+- island: River Chavez (2021-03-21)
 
 To compile this work, use the following commands.
 
