@@ -10,7 +10,8 @@ LOGS = []
 python_works = ['netpbm/dissolve',
                 'netpbm/mod',
                 'netpbm/drunk_walk',
-                'netpbm/partition']
+                'netpbm/partition',
+                'netpbm/clip']
 
 for path in python_works:
     name = path.split('/')[-1]

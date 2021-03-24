@@ -104,7 +104,8 @@ def change_gradient(image:Netpbm, k:int) -> Netpbm:
     return Netpbm(w=image.w, h=image.h, k=k, M=M_prime)
 
 
-def image_grid(images:List[Netpbm], w:int, h:int, b:int) -> Netpbm:
+def image_grid(images:List[Netpbm], w:int, h:int, b:int,
+               color:int="white") -> Netpbm:
     """Create a w * h grid of images with a border of width b.
 
     Args:
@@ -112,14 +113,16 @@ def image_grid(images:List[Netpbm], w:int, h:int, b:int) -> Netpbm:
         w (int): number of images in each row of the grid.
         h (int): number of images in each column of the grid.
         b (int): width of the border/margin.
+        color (int): color of border {'white', 'black'} (defaults to white).
 
     Returns:
         Netpbm: grid layout of the images.
     """
     n,m = images[0].M.shape
     k = images[0].k
-    h_border = k*np.ones((b, w*m + (w+1)*b))
-    v_border = k*np.ones((n, b))
+    c = {'white':k, 'black':0}[color]
+    h_border = c*np.ones((b, w*m + (w+1)*b))
+    v_border = c*np.ones((n, b))
     grid_layout = h_border
     p = 0
     for i in range(h):
@@ -133,6 +136,20 @@ def image_grid(images:List[Netpbm], w:int, h:int, b:int) -> Netpbm:
     return Netpbm(w=w*m + (w+1)*b,
                   h=h*n + (h+1)*b,
                   k=k, M=grid_layout.astype(int))
+
+
+def border(image:Netpbm, b:int, color:int="white") -> Netpbm:
+    """Add a border of width b to the image
+
+    Args:
+        image (Netpbm): Netpbm image to add a border to
+        b (int): width of the border/margin.
+        color (int): color of border {'white', 'black'} (defaults to white).
+
+    Returns:
+        Netpbm: Image with border added.
+    """
+    return image_grid([image], w=1, h=1, b=b, color=color)
 
 
 def transform(in_path:str, out_path:str, f:Callable,
