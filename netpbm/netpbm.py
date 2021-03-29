@@ -39,7 +39,7 @@ def raw_to_plain(path:str, magic_number:int=None) -> str:
     magic_number = prev if magic_number is None else magic_number
     assert magic_number <= prev
     if magic_number == prev:
-        out_path = path[:-3] + "_plain" + MAGIC_TO_EXT[magic_number]
+        out_path = path[:-4] + "_plain." + MAGIC_TO_EXT[magic_number]
     else:
         out_path = path[:-3] + MAGIC_TO_EXT[magic_number]
     os.system("convert %s -compress none %s" % (path, out_path))
@@ -55,18 +55,15 @@ def read(file_name:str) -> Netpbm:
     Returns:
         Netpbm: Netpbm image.
     """
-    lines = open(file_name).readlines()
-    P = int(lines[0][1])
-    assert P in [1,2,3]
-    w,h = [int(i) for i in lines[1][:-1].split(' ')]
-    k = int(lines[2][:-1])
-    M = np.array([line.strip('\n ').split(' ') for line in lines[3:]])
-    M = M.astype(int)
-    if P == 3:
-        assert (h,3*w) == M.shape
-    else:
-        assert (h,w) == M.shape
-    return Netpbm(P=P, w=w, h=h, k=k, M=M)
+    # Adapted from code provided by Dan Torop
+    with open(file_name) as f:
+        vals = [v for line in f for v in line.split('#')[0].split()]
+        P = int(vals[0][1])
+        w, h, k, *vals = [int(v) for v in vals[1:]]
+        is_P3 = (3 if P == 3  else 1)
+        assert len(vals) == w * h * is_P3
+        M = np.array(vals).reshape(h, w * is_P3)
+        return Netpbm(P=P, w=w, h=h, k=k, M=M)
 
 
 def write(file_name:str, image:Netpbm):
@@ -78,7 +75,8 @@ def write(file_name:str, image:Netpbm):
     """
     with open(file_name, "w") as f:
         f.write('P%d\n' % image.P)
-        f.write("%s %s\n" % (image.w, image.h))
+        is_P3 = (3 if image.P == 3  else 1)
+        f.write("%s %s\n" % (int(image.w / is_P3), image.h))
         f.write("%s\n" % (image.k))
         lines = image.M.astype(str).tolist()
         f.write('\n'.join([' '.join(line) for line in lines]))
@@ -99,8 +97,14 @@ def enlarge(image:Netpbm, k:int) -> Netpbm:
     for i in range(n*k):
         expanded_rows[i] = image.M[i // k]
     expanded = np.zeros((n*k, m*k))
-    for j in range(m*k):
-        expanded[:,j] = expanded_rows[:,j // k]
+    if image.P == 3:
+        for j in range(int(m/3)*k):
+            x = (j // k) * 3
+            y = j * 3
+            expanded[:,y:y+3] = expanded_rows[:,x:x+3]
+    else:
+        for j in range(m*k):
+            expanded[:,j] = expanded_rows[:,j // k]
     M_prime = expanded.astype(int)
     h,w = M_prime.shape
     return Netpbm(P=image.P, w=w, h=h, k=image.k, M=M_prime)
@@ -188,7 +192,7 @@ def transform(in_path:str, out_path:str, f:Callable, scale:int=-1,
     image = read(raw_to_plain(in_path, magic_number=magic_number))
     new_image = f(image=image, **kwargs)
     if scale != -1:
-        m = ceil(scale / max(new_image.M.shape))
+        m = ceil(scale / max(new_image.w,new_image.h))
         new_image = enlarge(new_image, m)
     write(out_path, new_image)
 
