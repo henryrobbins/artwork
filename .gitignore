@@ -159,3 +159,6 @@ netpbm/mod/*.pgm
 netpbm/drunk_walk/*.pgm
 netpbm/partition/*.pgm
 netpbm/clip/*.pgm
+netpbm/channel/*.ppm
+!netpbm/channel/math.ppm
+!netpbm/channel/math_plain.ppm
