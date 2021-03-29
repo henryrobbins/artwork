@@ -62,7 +62,10 @@ def read(file_name:str) -> Netpbm:
     k = int(lines[2][:-1])
     M = np.array([line.strip('\n ').split(' ') for line in lines[3:]])
     M = M.astype(int)
-    assert (h,w) == M.shape
+    if P == 3:
+        assert (h,3*w) == M.shape
+    else:
+        assert (h,w) == M.shape
     return Netpbm(P=P, w=w, h=h, k=k, M=M)
 
 
