@@ -26,6 +26,7 @@ README. If no instructions are found, there is no work to compile.
 | drunk_walk | 2021-03-17 | [drunk_walk](netpbm/drunk_walk) | [README.md](netpbm/drunk_walk/README.md) |
 | partition | 2021-03-20 | [partition](netpbm/partition) | [README.md](netpbm/partition/README.md) |
 | clip | 2021-03-23 | [clip](netpbm/clip) | [README.md](netpbm/clip/README.md) |
+| channel | 2021-03-29 | [channel](netpbm/channel) | [README.md](netpbm/channel/README.md) |
 
 
 ## License

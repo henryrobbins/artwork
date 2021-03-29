@@ -75,8 +75,7 @@ def write(file_name:str, image:Netpbm):
     """
     with open(file_name, "w") as f:
         f.write('P%d\n' % image.P)
-        is_P3 = (3 if image.P == 3  else 1)
-        f.write("%s %s\n" % (int(image.w / is_P3), image.h))
+        f.write("%s %s\n" % (image.w, image.h))
         f.write("%s\n" % (image.k))
         lines = image.M.astype(str).tolist()
         f.write('\n'.join([' '.join(line) for line in lines]))
@@ -106,8 +105,8 @@ def enlarge(image:Netpbm, k:int) -> Netpbm:
         for j in range(m*k):
             expanded[:,j] = expanded_rows[:,j // k]
     M_prime = expanded.astype(int)
-    h,w = M_prime.shape
-    return Netpbm(P=image.P, w=w, h=h, k=image.k, M=M_prime)
+    w,h = image.w, image.h
+    return Netpbm(P=image.P, w=w*k, h=h*k, k=image.k, M=M_prime)
 
 
 def change_gradient(image:Netpbm, k:int) -> Netpbm:
