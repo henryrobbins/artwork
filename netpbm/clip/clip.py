@@ -52,9 +52,9 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
 log = []
 for name, k, lb, ub, b, c in pieces:
     file_path = "%s/%s_clip_%d_%d.pgm" % (SOURCE_DIR, name, lb, ub)
-    pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=pbm_path, out_path=file_path, f=clip,
-                                k=k, lb=lb, ub=ub, b=b, c=c, scale=1000)
+    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
+                                magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b, c=c, scale=1000)
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'clip.log'), log)

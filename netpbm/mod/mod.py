@@ -40,9 +40,9 @@ pieces = [('road_day', 8),
 log = []
 for name, k in pieces:
     file_path = "%s/%s_mod_%d.pgm" % (SOURCE_DIR, name, k)
-    pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=pbm_path, out_path=file_path,
-                                f=mod, k=k, scale=1000)
+    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
+                                magic_number=2, f=mod, k=k, scale=1000)
     log.append(file_log)
 
 # animations
@@ -54,10 +54,10 @@ for name, lb, ub in pieces:
     if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
         os.mkdir("%s/%s" % (SOURCE_DIR, name))
     for k in range(lb,ub+1):
-        file_path = "%s/%s/%s_mod_%s.pgm" % (SOURCE_DIR, name, name, str(k).zfill(3))
-        pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
-        file_log = netpbm.transform(in_path=pbm_path, out_path=file_path,
-                                    f=mod, k=k)
+        file_path = "%s/%s/%s_mod_%s.pm" % (SOURCE_DIR, name, name, str(k).zfill(3))
+        ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+        file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
+                                    magic_number=2, f=mod, k=k)
         tmp_logs.append(file_log)
     log.append(collapse_log(name, tmp_logs))
 

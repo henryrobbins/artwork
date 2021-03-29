@@ -59,9 +59,10 @@ pieces = [('road_day', 8, 30),
 log = []
 for name, k, b in pieces:
     file_path = "%s/%s_partition_%d.pgm" % (SOURCE_DIR, name, k)
-    pbm_path = '%s/%s.pbm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=pbm_path, out_path=file_path,
-                                f=partition, k=k, b=b, scale=2000)
+    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
+                                magic_number=2, f=partition, k=k, b=b,
+                                scale=2000)
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'partition.log'), log)

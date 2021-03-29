@@ -20,18 +20,27 @@ Netpbm image.
 - k (int): Maximum value of gradients.
 - M (np.ndarray): h by w NumPy matrix of pixels.'''
 
-def convert_from_p6(path:str) -> str:
-    """Convert a netpbm file in P6 format to P2 format.
+def raw_to_plain(path:str, magic_number:int=None) -> str:
+    """Convert a netpbm file in raw format to plain format.
 
     Args:
         path (str): Path to the file to convert.
+        magic_number (int): "Magic number" {1,2,3}.
 
     Return:
         str: Path to the resulting file.
     """
-    pgm_path = path[:-3] + 'pgm'
-    os.system("convert %s -compress none %s" % (path, pgm_path))
-    return pgm_path
+    ext_to_magic = {"pbm":1, "pgm":2, "ppm":3}
+    magic_to_ext = {1:"pbm", 2:"pgm", 3:"ppm"}
+    prev = ext_to_magic[path[-3:]]
+    magic_number = prev if magic_number is None else magic_number
+    assert magic_number <= prev
+    if magic_number == prev:
+        out_path = path[:-3] + "_plain" + magic_to_ext[magic_number]
+    else:
+        out_path = path[:-3] + magic_to_ext[magic_number]
+    os.system("convert %s -compress none %s" % (path, out_path))
+    return out_path
 
 
 def read(file_name:str) -> Netpbm:
@@ -152,8 +161,8 @@ def border(image:Netpbm, b:int, color:int="white") -> Netpbm:
     return image_grid([image], w=1, h=1, b=b, color=color)
 
 
-def transform(in_path:str, out_path:str, f:Callable,
-              scale:int=-1, **kwargs) -> Log:
+def transform(in_path:str, out_path:str, f:Callable, scale:int=-1,
+              magic_number=None, **kwargs) -> Log:
     """Apply f to the image at in_path and write result to out_path.
 
     Args:
@@ -161,13 +170,14 @@ def transform(in_path:str, out_path:str, f:Callable,
         out_path (str): Path the transformed image is written to.
         f (Callable): Function to apply to the netpbm image.
         scale (int): Scale the image to this dimension. Defaults to -1.
+        magic_number (int): "Magic number" {1,2,3}. Defaults to None.
 
     Returns:
         Log: log from compiling this file.
     """
     then = time.time()
 
-    image = read(convert_from_p6(in_path))
+    image = read(raw_to_plain(in_path, magic_number=magic_number))
     new_image = f(image=image, **kwargs)
     if scale != -1:
         m = ceil(scale / max(new_image.M.shape))
