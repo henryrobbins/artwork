@@ -23,7 +23,7 @@ def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
     """
     M_prime = np.array(list(map(lambda x: x % k, image.M)))
     h,w = M_prime.shape
-    return netpbm.Netpbm(w=w, h=h, k=k, M=M_prime)
+    return netpbm.Netpbm(P=image.P, w=w, h=h, k=k, M=M_prime)
 
 
 # COMPILE PIECES | 2021-03-07

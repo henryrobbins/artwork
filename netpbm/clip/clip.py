@@ -32,7 +32,7 @@ def clip(image:netpbm.Netpbm,
     M_lb = np.where(lb <= image.M, 1, 0)
     M_ub = np.where(image.M <= ub, 1, 0)
     M = np.where(M_lb + M_ub == 2, 0, 1)
-    image = netpbm.Netpbm(w=w, h=h, k=1, M=M)
+    image = netpbm.Netpbm(P=image.P, w=w, h=h, k=1, M=M)
     return netpbm.border(image, b, c)
 
 

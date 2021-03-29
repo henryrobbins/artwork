@@ -23,20 +23,21 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
     image = netpbm.change_gradient(image, k)
+    P = image.P
     h,w = image.M.shape
     layers = []
     for i in range(k):
         M = np.where(image.M == i,k,0)
-        layers.append(netpbm.Netpbm(w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,k)
-        layers.append(netpbm.Netpbm(w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,i,0)
-        layers.append(netpbm.Netpbm(w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,i)
-        layers.append(netpbm.Netpbm(w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
     return netpbm.image_grid(layers,k,4,b)
 
 

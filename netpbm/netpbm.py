@@ -11,10 +11,15 @@ root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from log import Log, write_log, collapse_log
 
-Netpbm = namedtuple('Netpbm', ['w', 'h', 'k', 'M'])
+# Dictionary from Netpbm extentsions to magic number and vice versa
+EXT_TO_MAGIC = {"pbm":1, "pgm":2, "ppm":3}
+MAGIC_TO_EXT = {1:"pbm", 2:"pgm", 3:"ppm"}
+
+Netpbm = namedtuple('Netpbm', ['P', 'w', 'h', 'k', 'M'])
 Netpbm.__doc__ = '''\
 Netpbm image.
 
+- P (int): "Magic number" of the Netpbm image {1,2,3}.
 - w (int): Width of the netpbm image.
 - h (int): Height of the netpbm image.
 - k (int): Maximum value of gradients.
@@ -30,15 +35,13 @@ def raw_to_plain(path:str, magic_number:int=None) -> str:
     Return:
         str: Path to the resulting file.
     """
-    ext_to_magic = {"pbm":1, "pgm":2, "ppm":3}
-    magic_to_ext = {1:"pbm", 2:"pgm", 3:"ppm"}
-    prev = ext_to_magic[path[-3:]]
+    prev = EXT_TO_MAGIC[path[-3:]]
     magic_number = prev if magic_number is None else magic_number
     assert magic_number <= prev
     if magic_number == prev:
-        out_path = path[:-3] + "_plain" + magic_to_ext[magic_number]
+        out_path = path[:-3] + "_plain" + MAGIC_TO_EXT[magic_number]
     else:
-        out_path = path[:-3] + magic_to_ext[magic_number]
+        out_path = path[:-3] + MAGIC_TO_EXT[magic_number]
     os.system("convert %s -compress none %s" % (path, out_path))
     return out_path
 
@@ -53,13 +56,14 @@ def read(file_name:str) -> Netpbm:
         Netpbm: Netpbm image.
     """
     lines = open(file_name).readlines()
-    assert lines[0][:-1] == 'P2'
+    P = int(lines[0][1])
+    assert P in [1,2,3]
     w,h = [int(i) for i in lines[1][:-1].split(' ')]
     k = int(lines[2][:-1])
     M = np.array([line.strip('\n ').split(' ') for line in lines[3:]])
     M = M.astype(int)
     assert (h,w) == M.shape
-    return Netpbm(w=w, h=h, k=k, M=M)
+    return Netpbm(P=P, w=w, h=h, k=k, M=M)
 
 
 def write(file_name:str, image:Netpbm):
@@ -70,7 +74,7 @@ def write(file_name:str, image:Netpbm):
         image (Netpbm): Netpbm image to write.
     """
     with open(file_name, "w") as f:
-        f.write('P2\n')
+        f.write('P%d\n' % image.P)
         f.write("%s %s\n" % (image.w, image.h))
         f.write("%s\n" % (image.k))
         lines = image.M.astype(str).tolist()
@@ -96,7 +100,7 @@ def enlarge(image:Netpbm, k:int) -> Netpbm:
         expanded[:,j] = expanded_rows[:,j // k]
     M_prime = expanded.astype(int)
     h,w = M_prime.shape
-    return Netpbm(w=w, h=h, k=image.k, M=M_prime)
+    return Netpbm(P=image.P, w=w, h=h, k=image.k, M=M_prime)
 
 
 def change_gradient(image:Netpbm, k:int) -> Netpbm:
@@ -110,7 +114,7 @@ def change_gradient(image:Netpbm, k:int) -> Netpbm:
        Netpbm: Netpbm image with changed gradient.
     """
     M_prime = np.array(list(map(lambda x: x // int(image.k / k), image.M)))
-    return Netpbm(w=image.w, h=image.h, k=k, M=M_prime)
+    return Netpbm(P=image.P, w=image.w, h=image.h, k=k, M=M_prime)
 
 
 def image_grid(images:List[Netpbm], w:int, h:int, b:int,
@@ -142,7 +146,8 @@ def image_grid(images:List[Netpbm], w:int, h:int, b:int,
             p += 1
         grid_layout = np.vstack((grid_layout, row))
         grid_layout = np.vstack((grid_layout, h_border))
-    return Netpbm(w=w*m + (w+1)*b,
+    return Netpbm(P= images[0].P,
+                  w=w*m + (w+1)*b,
                   h=h*n + (h+1)*b,
                   k=k, M=grid_layout.astype(int))
 
