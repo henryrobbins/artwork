@@ -1,15 +1,14 @@
-import time
 import numpy as np
-from math import ceil
 import random
 random.seed(3699)
 
-import os, sys
+import os
+import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import Log, write_log, collapse_log
+from log import write_log
 
 
 def drunk_walk(k:int, x:int, y:int, M:np.ndarray):
@@ -24,10 +23,14 @@ def drunk_walk(k:int, x:int, y:int, M:np.ndarray):
     n,m = M.shape
     for i in range(k):
         move = random.randint(0,3)
-        if move == 0: x += 1
-        if move == 1: x -= 1
-        if move == 2: y += 1
-        if move == 3: y -= 1
+        if move == 0:
+            x += 1
+        if move == 1:
+            x -= 1
+        if move == 2:
+            y += 1
+        if move == 3:
+            y -= 1
         M[x % n][y % m] += 1
     return M
 
@@ -40,7 +43,6 @@ def drunk_walk_image(n:int, k:int, d:int):
         k (int): number of gradients.
         d (int): dimension of the board on which to walk.
     """
-    c = int(d/2)
     M = np.zeros((d,d))
     x = random.randint(0,d)
     y = random.randint(0,d)
@@ -51,7 +53,8 @@ def drunk_walk_image(n:int, k:int, d:int):
     return netpbm.Netpbm(2,d,d,k,M.astype(int))
 
 
-def drunk_walk_series(n:int, k:int, d:int, w:int, h:int, b:int) -> netpbm.Netpbm:
+def drunk_walk_series(n:int, k:int, d:int,
+                      w:int, h:int, b:int) -> netpbm.Netpbm:
     """Create a series of d*d drunk walk with n steps on k gradients.
 
     Args:

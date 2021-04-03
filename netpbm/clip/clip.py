@@ -1,14 +1,12 @@
-import os
-import time
 import numpy as np
-from math import ceil
 
+import os
 import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log, collapse_log
+from log import write_log
 
 
 def clip(image:netpbm.Netpbm,
@@ -28,7 +26,6 @@ def clip(image:netpbm.Netpbm,
     """
     image = netpbm.change_gradient(image, k)
     h,w = image.M.shape
-    layers = []
     M_lb = np.where(lb <= image.M, 1, 0)
     M_ub = np.where(image.M <= ub, 1, 0)
     M = np.where(M_lb + M_ub == 2, 0, 1)
@@ -54,7 +51,8 @@ for name, k, lb, ub, b, c in pieces:
     file_path = "%s/%s_clip_%d_%d.pgm" % (SOURCE_DIR, name, lb, ub)
     ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
     file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b, c=c, scale=1000)
+                                magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b,
+                                c=c, scale=1000)
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'clip.log'), log)

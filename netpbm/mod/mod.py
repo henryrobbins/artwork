@@ -1,8 +1,6 @@
-import os
-import time
 import numpy as np
-from math import ceil
 
+import os
 import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
@@ -54,7 +52,8 @@ for name, lb, ub in pieces:
     if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
         os.mkdir("%s/%s" % (SOURCE_DIR, name))
     for k in range(lb,ub+1):
-        file_path = "%s/%s/%s_mod_%s.pm" % (SOURCE_DIR, name, name, str(k).zfill(3))
+        file_path = "%s/%s/%s_mod_%s.pm" % (SOURCE_DIR, name,
+                                            name, str(k).zfill(3))
         ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
         file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
                                     magic_number=2, f=mod, k=k)

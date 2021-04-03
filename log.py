@@ -1,7 +1,7 @@
 import datetime
 import pickle
 from collections import namedtuple
-from typing import List, Dict
+from typing import List
 
 Log = namedtuple('Log', ['name', 'time', 'size'])
 Log.__doc__ = '''\

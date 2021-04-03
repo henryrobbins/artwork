@@ -37,10 +37,9 @@ def dissolve_iter(v:np.ndarray) -> np.ndarray:
 
 def dissolve_vector(v:np.ndarray) -> np.ndarray:
     """Return the evolution of v as it dissolves completely."""
-    n = len(v)
     v_current = v
     v_hist = [list(v)]
-    while len(np.where(v_current != 0 )[0]) > 0:
+    while len(np.where(v_current != 0)[0]) > 0:
         v_current = dissolve_iter(v_current)
         v_hist.append(list(v_current))
     return np.array(v_hist)
@@ -82,7 +81,8 @@ for piece in pieces:
     file_path = '%s/beebe_trail_%s.pgm' % (SOURCE_DIR, modification)
     ppm_path = '%s/%s' % (SOURCE_DIR, 'beebe_trail.ppm')
     file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=dissolve, scale=1000, modifications=piece)
+                                magic_number=2, f=dissolve, scale=1000,
+                                modifications=piece)
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'dissolve.log'), log)

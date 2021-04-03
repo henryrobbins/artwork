@@ -1,22 +1,20 @@
-import os
-import time
 import numpy as np
 from math import ceil, pi
-
 from typing import Callable
 
+import os
 import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
 from netpbm import colorspace
-from log import write_log, collapse_log
+from log import write_log
 
 
 # Adapted from code provided by Dan Torop
 def channel(image:netpbm.Netpbm, f_R:Callable,
-            f_G:Callable, f_B:Callable ) -> netpbm.Netpbm:
+            f_G:Callable, f_B:Callable) -> netpbm.Netpbm:
     """Return the Netpbm image after applying the functions to each channel.
 
     Args:
@@ -54,19 +52,33 @@ def channel(image:netpbm.Netpbm, f_R:Callable,
 # COMPILE PIECES | 2021-03-29
 
 # functions
-identity = (lambda x : x, "x")
-abs_sin = lambda p : (lambda x : abs(np.sin(x*p)), "abs(sin(x*%d))" % p)
-abs_sin_sft = lambda p : (lambda x : abs(np.sin(x*p+p)),
-                          "abs(sin(x*%d+%d))" % (p,p))
-ceiling = lambda p : (lambda x : ceil(x*p)/p, "frac{ceil(x*%d)}{%d}" % (p,p))
-triangle = lambda a, p : (
-                lambda x : abs((2*a*np.arcsin(np.sin((2*pi*x)/(p))))/(pi)),
-                 "triangle_%0.1f_%0.1f" % (a,p))
-invert = (lambda x : 1 - x, "1-x")
-multiply = lambda p : (lambda x : x*p, "%0.1fx" % (p))
-zero = (lambda x : 0, "0")
-half = (lambda x : 0.5, "0.5")
-one = (lambda x : 1, "1")
+identity = (lambda x: x, "x")
+invert = (lambda x: 1 - x, "1-x")
+zero = (lambda x: 0, "0")
+half = (lambda x: 0.5, "0.5")
+one = (lambda x: 1, "1")
+
+
+def abs_sin(p):
+    return (lambda x: abs(np.sin(x*p)), "abs(sin(x*%d))" % p)
+
+
+def abs_sin_sft(p):
+    return (lambda x: abs(np.sin(x*p+p)), "abs(sin(x*%d+%d))" % (p,p))
+
+
+def ceiling(p):
+    return (lambda x: ceil(x*p)/p, "frac{ceil(x*%d)}{%d}" % (p,p))
+
+
+def triangle(a,p):
+    return (lambda x: abs((2*a*np.arcsin(np.sin((2*pi*x)/(p))))/(pi)),
+            "triangle_%0.1f_%0.1f" % (a,p))
+
+
+def multiply(p):
+    return (lambda x: x*p, "%0.1fx" % p)
+
 
 # 2021-03-29 -- Normal RGB edits
 # pieces = [('math', abs_sin(5), identity, identity),
@@ -79,6 +91,7 @@ one = (lambda x : 1, "1")
 #           ('math', identity, identity, triangle(1.0,0.4)),
 #           ('math', invert, identity, identity),
 #           ('math', invert, invert, invert)]
+
 
 # 2021-03-31 -- Lab edits
 pieces = [('math', identity, half, half),

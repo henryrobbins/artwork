@@ -1,11 +1,11 @@
 import numpy as np
 from collections import namedtuple
 
-import os, sys
+import os
+import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(SOURCE_DIR)
 sys.path.insert(0,root)
-from log import Log, write_log, collapse_log
 from netpbm import netpbm
 
 Ascii = namedtuple('Ascii', ['M'])

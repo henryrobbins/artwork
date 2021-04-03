@@ -1,6 +1,6 @@
 import os
 import pickle
-from log import Log, write_log, collapse_log
+from log import write_log, collapse_log
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 LOGS = []

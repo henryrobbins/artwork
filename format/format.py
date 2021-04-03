@@ -1,4 +1,7 @@
-import os, sys, time, math
+import os
+import sys
+import time
+import math
 import numpy as np
 
 os.system('clear')
@@ -17,6 +20,7 @@ for i in range(len(A)):
         if i < j:
             l = sum(c[k] + 1 for k in range(i+1, j)) + c[j]
             A[i,j] = (L - l)**2
+
 
 def dijkstras(A, s=0):
     d = [float('inf')] * len(A)
@@ -49,6 +53,7 @@ def dijkstras(A, s=0):
         for i in range(len(path)-1):
             print(' '.join(words[path[i]+1:path[i+1]+1]))
         time.sleep(0.05)
+
 
 while 1 > 0:
     dijkstras(A,0)

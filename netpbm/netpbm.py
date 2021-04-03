@@ -3,13 +3,14 @@ import time
 import numpy as np
 from math import ceil
 from collections import namedtuple
-from typing import List, Tuple, Callable
+from typing import List, Callable
 
 import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
-from log import Log, write_log, collapse_log
+from log import Log
+
 
 # Dictionary from Netpbm extentsions to magic number and vice versa
 EXT_TO_MAGIC = {"pbm":1, "pgm":2, "ppm":3}
@@ -25,7 +26,8 @@ Netpbm image.
 - k (int): Maximum value of gradients.
 - M (np.ndarray): h by w NumPy matrix of pixels.'''
 
-def raw_to_plain(path:str, magic_number:int=None) -> str:
+
+def raw_to_plain(path:str, magic_number:int = None) -> str:
     """Convert a netpbm file in raw format to plain format.
 
     Args:
@@ -60,7 +62,7 @@ def read(file_name:str) -> Netpbm:
         vals = [v for line in f for v in line.split('#')[0].split()]
         P = int(vals[0][1])
         w, h, k, *vals = [int(v) for v in vals[1:]]
-        is_P3 = (3 if P == 3  else 1)
+        is_P3 = (3 if P == 3 else 1)
         assert len(vals) == w * h * is_P3
         M = np.array(vals).reshape(h, w * is_P3)
         return Netpbm(P=P, w=w, h=h, k=k, M=M)
@@ -124,7 +126,7 @@ def change_gradient(image:Netpbm, k:int) -> Netpbm:
 
 
 def image_grid(images:List[Netpbm], w:int, h:int, b:int,
-               color:int="white") -> Netpbm:
+               color:int = "white") -> Netpbm:
     """Create a w * h grid of images with a border of width b.
 
     Args:
@@ -152,13 +154,13 @@ def image_grid(images:List[Netpbm], w:int, h:int, b:int,
             p += 1
         grid_layout = np.vstack((grid_layout, row))
         grid_layout = np.vstack((grid_layout, h_border))
-    return Netpbm(P= images[0].P,
+    return Netpbm(P=images[0].P,
                   w=w*m + (w+1)*b,
                   h=h*n + (h+1)*b,
                   k=k, M=grid_layout.astype(int))
 
 
-def border(image:Netpbm, b:int, color:int="white") -> Netpbm:
+def border(image:Netpbm, b:int, color:int = "white") -> Netpbm:
     """Add a border of width b to the image
 
     Args:
@@ -172,8 +174,8 @@ def border(image:Netpbm, b:int, color:int="white") -> Netpbm:
     return image_grid([image], w=1, h=1, b=b, color=color)
 
 
-def transform(in_path:str, out_path:str, f:Callable, scale:int=-1,
-              magic_number=None, **kwargs) -> Log:
+def transform(in_path:str, out_path:str, f:Callable, scale:int = -1,
+              magic_number:int = None, **kwargs) -> Log:
     """Apply f to the image at in_path and write result to out_path.
 
     Args:
@@ -201,7 +203,7 @@ def transform(in_path:str, out_path:str, f:Callable, scale:int=-1,
     return (Log(name=name, time=t, size=size))
 
 
-def generate(path:str, f:Callable, scale:int=-1, **kwargs) -> Log:
+def generate(path:str, f:Callable, scale:int = -1, **kwargs) -> Log:
     """Generate a Netpbm image using f and write the image to the path.
 
     Args:

@@ -1,11 +1,12 @@
 import numpy as np
-from collections import namedtuple
 from typing import Callable
 
-import os, sys
+import os
+import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
+
 
 def RGB_to_XYZ(pixels:np.ndarray) -> np.ndarray:
     """Convert a pixel matrix in RGB color space to XYZ color space.
@@ -24,7 +25,7 @@ def RGB_to_XYZ(pixels:np.ndarray) -> np.ndarray:
                   [0, 0.01, 0.99]])
     n,m = pixels.shape
     p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
-    p = np.apply_along_axis(lambda x : np.matmul(A,x)/b, 1, p)
+    p = np.apply_along_axis(lambda x: np.matmul(A,x)/b, 1, p)
     return np.reshape(p, (n,m))
 
 
@@ -44,7 +45,7 @@ def XYZ_to_RGB(pixels:np.ndarray) -> np.ndarray:
                   [0.00092090, -0.0025498, 0.17860]])
     n,m = pixels.shape
     p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
-    p = np.apply_along_axis(lambda x : np.matmul(A,x), 1, p)
+    p = np.apply_along_axis(lambda x: np.matmul(A,x), 1, p)
     return np.reshape(p, (n,m))
 
 
@@ -106,7 +107,8 @@ def YUV_to_RGB(pixels:np.ndarray) -> np.ndarray:
     return np.reshape(p, (n,m))
 
 
-def XYZ_to_Lab(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
+def XYZ_to_Lab(pixels:np.ndarray,
+               standard_illuminant:str = 'D65') -> np.ndarray:
     """Convert a pixel matrix in XYZ color space to Lab color space.
 
     Args:
@@ -121,7 +123,9 @@ def XYZ_to_Lab(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
     X_n, Y_n, Z_n = {'D50':(96.4212, 100.0, 82.5188),
                      'D65':(95.0489, 100.0, 108.8840)}[standard_illuminant]
     delta = 6 / 29
-    f = lambda t : t**(1/3) if t > delta**3 else (t/(3*delta**2)) + (4/29)
+
+    def f(t):
+        return t**(1/3) if t > delta**3 else (t/(3*delta**2)) + (4/29)
 
     def to_Lab(x):
         X, Y, Z = x
@@ -136,7 +140,8 @@ def XYZ_to_Lab(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
     return np.reshape(p, (n,m))
 
 
-def Lab_to_XYZ(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
+def Lab_to_XYZ(pixels:np.ndarray,
+               standard_illuminant:str = 'D65') -> np.ndarray:
     """Convert a pixel matrix in Lab color space to XYZ color space.
 
     Args:
@@ -151,7 +156,9 @@ def Lab_to_XYZ(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
     X_n, Y_n, Z_n = {'D50':(96.4212, 100.0, 82.5188),
                      'D65':(95.0489, 100.0, 108.8840)}[standard_illuminant]
     delta = 6 / 29
-    f_inv = lambda t : t**3 if t > delta else 3*delta**2*(t-(4/29))
+
+    def f_inv(t):
+        return t**3 if t > delta else 3*delta**2*(t-(4/29))
 
     def to_XYZ(x):
         L, a, b = x
@@ -166,7 +173,8 @@ def Lab_to_XYZ(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
     return np.reshape(p, (n,m))
 
 
-def RGB_to_Lab(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
+def RGB_to_Lab(pixels:np.ndarray,
+               standard_illuminant:str = 'D65') -> np.ndarray:
     """Convert a pixel matrix in RGB color space to Lab color space.
 
     Args:
@@ -179,7 +187,8 @@ def RGB_to_Lab(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
     return XYZ_to_Lab(RGB_to_XYZ(pixels), standard_illuminant)
 
 
-def Lab_to_RGB(pixels:np.ndarray, standard_illuminant:str='D65') -> np.ndarray:
+def Lab_to_RGB(pixels:np.ndarray,
+               standard_illuminant:str = 'D65') -> np.ndarray:
     """Convert a pixel matrix in Lab color space to RGB color space.
 
     Args:
@@ -230,11 +239,9 @@ def normalize(pixels:np.ndarray, color_space:str, norm:bool) -> np.ndarray:
          'Lab':[[0,255],[-128,127],[-128,127]],
          'YUV':[[0,1],[-0.436,0.436],[-0.615,0.615]]}[color_space]
     if norm:
-        f_1 = lambda x : (x - r[0][0]) / (r[0][1] - r[0][0])
-        f_2 = lambda x : (x - r[1][0]) / (r[1][1] - r[1][0])
-        f_3 = lambda x : (x - r[2][0]) / (r[2][1] - r[2][0])
+        def f(i):
+            return lambda x: (x - r[i][0]) / (r[i][1] - r[i][0])
     else:
-        f_1 = lambda x : (x * (r[0][1] - r[0][0])) + r[0][0]
-        f_2 = lambda x : (x * (r[1][1] - r[1][0])) + r[1][0]
-        f_3 = lambda x : (x * (r[2][1] - r[2][0])) + r[2][0]
-    return apply_to_channels(pixels, f_1, f_2, f_3)
+        def f(i):
+            return lambda x: (x * (r[i][1] - r[i][0])) + r[i][0]
+    return apply_to_channels(pixels, f(0), f(1), f(2))

@@ -1,8 +1,8 @@
-import os, sys
+import os
+import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
-from log import Log, write_log, collapse_log
 from netpbm import netpbm
 from ascii import ascii
 
