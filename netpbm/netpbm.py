@@ -77,7 +77,7 @@ def write(file_name:str, image:Netpbm):
         f.write('P%d\n' % image.P)
         f.write("%s %s\n" % (image.w, image.h))
         f.write("%s\n" % (image.k))
-        lines = image.M.astype(str).tolist()
+        lines = image.M.clip(0,image.k).astype(int).astype(str).tolist()
         f.write('\n'.join([' '.join(line) for line in lines]))
         f.write('\n')
 

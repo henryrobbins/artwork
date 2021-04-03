@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 from math import ceil, pi
+
 from typing import Callable
 
 import sys
@@ -9,6 +10,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
+from netpbm import colorspace
 from log import write_log, collapse_log
 
 
@@ -28,10 +30,24 @@ def channel(image:netpbm.Netpbm, f_R:Callable,
     """
     n,m = image.M.shape
     k = image.k
-    pixels = image.M.flatten() / k
-    rgb = [pixels[n:n+3] for n in range(0, len(pixels), 3)]
-    rgb = [[f_R(r), f_G(g), f_B(b)] for r,g,b in rgb]
-    M = (np.array(rgb).reshape(n,m).clip(0,1)*k).astype(int)
+    M = image.M
+
+    # M = colorspace.normalize(M, 'RGB', True)
+    # M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    # M = colorspace.normalize(M, 'RGB', False)
+
+    # M = colorspace.RGB_to_Lab(M)
+    # M = colorspace.normalize(M, 'Lab', True)
+    # M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    # M = colorspace.normalize(M, 'Lab', False)
+    # M = colorspace.Lab_to_RGB(M)
+
+    M = colorspace.RGB_to_YUV(M)
+    M = colorspace.normalize(M, 'YUV', True)
+    M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    M = colorspace.normalize(M, 'YUV', False)
+    M = colorspace.YUV_to_RGB(M)
+
     return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=k, M=M)
 
 
@@ -47,17 +63,36 @@ triangle = lambda a, p : (
                 lambda x : abs((2*a*np.arcsin(np.sin((2*pi*x)/(p))))/(pi)),
                  "triangle_%0.1f_%0.1f" % (a,p))
 invert = (lambda x : 1 - x, "1-x")
+multiply = lambda p : (lambda x : x*p, "%0.1fx" % (p))
+zero = (lambda x : 0, "0")
+half = (lambda x : 0.5, "0.5")
+one = (lambda x : 1, "1")
 
-pieces = [('math', abs_sin(5), identity, identity),
-          ('math', abs_sin(10), identity, identity),
-          ('math', identity, abs_sin(5), identity),
-          ('math', identity, identity, abs_sin(10)),
-          ('math', abs_sin(10), identity, abs_sin_sft(10)),
-          ('math', ceiling(5), identity, identity),
-          ('math', triangle(1.0,0.4), identity, identity),
-          ('math', identity, identity, triangle(1.0,0.4)),
-          ('math', invert, identity, identity),
-          ('math', invert, invert, invert)]
+# 2021-03-29 -- Normal RGB edits
+# pieces = [('math', abs_sin(5), identity, identity),
+#           ('math', abs_sin(10), identity, identity),
+#           ('math', identity, abs_sin(5), identity),
+#           ('math', identity, identity, abs_sin(10)),
+#           ('math', abs_sin(10), identity, abs_sin_sft(10)),
+#           ('math', ceiling(5), identity, identity),
+#           ('math', triangle(1.0,0.4), identity, identity),
+#           ('math', identity, identity, triangle(1.0,0.4)),
+#           ('math', invert, identity, identity),
+#           ('math', invert, invert, invert)]
+
+# 2021-03-31 -- Lab edits
+pieces = [('math', identity, half, half),
+          ('math', zero, identity, half),
+          ('math', zero, half, identity),
+          ('barn', identity, half, half),
+          ('barn', zero, identity, half),
+          ('barn', zero, half, identity),
+          ('math', multiply(1.3), identity, identity),
+          ('math', identity, multiply(1.3), identity),
+          ('math', identity, identity, multiply(1.3)),
+          ('barn', multiply(1.3), identity, identity),
+          ('barn', identity, multiply(1.3), identity),
+          ('barn', identity, identity, multiply(1.3))]
 
 log = []
 for name, R, G, B in pieces:
