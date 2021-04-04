@@ -151,14 +151,31 @@ netpbm/templates
 *.log
 *log.pickle
 
-# compiled works
+# COMPILED WORKS
+
+# dissolve
 netpbm/dissolve/beebe_trail*.pgm
+
+# mod
 netpbm/mod/faces
 netpbm/mod/faces.gif
 netpbm/mod/*.pgm
+
+# drunk_walk
 netpbm/drunk_walk/*.pgm
+
+# partition
 netpbm/partition/*.pgm
+
+# clip
 netpbm/clip/*.pgm
+
+# channel
 netpbm/channel/*.ppm
 !netpbm/channel/math.ppm
-!netpbm/channel/math_plain.ppm
+
+# resolution
+netpbm/resolution/*.ppm
+netpbm/resolution/*.pgm
+!netpbm/resolution/florida.ppm
+!netpbm/resolution/paper.ppm

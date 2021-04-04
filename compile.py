@@ -12,7 +12,8 @@ python_works = ['netpbm/dissolve',
                 'netpbm/drunk_walk',
                 'netpbm/partition',
                 'netpbm/clip',
-                'netpbm/channel']
+                'netpbm/channel',
+                'netpbm/resolution']
 
 for path in python_works:
     name = path.split('/')[-1]

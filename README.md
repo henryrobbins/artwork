@@ -27,6 +27,7 @@ README. If no instructions are found, there is no work to compile.
 | partition | 2021-03-20 | [partition](netpbm/partition) | [README.md](netpbm/partition/README.md) |
 | clip | 2021-03-23 | [clip](netpbm/clip) | [README.md](netpbm/clip/README.md) |
 | channel | 2021-03-29 | [channel](netpbm/channel) | [README.md](netpbm/channel/README.md) |
+| resolution | 2021-04-04 | [resolution](netpbm/resolution) | [README.md](netpbm/resolution/README.md) |
 
 
 ## License
