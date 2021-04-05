@@ -172,6 +172,7 @@ netpbm/clip/*.pgm
 
 # channel
 netpbm/channel/*.ppm
+netpbm/channel/test_sample*
 !netpbm/channel/math.ppm
 
 # resolution

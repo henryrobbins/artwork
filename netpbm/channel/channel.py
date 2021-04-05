@@ -94,7 +94,13 @@ def multiply(p):
 
 
 # 2021-03-31 -- Lab edits
-pieces = [('math', identity, half, half),
+pieces = [('math', identity, zero, zero),
+          ('math', zero, identity, zero),
+          ('math', zero, zero, identity),
+          ('barn', identity, zero, zero),
+          ('barn', zero, identity, zero),
+          ('barn', zero, zero, identity),
+          ('math', identity, half, half),
           ('math', zero, identity, half),
           ('math', zero, half, identity),
           ('barn', identity, half, half),
