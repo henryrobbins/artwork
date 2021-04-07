@@ -45,19 +45,21 @@ for name, k in pieces:
 
 # animations
 
-pieces = [('faces',1,150)]
+pieces = [('faces',1,150),
+          ('water_cup',1,150)]
 
 for name, lb, ub in pieces:
-    tmp_logs = []
     if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
         os.mkdir("%s/%s" % (SOURCE_DIR, name))
     for k in range(lb,ub+1):
-        file_path = "%s/%s/%s_mod_%s.pm" % (SOURCE_DIR, name,
+        file_path = "%s/%s/%s_mod_%s.pgm" % (SOURCE_DIR, name,
                                             name, str(k).zfill(3))
         ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-        file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                    magic_number=2, f=mod, k=k)
-        tmp_logs.append(file_log)
-    log.append(collapse_log(name, tmp_logs))
+        netpbm.transform(in_path=ppm_path, out_path=file_path,
+                         magic_number=2, f=mod, k=k)
+    file_log = netpbm.animate("%s/%s/%s_mod_%%03d.pgm" % (SOURCE_DIR, name, name),
+                              "%s/%s_mod_animation.mp4" % (SOURCE_DIR, name),
+                              fps=10)
+    log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'mod.log'), log)

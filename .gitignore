@@ -157,9 +157,9 @@ netpbm/templates
 netpbm/dissolve/beebe_trail*.pgm
 
 # mod
-netpbm/mod/faces
-netpbm/mod/faces.gif
+netpbm/mod/*/
 netpbm/mod/*.pgm
+netpbm/mod/*.mp4
 
 # drunk_walk
 netpbm/drunk_walk/*.pgm

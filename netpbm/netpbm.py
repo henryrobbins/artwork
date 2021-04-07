@@ -226,3 +226,30 @@ def generate(path:str, f:Callable, scale:int = -1, **kwargs) -> Log:
     size = os.stat(path).st_size
     name = path.split('/')[-1]
     return (Log(name=name, time=t, size=size))
+
+
+def animate(pattern:str, out_path:str, fps:int) -> Log:
+    """Creates an animation by calling the ffmpeg commmand line tool.
+
+    Args:
+        pattern (str): Pattern of the input frame.
+        out_path (str): Path to write the output file to.
+        fps (int): Frames per second.
+
+    Returns:
+        Log: log from compiling this file.
+    """
+    # -r   set frame rate
+    # -i   pattern of image frame file names
+    # -y   overwrite output files
+    # -an  disable audio
+    # -vb  video bitrate
+    # -sn  disable subtitle
+    then = time.time()
+    command = ("ffmpeg -r %d -i %s -y -an -vb 20M -sn %s"
+               % (fps, pattern, out_path))
+    os.system(command)
+    t = time.time() - then
+    size = os.stat(out_path).st_size
+    name = out_path.split('/')[-1]
+    return (Log(name=name, time=t, size=size))
