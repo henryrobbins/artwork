@@ -7,7 +7,8 @@ LOGS = []
 
 # =============== Python Works ===============
 
-python_works = ['netpbm/dissolve',
+python_works = ['netpbm/template'
+                'netpbm/dissolve',
                 'netpbm/mod',
                 'netpbm/drunk_walk',
                 'netpbm/partition',

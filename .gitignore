@@ -153,6 +153,9 @@ netpbm/templates
 
 # COMPILED WORKS
 
+# template
+netpbm/template/*.pgm
+
 # dissolve
 netpbm/dissolve/beebe_trail*.pgm
 
