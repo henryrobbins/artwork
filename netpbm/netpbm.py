@@ -61,7 +61,11 @@ def read(file_name:str) -> Netpbm:
     with open(file_name) as f:
         vals = [v for line in f for v in line.split('#')[0].split()]
         P = int(vals[0][1])
-        w, h, k, *vals = [int(v) for v in vals[1:]]
+        if P == 1:
+            w, h, *vals = [int(v) for v in vals[1:]]
+            k = 1
+        else:
+            w, h, k, *vals = [int(v) for v in vals[1:]]
         is_P3 = (3 if P == 3 else 1)
         assert len(vals) == w * h * is_P3
         M = np.array(vals).reshape(h, w * is_P3)
@@ -78,7 +82,8 @@ def write(file_name:str, image:Netpbm):
     with open(file_name, "w") as f:
         f.write('P%d\n' % image.P)
         f.write("%s %s\n" % (image.w, image.h))
-        f.write("%s\n" % (image.k))
+        if image.P != 1:
+            f.write("%s\n" % (image.k))
         lines = image.M.clip(0,image.k).astype(int).astype(str).tolist()
         f.write('\n'.join([' '.join(line) for line in lines]))
         f.write('\n')

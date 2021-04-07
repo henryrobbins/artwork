@@ -183,3 +183,9 @@ netpbm/resolution/*.ppm
 netpbm/resolution/*.pgm
 !netpbm/resolution/florida.ppm
 !netpbm/resolution/paper.ppm
+
+# conway
+netpbm/conway/*/
+netpbm/conway/*.pbm
+netpbm/conway/*.pgm
+netpbm/conway/*.mp4

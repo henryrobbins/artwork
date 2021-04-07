@@ -14,7 +14,8 @@ python_works = ['netpbm/template'
                 'netpbm/partition',
                 'netpbm/clip',
                 'netpbm/channel',
-                'netpbm/resolution']
+                'netpbm/resolution',
+                'netpbm/compile']
 
 for path in python_works:
     name = path.split('/')[-1]
