@@ -6,7 +6,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log, collapse_log
+from log import write_log
 
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:
@@ -30,6 +30,7 @@ def shrink(M:np.ndarray, d:int) -> np.ndarray:
             B = np.ones((s,s))*v
             M[s*i:s*(i+1), s*j:s*(j+1)] = B
     return M
+
 
 def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
     """TODO

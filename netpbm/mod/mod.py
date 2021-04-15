@@ -6,7 +6,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log, collapse_log
+from log import write_log
 
 
 def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
@@ -53,7 +53,7 @@ for name, lb, ub in pieces:
         os.mkdir("%s/%s" % (SOURCE_DIR, name))
     for k in range(lb,ub+1):
         file_path = "%s/%s/%s_mod_%s.pgm" % (SOURCE_DIR, name,
-                                            name, str(k).zfill(3))
+                                             name, str(k).zfill(3))
         ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
         netpbm.transform(in_path=ppm_path, out_path=file_path,
                          magic_number=2, f=mod, k=k)
