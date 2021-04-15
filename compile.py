@@ -14,7 +14,7 @@ python_works = ['netpbm/template',
                 'netpbm/partition',
                 'netpbm/clip',
                 'netpbm/channel',
-                'netpbm/resolution'
+                'netpbm/resolution',
                 'animation/stewart']
 
 for path in python_works:
