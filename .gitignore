@@ -189,3 +189,6 @@ netpbm/conway/*/
 netpbm/conway/*.pbm
 netpbm/conway/*.pgm
 netpbm/conway/*.mp4
+
+# stewart
+animation/stewart/*.mp4

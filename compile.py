@@ -7,15 +7,15 @@ LOGS = []
 
 # =============== Python Works ===============
 
-python_works = ['netpbm/template'
+python_works = ['netpbm/template',
                 'netpbm/dissolve',
                 'netpbm/mod',
                 'netpbm/drunk_walk',
                 'netpbm/partition',
                 'netpbm/clip',
                 'netpbm/channel',
-                'netpbm/resolution',
-                'netpbm/compile']
+                'netpbm/resolution'
+                'animation/stewart']
 
 for path in python_works:
     name = path.split('/')[-1]
