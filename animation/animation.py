@@ -1,6 +1,7 @@
 import imageio
 import numpy as np
 from math import ceil
+import time
 from skimage.color import rgb2gray, gray2rgb
 from typing import List, Callable
 
@@ -9,6 +10,7 @@ import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
+from log import Log
 
 
 def clip(path:str, start:int = None, end:int = None) -> List[np.ndarray]:
@@ -75,3 +77,28 @@ def pad_to_16(M:np.ndarray) -> np.ndarray:
     return np.pad(M,((y_pad // 2, y_pad // 2 + y_pad % 2),
                      (x_pad // 2, x_pad // 2 + x_pad % 2),
                      (0,0)))
+
+
+def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1) -> Log:
+    """Write an animation as a .mp4 file using ffmpeg through imageio.mp4
+
+    Args:
+        frames (List[np.ndarray]): List of frames in the animation.
+        path (str): Path where the file should be written.
+        fps (int): Frames per second.
+        s (int, optional): Multiplier for scaling. Defaults to 1.
+
+    Returns:
+        Log: log from writing this animation file.
+    """
+    then = time.time()
+    imageio.mimwrite(uri=path,
+                     ims=[pad_to_16(f) for f in frames],
+                     format='FFMPEG',
+                     fps=fps,
+                     output_params=["-vf","scale=iw*%d:ih*%d" % (s,s),
+                                    "-sws_flags", "neighbor"])
+    now = time.time()
+    name = path.split('/')[-1]
+    size = os.stat(path).st_size
+    return Log(name, now-then, size)
