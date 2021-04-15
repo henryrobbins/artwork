@@ -6,6 +6,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
+from animation.animation import animation
 from log import write_log
 
 
@@ -46,20 +47,13 @@ for name, k in pieces:
 # animations
 
 pieces = [('faces',1,150),
-          ('water_cup',1,150)]
+          ('water_cup',1,140)]
 
 for name, lb, ub in pieces:
-    if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
-        os.mkdir("%s/%s" % (SOURCE_DIR, name))
-    for k in range(lb,ub+1):
-        file_path = "%s/%s/%s_mod_%s.pgm" % (SOURCE_DIR, name,
-                                             name, str(k).zfill(3))
-        ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-        netpbm.transform(in_path=ppm_path, out_path=file_path,
-                         magic_number=2, f=mod, k=k)
-    file_log = netpbm.animate("%s/%s/%s_mod_%%03d.pgm" % (SOURCE_DIR, name, name),
-                              "%s/%s_mod_animation.mp4" % (SOURCE_DIR, name),
-                              fps=10)
-    log.append(file_log)
+    path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    M = netpbm.read(netpbm.raw_to_plain(path, magic_number=2))
+    frames = [mod(M,k).M * (255/k) for k in range(lb,ub+1)]
+    file_name = '%s/%s_mod_animation.mp4' % (SOURCE_DIR, name)
+    log.append(animation(frames=frames, path=file_name, fps=10, s=4))
 
 write_log('%s/%s' % (SOURCE_DIR, 'mod.log'), log)

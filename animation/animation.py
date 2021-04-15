@@ -63,7 +63,6 @@ def transform(frames:List[np.ndarray],
             M = M.reshape(n,m,3)
         if greyscale:
             M = gray2rgb(M)
-        M = M.astype(np.uint8).clip(0,255)
         tmp[i] = M
     return tmp
 
@@ -71,12 +70,19 @@ def transform(frames:List[np.ndarray],
 def pad_to_16(M:np.ndarray) -> np.ndarray:
     """Return M padded such that dimensions are multiples of 16."""
     # Adapted from code by: https://stackoverflow.com/users/9698684/yatu
-    m,n,_ = M.shape
-    y_pad = (ceil(m/16)*16-m)
-    x_pad = (ceil(n/16)*16-n)
-    return np.pad(M,((y_pad // 2, y_pad // 2 + y_pad % 2),
-                     (x_pad // 2, x_pad // 2 + x_pad % 2),
-                     (0,0)))
+    if len(M.shape) == 3:
+        m,n,_ = M.shape
+        y_pad = (ceil(m/16)*16-m)
+        x_pad = (ceil(n/16)*16-n)
+        return np.pad(M,((y_pad // 2, y_pad // 2 + y_pad % 2),
+                         (x_pad // 2, x_pad // 2 + x_pad % 2),
+                         (0,0)))
+    else:
+        m,n = M.shape
+        y_pad = (ceil(m/16)*16-m)
+        x_pad = (ceil(n/16)*16-n)
+        return np.pad(M,((y_pad // 2, y_pad // 2 + y_pad % 2),
+                         (x_pad // 2, x_pad // 2 + x_pad % 2)))
 
 
 def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1) -> Log:
@@ -92,8 +98,10 @@ def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1) -> Log:
         Log: log from writing this animation file.
     """
     then = time.time()
+    frames = [f.astype(np.uint8).clip(0,255) for f in frames]
+    frames = [pad_to_16(f) for f in frames]
     imageio.mimwrite(uri=path,
-                     ims=[pad_to_16(f) for f in frames],
+                     ims=frames,
                      format='FFMPEG',
                      fps=fps,
                      output_params=["-vf","scale=iw*%d:ih*%d" % (s,s),

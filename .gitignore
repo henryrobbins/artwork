@@ -160,7 +160,6 @@ netpbm/template/*.pgm
 netpbm/dissolve/beebe_trail*.pgm
 
 # mod
-netpbm/mod/*/
 netpbm/mod/*.pgm
 netpbm/mod/*.mp4
 
