@@ -7,6 +7,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
+from animation.animation import animation
 from log import write_log
 
 # This code was provided by Dan Torop for ART 3699
@@ -15,7 +16,7 @@ COUNT_NEIGHBORS = np.array([[1,1,1],
                             [1,1,1]])
 
 
-def conway(image:netpbm.Netpbm) -> netpbm.Netpbm:
+def conway(M:np.ndarray) -> np.ndarray:
     """Return image after one iteration of Conway's Game of Life.
 
     Args:
@@ -24,15 +25,11 @@ def conway(image:netpbm.Netpbm) -> netpbm.Netpbm:
     Returns:
         np.ndarray: Current world state one iteration in the future.
     """
-    M = image.M
-
     # This code was provided by Dan Torop for ART 3699
     neighbors = convolve2d(M, COUNT_NEIGHBORS, mode="same", boundary="wrap")
     survive = M & ((neighbors == 2) | (neighbors == 3))
     born = neighbors == 3
-    M = survive | born
-
-    return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=image.k, M=M)
+    return survive | born
 
 
 # COMPILE PIECES | 2021-04-07
@@ -40,30 +37,15 @@ def conway(image:netpbm.Netpbm) -> netpbm.Netpbm:
 pieces = [('beebe_trail', 100),
           ('water_cup', 2000)]
 
-logs = []
+log = []
 for name, g in pieces:
-    # generate first iteration
-    if not os.path.isdir("%s/%s" % (SOURCE_DIR, name)):
-        os.mkdir("%s/%s" % (SOURCE_DIR, name))
-    file_path = "%s/%s/%s_conway_%s.pbm" % (SOURCE_DIR, name,
-                                            name, str(1).zfill(4))
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     magic_number=1, f=(lambda image: image))
+    path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    M = netpbm.read(netpbm.raw_to_plain(path, magic_number=1)).M
+    frames = [conway(M)]
+    for i in range(g):
+        frames.append(conway(frames[-1]))
+    frames = [np.where(f == 1,0,255) for f in frames]
+    file_name = '%s/%s_conway_animation.mp4' % (SOURCE_DIR, name)
+    log.append(animation(frames=frames, path=file_name, fps=30, s=4))
 
-    # generate remaining iterations
-    for k in range(2,g):
-        in_path = "%s/%s/%s_conway_%s.pbm" % (SOURCE_DIR, name,
-                                              name, str(k-1).zfill(4))
-        out_path = "%s/%s/%s_conway_%s.pbm" % (SOURCE_DIR, name,
-                                               name, str(k).zfill(4))
-        M = netpbm.read(in_path)
-        M = conway(M)
-        netpbm.write(out_path, M)
-
-    log = netpbm.animate("%s/%s/%s_conway_%%04d.pbm" % (SOURCE_DIR, name, name),
-                         "%s/%s_conway_animation.mp4" % (SOURCE_DIR, name),
-                         fps=30)
-    logs.append(log)
-
-write_log('%s/%s' % (SOURCE_DIR, 'conway.log'), logs)
+write_log('%s/%s' % (SOURCE_DIR, 'conway.log'), log)
