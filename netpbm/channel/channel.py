@@ -26,7 +26,6 @@ def channel(image:netpbm.Netpbm, f_R:Callable,
     Returns:
         netpbm.Netpbm: NumPy matrix with modified channels.
     """
-    n,m = image.M.shape
     k = image.k
     M = image.M
 

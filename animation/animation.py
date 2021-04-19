@@ -58,9 +58,7 @@ def transform(frames:List[np.ndarray],
             M = f(M,**kwargs)
         else:
             n,m,_ = M.shape
-            M = M.reshape(n,3*m)
             M = f(M,**kwargs)
-            M = M.reshape(n,m,3)
         if greyscale:
             M = gray2rgb(M)
         tmp[i] = M

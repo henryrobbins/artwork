@@ -23,10 +23,10 @@ def RGB_to_XYZ(pixels:np.ndarray) -> np.ndarray:
     A = np.array([[0.49, 0.31, 0.2],
                   [0.17697, 0.81240, 0.01063],
                   [0, 0.01, 0.99]])
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(lambda x: np.matmul(A,x)/b, 1, p)
-    return np.reshape(p, (n,m))
+    return np.reshape(p, (n,m,k))
 
 
 def XYZ_to_RGB(pixels:np.ndarray) -> np.ndarray:
@@ -43,10 +43,10 @@ def XYZ_to_RGB(pixels:np.ndarray) -> np.ndarray:
     A = np.array([[0.41847, -0.15866, -0.082835],
                   [-0.091169, 0.25243, 0.015708],
                   [0.00092090, -0.0025498, 0.17860]])
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(lambda x: np.matmul(A,x), 1, p)
-    return np.reshape(p, (n,m))
+    return np.reshape(p, (n,m,k))
 
 
 def RGB_to_YUV(pixels:np.ndarray) -> np.ndarray:
@@ -72,10 +72,10 @@ def RGB_to_YUV(pixels:np.ndarray) -> np.ndarray:
         return np.array([Y,U,V])
 
     pixels = normalize(pixels, 'RGB', True)
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(to_YUV, 1, p)
-    return np.reshape(p, (n,m))
+    return np.reshape(p, (n,m,k))
 
 
 def YUV_to_RGB(pixels:np.ndarray) -> np.ndarray:
@@ -100,11 +100,11 @@ def YUV_to_RGB(pixels:np.ndarray) -> np.ndarray:
         B = Y + U*((1-W_B)/U_max)
         return np.array([R,G,B])
 
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(to_RGB, 1, p)
-    p = normalize(p, 'RGB', False)
-    return np.reshape(p, (n,m))
+    p = np.reshape(p, (n,m,k))
+    return normalize(p, 'RGB', False)
 
 
 def XYZ_to_Lab(pixels:np.ndarray,
@@ -134,10 +134,10 @@ def XYZ_to_Lab(pixels:np.ndarray,
         b = 200*(f(Y/Y_n) - f(Z/Z_n))
         return np.array([L,a,b])
 
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(to_Lab, 1, p)
-    return np.reshape(p, (n,m))
+    return np.reshape(p, (n,m,k))
 
 
 def Lab_to_XYZ(pixels:np.ndarray,
@@ -167,10 +167,10 @@ def Lab_to_XYZ(pixels:np.ndarray,
         Z = Z_n*f_inv(((L + 16)/116) - b/200)
         return np.array([X,Y,Z])
 
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p = np.apply_along_axis(to_XYZ, 1, p)
-    return np.reshape(p, (n,m))
+    return np.reshape(p, (n,m,k))
 
 
 def RGB_to_Lab(pixels:np.ndarray,
@@ -216,12 +216,12 @@ def apply_to_channels(pixels:np.ndarray,
     Returns:
         np.ndarray: Pixel matrix with functions applied to each channel.
     """
-    n,m = pixels.shape
-    p = np.reshape(pixels, (int(n*m/3),3)).astype(float)
+    n,m,k = pixels.shape
+    p = np.reshape(pixels, (n*m,3)).astype(float)
     p[:,0] = f_1(p[:,0])
     p[:,1] = f_2(p[:,1])
     p[:,2] = f_3(p[:,2])
-    return p
+    return np.reshape(p, (n,m,k))
 
 
 def normalize(pixels:np.ndarray, color_space:str, norm:bool) -> np.ndarray:

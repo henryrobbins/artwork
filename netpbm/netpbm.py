@@ -3,6 +3,7 @@ import time
 import numpy as np
 from math import ceil
 from collections import namedtuple
+from skimage.transform import rescale
 from typing import List, Callable
 
 import sys
@@ -66,9 +67,10 @@ def read(file_name:str) -> Netpbm:
             k = 1
         else:
             w, h, k, *vals = [int(v) for v in vals[1:]]
-        is_P3 = (3 if P == 3 else 1)
-        assert len(vals) == w * h * is_P3
-        M = np.array(vals).reshape(h, w * is_P3)
+        if P == 3:
+            M = np.array(vals).reshape(h, w, 3)
+        else:
+            M = np.array(vals).reshape(h, w)
         return Netpbm(P=P, w=w, h=h, k=k, M=M)
 
 
@@ -84,7 +86,11 @@ def write(file_name:str, image:Netpbm):
         f.write("%s %s\n" % (image.w, image.h))
         if image.P != 1:
             f.write("%s\n" % (image.k))
-        lines = image.M.clip(0,image.k).astype(int).astype(str).tolist()
+        if image.P == 3:
+            M = image.M.reshape(image.h, image.w * 3)
+        else:
+            M = image.M
+        lines = M.clip(0,image.k).astype(int).astype(str).tolist()
         f.write('\n'.join([' '.join(line) for line in lines]))
         f.write('\n')
 
@@ -98,22 +104,24 @@ def enlarge(image:Netpbm, k:int) -> Netpbm:
     Returns:
        Netpbm: Enlarged Netpbm image.
     """
-    n,m = image.M.shape
-    expanded_rows = np.zeros((n*k,m))
-    for i in range(n*k):
-        expanded_rows[i] = image.M[i // k]
-    expanded = np.zeros((n*k, m*k))
-    if image.P == 3:
-        for j in range(int(m/3)*k):
-            x = (j // k) * 3
-            y = j * 3
-            expanded[:,y:y+3] = expanded_rows[:,x:x+3]
-    else:
-        for j in range(m*k):
-            expanded[:,j] = expanded_rows[:,j // k]
-    M_prime = expanded.astype(int)
+    # old implementation -- now using skimage for efficency
+    # =====================================================
+    # M = image.M
+    # n,m = M.shape
+    # expanded_rows = np.zeros((n*k,m))
+    # for i in range(n*k):
+    #     expanded_rows[i] = M[i // k]
+    # expanded = np.zeros((n*k, m*k))
+    # for j in range(m*k):
+    #     expanded[:,j] = expanded_rows[:,j // k]
+    # M_prime = expanded.astype(int)
+    # =====================================================
+
+    # NEAREST_NEIGHBOR (order=0)
+    M = rescale(image.M, k,
+                order=0, preserve_range=True, multichannel=(image.P == 3))
     w,h = image.w, image.h
-    return Netpbm(P=image.P, w=w*k, h=h*k, k=image.k, M=M_prime)
+    return Netpbm(P=image.P, w=w*k, h=h*k, k=image.k, M=M)
 
 
 def change_gradient(image:Netpbm, k:int) -> Netpbm:

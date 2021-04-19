@@ -42,7 +42,11 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
         netpbm.Netpbm: TODO
     """
     M = image.M
-    n,m = M.shape
+    if image.P == 3:
+        n,m,k = M.shape
+        M = M.reshape(n,m*3)
+    else:
+        n,m = M.shape
     assert n % 256 == 0
     assert m % 256 == 0
     for i in range(int(n/256)):
@@ -56,6 +60,8 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
             else:
                 B = shrink(A, 32)
             M[256*i:256*(i+1), 256*j:256*(j+1)] = B
+    if image.P == 3:
+        M = M.reshape(n,m,3)
     return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=image.k, M=M)
 
 
