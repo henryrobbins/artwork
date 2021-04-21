@@ -43,6 +43,16 @@ def channel(M,f1,f2,f3,color_space='RGB'):
     return M
 
 
+def shift(frames, shift):
+    tmp = []
+    skip = shift
+    for frame in frames:
+        b = skip % 255
+        tmp.append(np.hstack((frame[:,b:,:],frame[:,:b,:])))
+        skip += shift
+    return tmp
+
+
 # TODO: Check these out:
 # https://vimeo.com/197136070
 # https://www.youtube.com/watch?v=Yt3nDgnC7M8
@@ -75,7 +85,6 @@ def f2(a,p):
 def f3():
     return lambda x: 1 - x
 
-
 animations.append((transform(frames, channel,
                              f1=f1(5),f2=f2(12,5),f3=f3()),'rgb_chaos'))
 
@@ -99,9 +108,55 @@ frames = (transform(clips[0],channel,f1=f1(5),f2=f2(12,5),f3=f3()) +
           transform(clips[13],channel,f1=f1(5),f2=f2(1,5),f3=f3()))
 animations.append((frames,'pinches_chaos'))
 
+
+plate_frames = transform(clip("%s/plate" % SOURCE_DIR),
+               channel,f1=lambda x: x,f2=lambda x: 0.55,f3=lambda x: 0.6,
+               color_space='Lab')
+frames = (
+    [np.zeros((189,255,3))]*10 +
+    shift(transform(clip("%s/town_tour" % SOURCE_DIR),
+            channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 29, 35),
+            mod, True, k=64) +
+    shift(transform(clip("%s/henry_movement" % SOURCE_DIR),
+            clip_gradient, True, lb=100, ub=200), 20) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 36, 40),
+            channel, f1=f1(0), f2=f2(16,5), f3=f3(), color_space='RGB') +
+    shift(transform(clip("%s/ella_movement" % SOURCE_DIR),
+            clip_gradient, True, lb=100, ub=200), 20) +
+    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 1, 19),
+            channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 1, 5),
+                clip_gradient,True,lb=100,ub=200) +
+    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44)[::-1],
+              channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -5) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 41, 45),
+              channel,f1=lambda x: x,f2=lambda x: 0.5,f3=lambda x: 0.6,
+              color_space='Lab') +
+    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44),
+              mod, True, k=64), 5) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 50, 53),
+              mod, True, k=32) +
+    shift(plate_frames[15:29][::-1] +
+          plate_frames[15:] +
+          plate_frames[24:29][::-1] +
+          plate_frames[24:], 8) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 23, 28),
+              clip_gradient, True, lb=0, ub=100) +
+    shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22),
+              channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 10) +
+    shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22)[::-1],
+          channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -10) +
+    transform(clip("%s/pinches" % SOURCE_DIR, 11, 14),
+        channel,f1=lambda x: x,f2=lambda x: 0.55,f3=lambda x: 0.6,
+               color_space='Lab') +
+    [np.zeros((189,255,3))]*10
+)
+animations.append((frames,'film'))
+
 log = []
 for frames, name in animations:
     path = "%s/stewart_%s.mp4" % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, path=path, fps=16, s=2))
+    log.append(animation(frames=frames, path=path, fps=14, s=6))
 
 write_log('%s/%s' % (SOURCE_DIR, 'stewart.log'), log)
