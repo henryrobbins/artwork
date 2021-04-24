@@ -1,5 +1,6 @@
 import os
 import time
+import datetime
 import numpy as np
 from math import ceil
 from collections import namedtuple
@@ -83,6 +84,9 @@ def write(file_name:str, image:Netpbm):
     """
     with open(file_name, "w") as f:
         f.write('P%d\n' % image.P)
+        comment = netpbm_comment(file_name)
+        for line in comment:
+            f.write(line)
         f.write("%s %s\n" % (image.w, image.h))
         if image.P != 1:
             f.write("%s\n" % (image.k))
@@ -239,6 +243,24 @@ def generate(path:str, f:Callable, scale:int = -1, **kwargs) -> Log:
     size = os.stat(path).st_size
     name = path.split('/')[-1]
     return (Log(name=name, time=t, size=size))
+
+
+def netpbm_comment(file_name:str):
+    """Comment to be written in the
+
+    Args:
+        file_name (str): Name of the Netpbm file to be written.
+    """
+    name = file_name.split('/')[-1]
+    lines = ["Title: %s\n" % name,
+             "Compiled on: %s\n" % datetime.datetime.now(), "\n"]
+    readme_path = "/".join(file_name.split('/')[:-1]) + "/README.md"
+    with open(readme_path) as f:
+        readme = f.readlines()
+        indices = [i for i in range(len(readme)) if readme[i] == '\n']
+        lines = lines + readme[:indices[1]]
+    lines = ["# " + line for line in lines]
+    return lines
 
 
 def animate(pattern:str, out_path:str, fps:int) -> Log:
