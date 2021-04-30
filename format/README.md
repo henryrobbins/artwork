@@ -1,6 +1,8 @@
-## format | 2021-02-08
+**Henry Robbins**<br/>
+*format* (2021)<br/>
+Python script
 
-format.py is a Python script which takes two arguments: a text file and an
+`format.py` is a Python script which takes two arguments: a text file and an
 integer w. The text is optimally split into lines with a target line width of
 w. This optimization is done via a reduction to the shortest path problem in
 which Dijksta's algorithm finds an optimal s-t path. The script visualizes the

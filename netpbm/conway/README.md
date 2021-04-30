@@ -1,4 +1,6 @@
-## conway (WIP) | 2021-04-07
+**Henry Robbins**<br/>
+*conway* (2021)<br/>
+Netpbm (P2 and P3)
 
 [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 applied to an image.

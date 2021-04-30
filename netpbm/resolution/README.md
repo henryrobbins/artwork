@@ -1,10 +1,8 @@
-## resolution (WIP) | 2021-04-04
+**Henry Robbins and River Chavez**<br/>
+*resolution* (2021)<br/>
+Netpbm (P2 and P3)
 
-This work is in collaboration with River Chavez.
-
-In some cases, unedited photos were taken by another photographer.
-- paper: River Chavez (?)
-- florida: River Chavez (?)
+The images paper and florida were photographed by River Chavez.
 
 To compile this work, use the following commands.
 

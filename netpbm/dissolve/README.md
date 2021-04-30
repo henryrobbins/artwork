@@ -1,4 +1,6 @@
-## dissolve | 2021-02-26, 2021-03-02
+**Henry Robbins**<br/>
+*dissolve* (2021)<br/>
+Netpbm (P2)
 
 This series contains two groups of images: those that were hand-crafted and
 those that were created by a script. dissolve.pgm, dissolve2.pgm, and
