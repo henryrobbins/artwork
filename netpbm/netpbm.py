@@ -100,13 +100,27 @@ def write(file_name:str, image:Netpbm):
         f.write('\n')
 
 
-def write_png(file_name:str, image:Netpbm):
+def write_png(file_name:str, image:Netpbm, size:int):
     """Write the Netpbm file as a PNG file.
 
     Args:
         file_name (str): Name of the PNG file to be written.
         image (Netpbm): Netpbm image to write.
+        size (int): Target width.
     """
+    # scale to desired size
+    w = image.M.shape[1]
+    image = enlarge(image, ceil(size / w))
+
+    # reverse gradient if portable bit map image
+    M = image.M
+    if image.P == 1:
+        M = M.where(M == 1, 0, 1)
+
+    # scale gradient to 255
+    M = M.image * (255 / k)
+    M = M.astype(np.uint8)
+
     directory = '/'.join(file_name.split('/')[:-1])
     if not os.path.exists(directory):
         os.makedirs(directory)
