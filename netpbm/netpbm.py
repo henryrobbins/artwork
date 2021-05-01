@@ -118,7 +118,7 @@ def write_png(file_name:str, image:Netpbm, size:int):
         M = M.where(M == 1, 0, 1)
 
     # scale gradient to 255
-    M = M.image * (255 / k)
+    M = M * (255 / k)
     M = M.astype(np.uint8)
 
     directory = '/'.join(file_name.split('/')[:-1])
