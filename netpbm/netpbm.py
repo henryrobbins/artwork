@@ -115,7 +115,7 @@ def write_png(file_name:str, image:Netpbm, size:int):
     # reverse gradient if portable bit map image
     M = image.M
     if image.P == 1:
-        M = M.where(M == 1, 0, 1)
+        M = np.where(M == 1, 0, 1)
 
     # scale gradient to 255
     M = M * (255 / image.k)
@@ -124,7 +124,7 @@ def write_png(file_name:str, image:Netpbm, size:int):
     directory = '/'.join(file_name.split('/')[:-1])
     if not os.path.exists(directory):
         os.makedirs(directory)
-    imageio.imwrite(file_name, image.M)
+    imageio.imwrite(file_name, M)
 
 
 def enlarge(image:Netpbm, k:int) -> Netpbm:
