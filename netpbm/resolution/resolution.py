@@ -6,7 +6,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log
+from log import write_log, write_works
 
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:
@@ -80,3 +80,4 @@ for name, p in pieces:
 
 
 write_log('%s/%s' % (SOURCE_DIR, 'resolution.log'), log)
+write_works(SOURCE_DIR, log)

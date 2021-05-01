@@ -1,0 +1,2 @@
+paper_resolution.ppm
+florida_resolution.ppm

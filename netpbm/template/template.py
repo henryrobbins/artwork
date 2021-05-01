@@ -6,7 +6,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log
+from log import write_log #, write_works
 
 
 def template(image:netpbm.Netpbm) -> netpbm.Netpbm:
@@ -35,3 +35,4 @@ for name in pieces:
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'template.log'), log)
+# write_works(SOURCE_DIR, log)

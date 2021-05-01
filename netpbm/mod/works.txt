@@ -1,0 +1,8 @@
+road_day_mod_8.pgm
+sky_mod_8.pgm
+faces_mod_12.pgm
+beebe_trail_mod_8.pgm
+stomp_mod_25.pgm
+water_cup_mod_7.pgm
+faces_mod_animation.mp4
+water_cup_mod_animation.mp4

@@ -7,7 +7,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log
+from log import write_log, write_works
 
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:
@@ -86,3 +86,5 @@ for piece in pieces:
     log.append(file_log)
 
 write_log('%s/%s' % (SOURCE_DIR, 'dissolve.log'), log)
+src_works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
+write_works(SOURCE_DIR, log, src_works)

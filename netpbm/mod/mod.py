@@ -7,7 +7,7 @@ root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
 from animation.animation import animation
-from log import write_log
+from log import write_log, write_works
 
 
 def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
@@ -57,3 +57,4 @@ for name, lb, ub in pieces:
     log.append(animation(frames=frames, path=file_name, fps=10, s=4))
 
 write_log('%s/%s' % (SOURCE_DIR, 'mod.log'), log)
+write_works(SOURCE_DIR, log)

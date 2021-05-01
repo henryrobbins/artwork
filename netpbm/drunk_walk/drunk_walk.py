@@ -8,7 +8,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
-from log import write_log
+from log import write_log, write_works
 
 
 def drunk_walk(k:int, x:int, y:int, M:np.ndarray):
@@ -89,3 +89,4 @@ for n, k, d, w, h, b in pieces:
                                n=n, k=k, d=d, w=w, h=h, b=b))
 
 write_log('%s/%s' % (SOURCE_DIR, 'drunk_walk.log'), log)
+write_works(SOURCE_DIR, log)

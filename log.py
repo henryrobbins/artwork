@@ -11,6 +11,17 @@ Log from compiling an image.
 - time (float): Time it took to compile the file.
 - size (int): Size of the compiled file (in bytes).'''
 
+def write_works(path:str, logs:List[Log], src_works:List[str] = []):
+    """Write a works file enumerating the works in a series.
+
+    Args:
+        path (str): Path to write the file to.
+        logs (List[Log]): List of logs from compiling generated works.
+        src_works (List[str]): List of files which are not generated.
+    """
+    works = src_works + [i.name for i in logs]
+    with open("%s/works.txt" % path, "w") as f:
+        f.write("\n".join(works))
 
 def write_log(path:str, logs:List[Log]):
     """Write the log file at the given path.

@@ -6,7 +6,7 @@ import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
-from log import write_log
+from log import write_log, write_works
 from netpbm import colorspace
 from animation.animation import clip, transform, animation
 
@@ -160,3 +160,4 @@ for frames, name in animations:
     log.append(animation(frames=frames, path=path, fps=14, s=6))
 
 write_log('%s/%s' % (SOURCE_DIR, 'stewart.log'), log)
+write_works(SOURCE_DIR, log)
