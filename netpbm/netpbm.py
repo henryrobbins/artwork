@@ -1,6 +1,7 @@
 import os
 import time
 import datetime
+import imageio
 import numpy as np
 from math import ceil
 from collections import namedtuple
