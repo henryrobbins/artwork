@@ -107,6 +107,9 @@ def write_png(file_name:str, image:Netpbm):
         file_name (str): Name of the PNG file to be written.
         image (Netpbm): Netpbm image to write.
     """
+    directory = '/'.join(file_name.split('/')[:-1])
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     imageio.imwrite(file_name, image.M)
 
 
