@@ -153,42 +153,27 @@ netpbm/templates
 
 # COMPILED WORKS
 
-# mother_of_all_demos
-netpbm/mother_of_all_demos/*.png
-
-# polyominoes
-netpbm/polyominoes/*.png
-
-# color_matrix
-netpbm/color_matrix/*.png
-
 # template
 netpbm/template/*.pgm
 
 # dissolve
 netpbm/dissolve/beebe_trail*.pgm
-netpbm/dissolve/*.png
 
 # mod
 netpbm/mod/*.pgm
 netpbm/mod/*.mp4
-netpbm/mod/*.png
 
 # drunk_walk
 netpbm/drunk_walk/*.pgm
-netpbm/drunk_walk/*.png
 
 # partition
 netpbm/partition/*.pgm
-netpbm/partition/*.png
 
 # clip
 netpbm/clip/*.pgm
-netpbm/clip/*.png
 
 # channel
 netpbm/channel/*.ppm
-netpbm/channel/*.png
 netpbm/channel/test_sample*
 !netpbm/channel/math.ppm
 !netpbm/channel/barn_plain.ppm
@@ -196,7 +181,6 @@ netpbm/channel/test_sample*
 # resolution
 netpbm/resolution/*.ppm
 netpbm/resolution/*.pgm
-netpbm/resolution/*.png
 !netpbm/resolution/florida.ppm
 !netpbm/resolution/paper.ppm
 
@@ -205,7 +189,6 @@ netpbm/conway/*/
 netpbm/conway/*.pbm
 netpbm/conway/*.pgm
 netpbm/conway/*.mp4
-netpbm/conway/*.png
 
 # stewart
 animation/stewart/*.mp4
