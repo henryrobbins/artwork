@@ -1,5 +1,5 @@
 **Henry Robbins**<br/>
-*color_matrix* (2021)<br/>
+*color_matrix* (2021-02-24)<br/>
 Netpbm (P3)
 
 The rows and columns of the matrix are the colors white, red, green, blue, and

@@ -1,5 +1,5 @@
 **Henry Robbins**<br/>
-*spin* (2021)<br/>
+*spin* (2021-02-08)<br/>
 Bash and Python script
 
 `spin.sh` and `spin.py` are a Bash and Python script respectively which return

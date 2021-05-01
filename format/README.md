@@ -1,5 +1,5 @@
 **Henry Robbins**<br/>
-*format* (2021)<br/>
+*format* (2021-02-08)<br/>
 Python script
 
 `format.py` is a Python script which takes two arguments: a text file and an
