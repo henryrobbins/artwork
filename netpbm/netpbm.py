@@ -107,7 +107,7 @@ def write_png(file_name:str, image:Netpbm):
         file_name (str): Name of the PNG file to be written.
         image (Netpbm): Netpbm image to write.
     """
-    imageio.mimwrite(file_name, image.M)
+    imageio.imwrite(file_name, image.M)
 
 
 def enlarge(image:Netpbm, k:int) -> Netpbm:
