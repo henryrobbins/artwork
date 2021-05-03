@@ -34,7 +34,8 @@ def conway(M:np.ndarray) -> np.ndarray:
 
 # COMPILE PIECES | 2021-05-02
 
-pieces = [('node', 4700)]
+pieces = [('node', 4700),
+          ('rhizomes', 4750)]
 
 log = []
 for name, g in pieces:

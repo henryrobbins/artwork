@@ -1,2 +1,4 @@
 node_conway_animation.mp4
 node_reverse_conway_animation.mp4
+rhizomes_conway_animation.mp4
+rhizomes_reverse_conway_animation.mp4
