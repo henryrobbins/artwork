@@ -8,7 +8,7 @@ root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
 from animation.animation import animation
-from log import write_log
+from log import write_log, write_works
 
 # This code was provided by Dan Torop for ART 3699
 COUNT_NEIGHBORS = np.array([[1,1,1],
@@ -32,20 +32,29 @@ def conway(M:np.ndarray) -> np.ndarray:
     return survive | born
 
 
-# COMPILE PIECES | 2021-04-07
+# COMPILE PIECES | 2021-05-02
 
-pieces = [('beebe_trail', 100),
-          ('water_cup', 2000)]
+pieces = [('node', 4700)]
 
 log = []
 for name, g in pieces:
     path = '%s/%s.ppm' % (SOURCE_DIR, name)
+
+    base_M = netpbm.read(netpbm.raw_to_plain(path, magic_number=2)).M
     M = netpbm.read(netpbm.raw_to_plain(path, magic_number=1)).M
+
     frames = [conway(M)]
     for i in range(g):
         frames.append(conway(frames[-1]))
-    frames = [np.where(f == 1,0,255) for f in frames]
+    base_M = base_M * np.where(frames[0] == 1,0,1)
+    frames = [base_M * np.where(f == 1,0,1) for f in frames]
+
     file_name = '%s/%s_conway_animation.mp4' % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, path=file_name, fps=30, s=4))
+    log.append(animation(frames=frames, path=file_name, fps=45, s=4))
+
+    frames = frames[::-1]
+    file_name = '%s/%s_reverse_conway_animation.mp4' % (SOURCE_DIR, name)
+    log.append(animation(frames=frames, path=file_name, fps=45, s=4))
 
 write_log('%s/%s' % (SOURCE_DIR, 'conway.log'), log)
+write_works(SOURCE_DIR, log)

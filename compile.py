@@ -13,6 +13,7 @@ python_works = ['netpbm/template',
                 'netpbm/drunk_walk',
                 'netpbm/partition',
                 'netpbm/clip',
+                'netpbm/conway',
                 'netpbm/channel',
                 'netpbm/resolution',
                 'animation/stewart']

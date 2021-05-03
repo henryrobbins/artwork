@@ -1,6 +1,8 @@
-**Henry Robbins**<br/>
-*conway* (2021-04-07)<br/>
-Netpbm (P2 and P3)
+**Henry Robbins and River Chavez**<br/>
+*conway* (2021-05-02)<br/>
+MPEG-4
+
+The image node was photographed by River Chavez.
 
 [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 applied to an image.
