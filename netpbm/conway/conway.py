@@ -50,11 +50,11 @@ for name, g in pieces:
     frames = [base_M * np.where(f == 1,0,1) for f in frames]
 
     file_name = '%s/%s_conway_animation.mp4' % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, path=file_name, fps=45, s=4))
+    log.append(animation(frames=frames, path=file_name, fps=45, s=8))
 
     frames = frames[::-1]
     file_name = '%s/%s_reverse_conway_animation.mp4' % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, path=file_name, fps=45, s=4))
+    log.append(animation(frames=frames, path=file_name, fps=45, s=8))
 
 write_log('%s/%s' % (SOURCE_DIR, 'conway.log'), log)
 write_works(SOURCE_DIR, log)
