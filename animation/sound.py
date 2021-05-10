@@ -58,7 +58,3 @@ def write(file_name:str, wave:WAV):
         wave (WAV): Wav file to write.
     """
     wavfile.write(file_name, SAMPLE_RATE, np.array([wave.r, wave.l]).T)
-
-
-# TODO: Delete this -- for testing
-write("test.wav", wave_sequence(np.linspace(0,440,10), 10))

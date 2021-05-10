@@ -11,6 +11,7 @@ SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from log import Log
+from animation import sound
 
 
 def clip(path:str, start:int = None, end:int = None) -> List[np.ndarray]:
@@ -83,11 +84,13 @@ def pad_to_16(M:np.ndarray) -> np.ndarray:
                          (x_pad // 2, x_pad // 2 + x_pad % 2)))
 
 
-def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1) -> Log:
+def animation(frames:List[np.ndarray], audio:sound.WAV,
+              path:str, fps:int, s:int = 1) -> Log:
     """Write an animation as a .mp4 file using ffmpeg through imageio.mp4
 
     Args:
         frames (List[np.ndarray]): List of frames in the animation.
+        audio (sound.WAV): Audio for the animation (None if no audio).
         path (str): Path where the file should be written.
         fps (int): Frames per second.
         s (int, optional): Multiplier for scaling. Defaults to 1.
@@ -98,12 +101,18 @@ def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1) -> Log:
     then = time.time()
     frames = [f.astype(np.uint8).clip(0,255) for f in frames]
     frames = [pad_to_16(f) for f in frames]
-    imageio.mimwrite(uri=path,
+    imageio.mimwrite(uri="tmp.mp4" if audio is not None else path,
                      ims=frames,
                      format='FFMPEG',
                      fps=fps,
                      output_params=["-vf","scale=iw*%d:ih*%d" % (s,s),
                                     "-sws_flags", "neighbor"])
+    if audio is not None:
+        sound.write("tmp.wav", audio)
+        os.system("ffmpeg -i %s -i %s -c:v copy -c:a aac -y %s"
+                  % ("tmp.mp4", "tmp.wav", path))
+        os.system("rm tmp.mp4")
+        os.system("rm tmp.wav")
     now = time.time()
     name = path.split('/')[-1]
     size = os.stat(path).st_size
