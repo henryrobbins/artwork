@@ -5,8 +5,13 @@ root = os.path.dirname(os.path.dirname(SOURCE_DIR))
 sys.path.insert(0,root)
 from netpbm import netpbm
 from ascii import ascii
+from log import write_log, write_works
 
-path = netpbm.convert_from_p6('%s/%s' % (SOURCE_DIR, 'steal_your_face.pbm'))
+path = netpbm.raw_to_plain('%s/%s' % (SOURCE_DIR, 'steal_your_face.ppm'), 2)
 image = netpbm.read(path)
 image = ascii.netpbm_to_ascii(image)
-ascii.write(image, '%s/%s' % (SOURCE_DIR, 'steal_your_face.txt'))
+log = ascii.write(image, '%s/%s' % (SOURCE_DIR, 'steal_your_face.png'), 'png')
+logs = [log]
+
+write_log('%s/%s' % (SOURCE_DIR, 'steal_your_face.log'), logs)
+write_works(SOURCE_DIR, logs)

@@ -192,3 +192,8 @@ netpbm/conway/*.mp4
 
 # stewart
 animation/stewart/*.mp4
+
+# steal_your_face
+ascii/steal_your_face/*.pgm
+ascii/steal_your_face/*.txt
+ascii/steal_your_face/*.png

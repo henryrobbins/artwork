@@ -30,7 +30,7 @@ README. If no instructions are found, there is no work to compile.
 | resolution (WIP) | 2021-04-04 | [resolution](netpbm/resolution) | [README.md](netpbm/resolution/README.md) |
 | stewart (WIP) | 2021-04-14 | [stewart](animation/stewart) | [README.md](animation/stewart/README.md) |
 | conway (WIP) | 2021-05-02 | [conway](netpbm/conway) | [README.md](netpbm/conway/README.md) |
-
+| steal_your_face | 2021-05-12 | [steal_your_face](ascii/steal_your_face) | [README.md](ascii/steal_your_face/README.md) |
 
 ## License
 

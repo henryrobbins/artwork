@@ -16,7 +16,8 @@ python_works = ['netpbm/template',
                 'netpbm/conway',
                 'netpbm/channel',
                 'netpbm/resolution',
-                'animation/stewart']
+                'animation/stewart',
+                'ascii/steal_your_face']
 
 for path in python_works:
     name = path.split('/')[-1]
