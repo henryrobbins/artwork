@@ -84,8 +84,8 @@ def pad_to_16(M:np.ndarray) -> np.ndarray:
                          (x_pad // 2, x_pad // 2 + x_pad % 2)))
 
 
-def animation(frames:List[np.ndarray], audio:sound.WAV,
-              path:str, fps:int, s:int = 1) -> Log:
+def animation(frames:List[np.ndarray], path:str, fps:int, s:int = 1,
+              audio:sound.WAV=None) -> Log:
     """Write an animation as a .mp4 file using ffmpeg through imageio.mp4
 
     Args:
