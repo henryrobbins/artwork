@@ -1,13 +1,13 @@
 import numpy as np
-
 import os
-import sys
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from log import write_log, write_works
+from dmtools import netpbm
+import logging
+logging.basicConfig(filename='partition.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
     """Return the Netpbm image mod k.
@@ -54,15 +54,15 @@ pieces = [('road_day', 8, 30),
           ('old_man', 8, 30),
           ('wading', 8, 30),
           ('island', 8, 30)]
-
-log = []
+works = []
 for name, k, b in pieces:
     file_path = "%s/%s_partition_%d.pgm" % (SOURCE_DIR, name, k)
     ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=partition, k=k, b=b,
-                                scale=2000)
-    log.append(file_log)
+    netpbm.transform(in_path=ppm_path, out_path=file_path,
+                     magic_number=2, f=partition, k=k, b=b,
+                     scale=2000)
+    works.append("%s_partition_%d.pgm" % (name, k))
 
-write_log('%s/%s' % (SOURCE_DIR, 'partition.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)

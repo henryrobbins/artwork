@@ -1,15 +1,15 @@
+import os
 import numpy as np
+from dmtools import netpbm
+import logging
+logging.basicConfig(filename='drunk_walk.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 import random
 random.seed(3699)
 
-import os
-import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from log import write_log, write_works
-
 
 def drunk_walk(k:int, x:int, y:int, M:np.ndarray):
     """Do a k-step drunk walk from (x,y) on M.
@@ -81,12 +81,14 @@ pieces = [(4096, 4, 128, 3, 3, 8),
           (64, 4, 8, 3, 3, 2),
           (16, 4, 4, 3, 3, 1)]
 
-log = []
+works = []
 for n, k, d, w, h, b in pieces:
     name = '%d' % n
     path = '%s/%s_step_drunk_walk.pgm' % (SOURCE_DIR, name)
-    log.append(netpbm.generate(path=path, f=drunk_walk_series, scale=1000,
-                               n=n, k=k, d=d, w=w, h=h, b=b))
+    netpbm.generate(path=path, f=drunk_walk_series, scale=1000,
+                    n=n, k=k, d=d, w=w, h=h, b=b)
+    works.append("%s_step_drunk_walk.pgm" % name)
 
-write_log('%s/%s' % (SOURCE_DIR, 'drunk_walk.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)

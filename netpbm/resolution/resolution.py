@@ -1,12 +1,13 @@
 import numpy as np
-
 import os
-import sys
+from dmtools import netpbm
+import logging
+logging.basicConfig(filename='resolution.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
+
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from log import write_log, write_works
 
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:
@@ -70,14 +71,14 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
 pieces = [('paper', 2),
           ('florida', 3)]
 
-log = []
+works = []
 for name, p in pieces:
     file_path = "%s/%s_resolution.ppm" % (SOURCE_DIR, name)
     ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
     file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
                                 magic_number=p, f=resolution, scale=-1)
-    log.append(file_log)
+    works.append("%s_resolution.ppm" % name)
 
-
-write_log('%s/%s' % (SOURCE_DIR, 'resolution.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)

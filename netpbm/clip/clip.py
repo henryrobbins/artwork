@@ -1,13 +1,13 @@
 import numpy as np
-
 import os
-import sys
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from log import write_log, write_works
+from dmtools import netpbm
+import logging
+logging.basicConfig(filename='clip.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def clip(image:netpbm.Netpbm,
          k:int, lb:int, ub:int, b:int, c:str) -> netpbm.Netpbm:
@@ -46,14 +46,15 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
           ('wall_light', 8, 5, 6, 75, "black"),
           ('laundry', 8, 0, 1, 75, "black")]
 
-log = []
+works = []
 for name, k, lb, ub, b, c in pieces:
     file_path = "%s/%s_clip_%d_%d.pgm" % (SOURCE_DIR, name, lb, ub)
     ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b,
-                                c=c, scale=1000)
-    log.append(file_log)
+    netpbm.transform(in_path=ppm_path, out_path=file_path,
+                     magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b,
+                     c=c, scale=1000)
+    works.append("%s_clip_%d_%d.pgm" % (name, lb, ub))
 
-write_log('%s/%s' % (SOURCE_DIR, 'clip.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)

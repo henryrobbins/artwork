@@ -1,14 +1,14 @@
-import numpy as np
-
 import os
-import sys
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from animation.animation import animation
-from log import write_log, write_works
+import numpy as np
+from dmtools import netpbm
+from dmtools.animation import animation
+import logging
+logging.basicConfig(filename='mod.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
     """Return the Netpbm image mod k.
@@ -36,13 +36,13 @@ pieces = [('road_day', 8),
           ('stomp', 25),
           ('water_cup', 7)]
 
-log = []
+works = []
 for name, k in pieces:
     file_path = "%s/%s_mod_%d.pgm" % (SOURCE_DIR, name, k)
     ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
-    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=mod, k=k, scale=1000)
-    log.append(file_log)
+    netpbm.transform(in_path=ppm_path, out_path=file_path,
+                     magic_number=2, f=mod, k=k, scale=1000)
+    works.append("%s_mod_%d.pgm" % (name, k))
 
 # animations
 
@@ -54,7 +54,9 @@ for name, lb, ub in pieces:
     M = netpbm.read(netpbm.raw_to_plain(path, magic_number=2))
     frames = [mod(M,k).M * (255/k) for k in range(lb,ub+1)]
     file_name = '%s/%s_mod_animation.mp4' % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, path=file_name, fps=10, s=4))
+    animation(frames=frames, path=file_name, fps=10, s=4)
+    works.append("%s_mod_animation.mp4" % name)
 
-write_log('%s/%s' % (SOURCE_DIR, 'mod.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)

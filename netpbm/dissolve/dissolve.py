@@ -1,13 +1,14 @@
 import numpy as np
 import os
 from typing import List
+from dmtools import netpbm
+import logging
+logging.basicConfig(filename='dissolve.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 
-import sys
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from log import write_log, write_works
 
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:
@@ -75,16 +76,17 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
-log = []
+
+works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
 for piece in pieces:
     modification = ''.join([op[0] + str(op[1]) for op in piece])
     file_path = '%s/beebe_trail_%s.pgm' % (SOURCE_DIR, modification)
     ppm_path = '%s/%s' % (SOURCE_DIR, 'beebe_trail.ppm')
-    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=2, f=dissolve, scale=1000,
-                                modifications=piece)
-    log.append(file_log)
+    netpbm.transform(in_path=ppm_path, out_path=file_path,
+                     magic_number=2, f=dissolve, scale=1000,
+                     modifications=piece)
+    works.append("beebe_trail_%s.pgm" % modification)
 
-write_log('%s/%s' % (SOURCE_DIR, 'dissolve.log'), log)
-src_works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
-write_works(SOURCE_DIR, log, src_works)
+with open("works.txt", "w") as f:
+    for work in works:
+        f.write("%s\n" % work)
