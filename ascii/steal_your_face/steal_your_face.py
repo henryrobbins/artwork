@@ -1,17 +1,19 @@
 import os
-import sys
+from dmtools import netpbm, ascii
+import logging
+logging.basicConfig(filename='steal_your_face.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
+
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from netpbm import netpbm
-from ascii import ascii
-from log import write_log, write_works
 
-path = netpbm.raw_to_plain('%s/%s' % (SOURCE_DIR, 'steal_your_face.ppm'), 2)
-image = netpbm.read(path)
-image = ascii.netpbm_to_ascii(image)
-log = ascii.write(image, '%s/%s' % (SOURCE_DIR, 'steal_your_face.png'), 'png')
-logs = [log]
+raw_file = '%s/%s' % (SOURCE_DIR, 'steal_your_face.ppm')
+plain_file = netpbm.raw_to_plain(raw_file, 2)
+netpbm_img = netpbm.read(plain_file)
+ascii_img = ascii.netpbm_to_ascii(netpbm_img)
+ascii.write(ascii_img, '%s/%s' % (SOURCE_DIR, 'steal_your_face.png'), 'png')
 
-write_log('%s/%s' % (SOURCE_DIR, 'steal_your_face.log'), logs)
-write_works(SOURCE_DIR, logs)
+works = ['steal_your_face.png']
+with open("works.txt", "w") as f:
+    f.writelines(works)
