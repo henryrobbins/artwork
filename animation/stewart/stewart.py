@@ -1,17 +1,17 @@
+import os
 import numpy as np
 from numpy import pi
-
-import os
-import sys
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
-root = os.path.dirname(os.path.dirname(SOURCE_DIR))
-sys.path.insert(0,root)
-from log import write_log, write_works
-from netpbm import colorspace
-from animation.animation import clip, transform, animation
-from animation import sound
 from scipy import signal
+from dmtools import netpbm, colorspace
+from dmtools.animation import clip, transform, animation
+from dmtools import sound
+import logging
+logging.basicConfig(filename='stewart.log',
+                    level=logging.INFO,
+                    format='%(asctime)s | %(message)s',
+                    datefmt='%m-%d-%Y %I:%M')
 
+SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def mod(M,k):
     return np.array(list(map(lambda x: x % k, M)))*int(256/64)
@@ -72,8 +72,8 @@ frames = (clip("%s/car_ride" % SOURCE_DIR) +
           clip("%s/ella_movement" % SOURCE_DIR) +
           clip("%s/destroy_town" % SOURCE_DIR))
 
-# animations.append((transform(frames,mod,True,k=64), 'mod', None))
-# animations.append((transform(frames,clip_gradient,True,lb=0,ub=100), 'clip'))
+animations.append((transform(frames,mod,True,k=64), 'mod', None, None))
+animations.append((transform(frames,clip_gradient,True,lb=0,ub=100), 'clip', None, None))
 
 
 def f1(p):
@@ -87,10 +87,11 @@ def f2(a,p):
 def f3():
     return lambda x: 1 - x
 
+# TODO: Uncomment to compile all works
 # animations.append((transform(frames, channel,
 #                              f1=f1(5),f2=f2(12,5),f3=f3()),'rgb_chaos'))
 
-
+# TODO: Uncomment to compile all works
 # pinches_clip = clip("%s/pinches" % SOURCE_DIR)
 # b = [0,5,10,14,18,22,28,35,40,45,49,53,57,61,66]
 # clips = [pinches_clip[b[i]+1:b[i+1]] for i in range(len(b)-1)]
@@ -110,80 +111,81 @@ def f3():
 #           transform(clips[13],channel,f1=f1(5),f2=f2(1,5),f3=f3()))
 # animations.append((frames,'pinches_chaos'))
 
+# TODO: Uncomment to compile all works
+# plate_frames = transform(clip("%s/plate" % SOURCE_DIR),
+#                channel,f1=lambda x: x,f2=lambda x: 0.55,f3=lambda x: 0.6,
+#                color_space='Lab')
+# frames = (
+#     [np.zeros((189,255,3))]*10 +
+#     shift(transform(clip("%s/town_tour" % SOURCE_DIR),
+#             channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 29, 35),
+#             mod, True, k=64) +
+#     shift(transform(clip("%s/henry_movement" % SOURCE_DIR),
+#             clip_gradient, True, lb=100, ub=200), 20) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 36, 40),
+#             channel, f1=f1(0), f2=f2(16,5), f3=f3(), color_space='RGB') +
+#     shift(transform(clip("%s/ella_movement" % SOURCE_DIR),
+#             clip_gradient, True, lb=100, ub=200), 20) +
+#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 1, 19),
+#             channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 1, 5),
+#                 clip_gradient,True,lb=100,ub=200) +
+#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44)[::-1],
+#               channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -5) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 41, 45),
+#               channel,f1=lambda x: x,f2=lambda x: 0.5,f3=lambda x: 0.6,
+#               color_space='Lab') +
+#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44),
+#               mod, True, k=64), 5) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 50, 53),
+#               mod, True, k=32) +
+#     shift(plate_frames[15:29][::-1] +
+#           plate_frames[15:] +
+#           plate_frames[24:29][::-1] +
+#           plate_frames[24:], 8) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 23, 28),
+#               clip_gradient, True, lb=0, ub=100) +
+#     shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22),
+#               channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 10) +
+#     shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22)[::-1],
+#           channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -10) +
+#     transform(clip("%s/pinches" % SOURCE_DIR, 11, 14),
+#         channel, f1=lambda x: x, f2=lambda x: 0.55, f3=lambda x: 0.6,
+#                color_space='Lab') +
+#     [np.zeros((189,255,3))]*10
+# )
 
-plate_frames = transform(clip("%s/plate" % SOURCE_DIR),
-               channel,f1=lambda x: x,f2=lambda x: 0.55,f3=lambda x: 0.6,
-               color_space='Lab')
-frames = (
-    [np.zeros((189,255,3))]*10 +
-    shift(transform(clip("%s/town_tour" % SOURCE_DIR),
-            channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 29, 35),
-            mod, True, k=64) +
-    shift(transform(clip("%s/henry_movement" % SOURCE_DIR),
-            clip_gradient, True, lb=100, ub=200), 20) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 36, 40),
-            channel, f1=f1(0), f2=f2(16,5), f3=f3(), color_space='RGB') +
-    shift(transform(clip("%s/ella_movement" % SOURCE_DIR),
-            clip_gradient, True, lb=100, ub=200), 20) +
-    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 1, 19),
-            channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 1, 5),
-                clip_gradient,True,lb=100,ub=200) +
-    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44)[::-1],
-              channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -5) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 41, 45),
-              channel,f1=lambda x: x,f2=lambda x: 0.5,f3=lambda x: 0.6,
-              color_space='Lab') +
-    shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44),
-              mod, True, k=64), 5) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 50, 53),
-              mod, True, k=32) +
-    shift(plate_frames[15:29][::-1] +
-          plate_frames[15:] +
-          plate_frames[24:29][::-1] +
-          plate_frames[24:], 8) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 23, 28),
-              clip_gradient, True, lb=0, ub=100) +
-    shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22),
-              channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 10) +
-    shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22)[::-1],
-          channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -10) +
-    transform(clip("%s/pinches" % SOURCE_DIR, 11, 14),
-        channel, f1=lambda x: x, f2=lambda x: 0.55, f3=lambda x: 0.6,
-               color_space='Lab') +
-    [np.zeros((189,255,3))]*10
-)
+# # adding sound to stewart_film
+# fps = 10
+# t = (len(frames) / fps)
 
-# adding sound to stewart_film
-fps = 10
-t = (len(frames) / fps)
+# line = np.linspace(0, t*(2*np.pi), int(t*sound.SAMPLE_RATE/25))
+# avgs = np.repeat([np.average(frame) / 255 for frame in frames],
+#                  int(sound.SAMPLE_RATE/fps/25))[:len(line)]
+# line = line[:len(avgs)]
+# avgs = (avgs * 400 + 100)  # normalize
+# wave1 = 0.2*np.sin(line*avgs)
+# wave1 = signal.resample(wave1, 25*len(wave1))
 
-line = np.linspace(0, t*(2*np.pi), int(t*sound.SAMPLE_RATE/25))
-avgs = np.repeat([np.average(frame) / 255 for frame in frames],
-                 int(sound.SAMPLE_RATE/fps/25))[:len(line)]
-line = line[:len(avgs)]
-avgs = (avgs * 400 + 100)  # normalize
-wave1 = 0.2*np.sin(line*avgs)
-wave1 = signal.resample(wave1, 25*len(wave1))
+# clips = np.repeat([np.average(np.where(f > 180, 1, 0)) for f in frames],
+#                   int(sound.SAMPLE_RATE/fps/25))[:len(line)]
+# line = line[:len(clips)]
+# clips = (clips * 400 + 100)  # normalize
+# wave2 = 0.4*np.cos(line*avgs)
+# wave2 = signal.resample(wave2, 25*len(wave2))
 
-clips = np.repeat([np.average(np.where(f > 180, 1, 0)) for f in frames],
-                  int(sound.SAMPLE_RATE/fps/25))[:len(line)]
-line = line[:len(clips)]
-clips = (clips * 400 + 100)  # normalize
-wave2 = 0.4*np.cos(line*avgs)
-wave2 = signal.resample(wave2, 25*len(wave2))
+# wave = wave1 + wave2
+# wave = wave / np.max(np.absolute(wave))
 
-wave = wave1 + wave2
-wave = wave / np.max(np.absolute(wave))
-
-animations.append((frames, 'film', sound.WAV(r=wave, l=wave), fps))
+# animations.append((frames, 'film', sound.WAV(r=wave, l=wave), fps))
 
 
-log = []
+works = []
 for frames, name, audio, fps in animations:
+    works.append("stewart_%s.mp4" % name)
     path = "%s/stewart_%s.mp4" % (SOURCE_DIR, name)
-    log.append(animation(frames=frames, audio=audio, path=path, fps=fps, s=3))
+    animation(frames=frames, audio=audio, path=path, fps=fps, s=3)
 
-write_log('%s/%s' % (SOURCE_DIR, 'stewart.log'), log)
-write_works(SOURCE_DIR, log)
+with open("works.txt", "w") as f:
+    f.writelines(works)
