@@ -1,5 +1,4 @@
 import numpy as np
-import os
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='template.log',
@@ -7,7 +6,6 @@ logging.basicConfig(filename='template.log',
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
 
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def template(image:netpbm.Netpbm) -> netpbm.Netpbm:
     """TODO: Add description
@@ -28,8 +26,8 @@ pieces = [('beebe_trail')]
 
 works = []
 for name in pieces:
-    file_path = "%s/%s_template.pgm" % (SOURCE_DIR, name)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_path = "%s_template.pgm" % name
+    ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      magic_number=2, f=template, scale=1000)
     works.append("%s_template.pgm" % name)

@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.signal import convolve2d
-import os
 from dmtools import netpbm
 from dmtools.animation import animation
 import logging
@@ -8,8 +7,6 @@ logging.basicConfig(filename='conway.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # This code was provided by Dan Torop for ART 3699
 COUNT_NEIGHBORS = np.array([[1,1,1],
@@ -40,7 +37,7 @@ pieces = [('node', 4700),
 
 works = []
 for name, g in pieces:
-    path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    path = '%s.ppm' % (name)
 
     base_M = netpbm.read(netpbm.raw_to_plain(path, magic_number=2)).M
     M = netpbm.read(netpbm.raw_to_plain(path, magic_number=1)).M
@@ -51,12 +48,12 @@ for name, g in pieces:
     base_M = base_M * np.where(frames[0] == 1,0,1)
     frames = [base_M * np.where(f == 1,0,1) for f in frames]
 
-    file_name = '%s/%s_conway_animation.mp4' % (SOURCE_DIR, name)
+    file_name = '%s_conway_animation.mp4' % name
     animation(frames=frames, path=file_name, fps=45, s=8)
     works.append("%s_conway_animation.mp4" % name)
 
     frames = frames[::-1]
-    file_name = '%s/%s_reverse_conway_animation.mp4' % (SOURCE_DIR, name)
+    file_name = '%s_reverse_conway_animation.mp4' % name
     animation(frames=frames, path=file_name, fps=45, s=8)
     works.append("%s_reverse_conway_animation.mp4" % name)
 

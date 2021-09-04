@@ -1,4 +1,3 @@
-import os
 import numpy as np
 from dmtools import netpbm
 import logging
@@ -9,7 +8,6 @@ logging.basicConfig(filename='drunk_walk.log',
 import random
 random.seed(3699)
 
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def drunk_walk(k:int, x:int, y:int, M:np.ndarray):
     """Do a k-step drunk walk from (x,y) on M.
@@ -84,7 +82,7 @@ pieces = [(4096, 4, 128, 3, 3, 8),
 works = []
 for n, k, d, w, h, b in pieces:
     name = '%d' % n
-    path = '%s/%s_step_drunk_walk.pgm' % (SOURCE_DIR, name)
+    path = '%s_step_drunk_walk.pgm' % name
     netpbm.generate(path=path, f=drunk_walk_series, scale=1000,
                     n=n, k=k, d=d, w=w, h=h, b=b)
     works.append("%s_step_drunk_walk.pgm" % name)

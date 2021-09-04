@@ -1,5 +1,4 @@
 import numpy as np
-import os
 from typing import List
 from dmtools import netpbm
 import logging
@@ -7,8 +6,6 @@ logging.basicConfig(filename='dissolve.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:
@@ -80,8 +77,8 @@ pieces = [[('h',70)],
 works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
 for piece in pieces:
     modification = ''.join([op[0] + str(op[1]) for op in piece])
-    file_path = '%s/beebe_trail_%s.pgm' % (SOURCE_DIR, modification)
-    ppm_path = '%s/%s' % (SOURCE_DIR, 'beebe_trail.ppm')
+    file_path = 'beebe_trail_%s.pgm' % modification
+    ppm_path = 'beebe_trail.ppm'
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      magic_number=2, f=dissolve, scale=1000,
                      modifications=piece)

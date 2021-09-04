@@ -1,7 +1,6 @@
 import numpy as np
 from math import ceil, pi
 from typing import Callable
-import os
 from dmtools import netpbm
 from dmtools import colorspace
 import logging
@@ -9,8 +8,6 @@ logging.basicConfig(filename='channel.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Adapted from code provided by Dan Torop
@@ -117,8 +114,8 @@ for name, R, G, B in pieces:
     f_R, f_R_s = R
     f_G, f_G_s = G
     f_B, f_B_s = B
-    file_path = "%s/%s_channel_%s_%s_%s.ppm" % (SOURCE_DIR, name,
+    file_path = "%s/%s_channel_%s_%s_%s.ppm" % (name,
                                                 f_R_s, f_G_s, f_B_s)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    ppm_path = '%s/%s.ppm' % (name)
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      f=channel, f_R=f_R, f_B=f_B, f_G=f_G)

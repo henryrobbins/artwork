@@ -1,5 +1,4 @@
 import numpy as np
-import os
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='partition.log',
@@ -7,7 +6,6 @@ logging.basicConfig(filename='partition.log',
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
 
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
     """Return the Netpbm image mod k.
@@ -56,8 +54,8 @@ pieces = [('road_day', 8, 30),
           ('island', 8, 30)]
 works = []
 for name, k, b in pieces:
-    file_path = "%s/%s_partition_%d.pgm" % (SOURCE_DIR, name, k)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_path = "%s_partition_%d.pgm" % (name, k)
+    ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      magic_number=2, f=partition, k=k, b=b,
                      scale=2000)

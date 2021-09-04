@@ -1,13 +1,10 @@
 import numpy as np
-import os
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='resolution.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:
@@ -73,8 +70,8 @@ pieces = [('paper', 2),
 
 works = []
 for name, p in pieces:
-    file_path = "%s/%s_resolution.ppm" % (SOURCE_DIR, name)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_path = "%s_resolution.ppm" % name
+    ppm_path = '%s.ppm' % name
     file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
                                 magic_number=p, f=resolution, scale=-1)
     works.append("%s_resolution.ppm" % name)

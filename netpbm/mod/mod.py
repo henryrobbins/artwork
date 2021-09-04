@@ -1,4 +1,3 @@
-import os
 import numpy as np
 from dmtools import netpbm
 from dmtools.animation import animation
@@ -8,7 +7,6 @@ logging.basicConfig(filename='mod.log',
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
 
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
     """Return the Netpbm image mod k.
@@ -38,8 +36,8 @@ pieces = [('road_day', 8),
 
 works = []
 for name, k in pieces:
-    file_path = "%s/%s_mod_%d.pgm" % (SOURCE_DIR, name, k)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_path = "%s_mod_%d.pgm" % (name, k)
+    ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      magic_number=2, f=mod, k=k, scale=1000)
     works.append("%s_mod_%d.pgm" % (name, k))
@@ -50,10 +48,10 @@ pieces = [('faces',1,150),
           ('water_cup',1,140)]
 
 for name, lb, ub in pieces:
-    path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    path = '%s.ppm' % name
     M = netpbm.read(netpbm.raw_to_plain(path, magic_number=2))
     frames = [mod(M,k).M * (255/k) for k in range(lb,ub+1)]
-    file_name = '%s/%s_mod_animation.mp4' % (SOURCE_DIR, name)
+    file_name = '%s_mod_animation.mp4' % name
     animation(frames=frames, path=file_name, fps=10, s=4)
     works.append("%s_mod_animation.mp4" % name)
 

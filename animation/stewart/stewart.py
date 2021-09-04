@@ -1,4 +1,3 @@
-import os
 import numpy as np
 from numpy import pi
 from scipy import signal
@@ -10,8 +9,6 @@ logging.basicConfig(filename='stewart.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def mod(M,k):
     return np.array(list(map(lambda x: x % k, M)))*int(256/64)
@@ -66,11 +63,11 @@ def shift(frames, shift):
 
 animations = []
 
-frames = (clip("%s/car_ride" % SOURCE_DIR) +
-          clip("%s/pinches" % SOURCE_DIR) +
-          clip("%s/henry_movement" % SOURCE_DIR) +
-          clip("%s/ella_movement" % SOURCE_DIR) +
-          clip("%s/destroy_town" % SOURCE_DIR))
+frames = (clip("car_ride") +
+          clip("pinches") +
+          clip("henry_movement") +
+          clip("ella_movement") +
+          clip("destroy_town"))
 
 animations.append((transform(frames,mod,True,k=64), 'mod', None, None))
 animations.append((transform(frames,clip_gradient,True,lb=0,ub=100), 'clip', None, None))
@@ -92,7 +89,7 @@ def f3():
 #                              f1=f1(5),f2=f2(12,5),f3=f3()),'rgb_chaos'))
 
 # TODO: Uncomment to compile all works
-# pinches_clip = clip("%s/pinches" % SOURCE_DIR)
+# pinches_clip = clip("pinches")
 # b = [0,5,10,14,18,22,28,35,40,45,49,53,57,61,66]
 # clips = [pinches_clip[b[i]+1:b[i+1]] for i in range(len(b)-1)]
 # frames = (transform(clips[0],channel,f1=f1(5),f2=f2(12,5),f3=f3()) +
@@ -112,45 +109,45 @@ def f3():
 # animations.append((frames,'pinches_chaos'))
 
 # TODO: Uncomment to compile all works
-# plate_frames = transform(clip("%s/plate" % SOURCE_DIR),
+# plate_frames = transform(clip("plate"),
 #                channel,f1=lambda x: x,f2=lambda x: 0.55,f3=lambda x: 0.6,
 #                color_space='Lab')
 # frames = (
 #     [np.zeros((189,255,3))]*10 +
-#     shift(transform(clip("%s/town_tour" % SOURCE_DIR),
+#     shift(transform(clip("%town_tour"),
 #             channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 29, 35),
+#     transform(clip("pinches", 29, 35),
 #             mod, True, k=64) +
-#     shift(transform(clip("%s/henry_movement" % SOURCE_DIR),
+#     shift(transform(clip("henry_movement"),
 #             clip_gradient, True, lb=100, ub=200), 20) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 36, 40),
+#     transform(clip("%pinches", 36, 40),
 #             channel, f1=f1(0), f2=f2(16,5), f3=f3(), color_space='RGB') +
-#     shift(transform(clip("%s/ella_movement" % SOURCE_DIR),
+#     shift(transform(clip("ella_movement"),
 #             clip_gradient, True, lb=100, ub=200), 20) +
-#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 1, 19),
+#     shift(transform(clip("destroy_town", 1, 19),
 #             channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 1) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 1, 5),
+#     transform(clip("pinches", 1, 5),
 #                 clip_gradient,True,lb=100,ub=200) +
-#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44)[::-1],
+#     shift(transform(clip("destroy_town", 19, 44)[::-1],
 #               channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -5) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 41, 45),
+#     transform(clip("%pinches", 41, 45),
 #               channel,f1=lambda x: x,f2=lambda x: 0.5,f3=lambda x: 0.6,
 #               color_space='Lab') +
-#     shift(transform(clip("%s/destroy_town" % SOURCE_DIR, 19, 44),
+#     shift(transform(clip("destroy_town", 19, 44),
 #               mod, True, k=64), 5) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 50, 53),
+#     transform(clip("pinches", 50, 53),
 #               mod, True, k=32) +
 #     shift(plate_frames[15:29][::-1] +
 #           plate_frames[15:] +
 #           plate_frames[24:29][::-1] +
 #           plate_frames[24:], 8) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 23, 28),
+#     transform(clip("%pinches", 23, 28),
 #               clip_gradient, True, lb=0, ub=100) +
-#     shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22),
+#     shift(transform(clip("tree_flowers", 5, 22),
 #               channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), 10) +
-#     shift(transform(clip("%s/tree_flowers" % SOURCE_DIR, 5, 22)[::-1],
+#     shift(transform(clip("tree_flowers", 5, 22)[::-1],
 #           channel, f1=f3(), f2=f3(), f3=f3(), color_space='RGB'), -10) +
-#     transform(clip("%s/pinches" % SOURCE_DIR, 11, 14),
+#     transform(clip("%pinches", 11, 14),
 #         channel, f1=lambda x: x, f2=lambda x: 0.55, f3=lambda x: 0.6,
 #                color_space='Lab') +
 #     [np.zeros((189,255,3))]*10
@@ -184,7 +181,7 @@ def f3():
 works = []
 for frames, name, audio, fps in animations:
     works.append("stewart_%s.mp4" % name)
-    path = "%s/stewart_%s.mp4" % (SOURCE_DIR, name)
+    path = "stewart_%s.mp4" % name
     animation(frames=frames, audio=audio, path=path, fps=fps, s=3)
 
 with open("works.txt", "w") as f:

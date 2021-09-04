@@ -1,13 +1,10 @@
 import numpy as np
-import os
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='clip.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
-
-SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def clip(image:netpbm.Netpbm,
          k:int, lb:int, ub:int, b:int, c:str) -> netpbm.Netpbm:
@@ -48,8 +45,8 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
 
 works = []
 for name, k, lb, ub, b, c in pieces:
-    file_path = "%s/%s_clip_%d_%d.pgm" % (SOURCE_DIR, name, lb, ub)
-    ppm_path = '%s/%s.ppm' % (SOURCE_DIR, name)
+    file_path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
+    ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b,
                      c=c, scale=1000)
