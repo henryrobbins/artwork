@@ -41,7 +41,7 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
     """
     M = image.M
     if image.P == 3:
-        n,m,k = M.shape
+        n,m,*_ = M.shape
         M = M.reshape(n,m*3)
     else:
         n,m = M.shape
@@ -60,7 +60,7 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
             M[256*i:256*(i+1), 256*j:256*(j+1)] = B
     if image.P == 3:
         M = M.reshape(n,m,3)
-    return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=image.k, M=M)
+    return netpbm.Netpbm(P=image.P, k=image.k, M=M)
 
 
 # COMPILE PIECES | 2021-04-04

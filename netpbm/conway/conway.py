@@ -42,8 +42,7 @@ for name, g in pieces:
     image = netpbm.read_netpbm(path)
     base_M = colorspace.RGB_to_gray(image.M)
     M = colorspace.RGB_to_gray(image.M)
-    h,w = M.shape
-    image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+    image = netpbm.Netpbm(P=2, k=image.k, M=M)
     image.set_max_color_value(1)
     M = image.M
 

@@ -62,7 +62,7 @@ def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
         elif direction == 'v':
             M = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
         h,w = M.shape
-        image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+        image = netpbm.Netpbm(P=2, k=image.k, M=M)
     return image
 
 

@@ -21,8 +21,7 @@ def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
     """
     M_prime = colorspace.RGB_to_gray(image.M)
     M_prime = np.array(list(map(lambda x: x % k, M_prime)))
-    h,w, *_ = M_prime.shape
-    return netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M_prime)
+    return netpbm.Netpbm(P=2, k=k, M=M_prime)
 
 
 # COMPILE PIECES | 2021-03-07

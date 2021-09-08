@@ -43,7 +43,7 @@ def channel(image:netpbm.Netpbm, f_R:Callable,
     # M = colorspace.denormalize(M, 'YUV')
     # M = colorspace.YUV_to_RGB(M)
 
-    return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=k, M=M)
+    return netpbm.Netpbm(P=image.P, k=k, M=M)
 
 
 # COMPILE PIECES | 2021-03-29

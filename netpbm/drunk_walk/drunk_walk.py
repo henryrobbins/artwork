@@ -48,7 +48,7 @@ def drunk_walk_image(n:int, k:int, d:int):
     # This implementation makes more sense but not as interesting..
     # M = np.clip(M, 0, k)
     M = np.array(list(map(lambda x: x % k, M)))
-    return netpbm.Netpbm(2,d,d,k,M.astype(int))
+    return netpbm.Netpbm(P=2, k=k, M=M.astype(int))
 
 
 def drunk_walk_series(n:int, k:int, d:int,

@@ -20,23 +20,22 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
     M = colorspace.RGB_to_gray(image.M)
-    h,w = M.shape
-    image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+    image = netpbm.Netpbm(P=2, k=image.k, M=M)
     image.set_max_color_value(k)
     P = image.P
     layers = []
     for i in range(k):
         M = np.where(image.M == i,k,0)
-        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,k)
-        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,i,0)
-        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,i)
-        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
     return netpbm.image_grid(layers,k,4,b)
 
 

@@ -23,14 +23,12 @@ def clip(image:netpbm.Netpbm,
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
     M = colorspace.RGB_to_gray(image.M)
-    h,w = M.shape
-    image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+    image = netpbm.Netpbm(P=2, k=image.k, M=M)
     image.set_max_color_value(k)
-    h,w = image.M.shape
     M_lb = np.where(lb <= image.M, 1, 0)
     M_ub = np.where(image.M <= ub, 1, 0)
     M = np.where(M_lb + M_ub == 2, 0, 1)
-    image = netpbm.Netpbm(P=image.P, w=w, h=h, k=1, M=M)
+    image = netpbm.Netpbm(P=image.P, k=1, M=M)
     return netpbm.border(image, b, c)
 
 
