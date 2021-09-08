@@ -1,4 +1,3 @@
-from os import terminal_size
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='template.log',
