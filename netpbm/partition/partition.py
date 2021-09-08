@@ -56,11 +56,11 @@ pieces = [('road_day', 8, 30),
           ('island', 8, 30)]
 works = []
 for name, k, b in pieces:
-    file_path = "%s_partition_%d.pgm" % (name, k)
-    ppm_path = '%s.ppm' % name
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     f=partition, k=k, b=b, scale=2000)
-    works.append("%s_partition_%d.pgm" % (name, k))
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    image = partition(image, k, b)
+    path = "%s_partition_%d.pgm" % (name, k)
+    image.to_netpbm(path)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:

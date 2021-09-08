@@ -81,11 +81,10 @@ pieces = [(4096, 4, 128, 3, 3, 8),
 
 works = []
 for n, k, d, w, h, b in pieces:
-    name = '%d' % n
-    path = '%s_step_drunk_walk.pgm' % name
-    netpbm.generate(path=path, f=drunk_walk_series, scale=1000,
-                    n=n, k=k, d=d, w=w, h=h, b=b)
-    works.append("%s_step_drunk_walk.pgm" % name)
+    image = drunk_walk_series(n, k, d, w, h, b)
+    path = '%d_step_drunk_walk.pgm' % n
+    image.to_netpbm(path)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:

@@ -70,11 +70,11 @@ pieces = [('paper', 2),
 
 works = []
 for name, p in pieces:
-    file_path = "%s_resolution.ppm" % name
-    ppm_path = '%s.ppm' % name
-    file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                f=resolution, scale=-1)
-    works.append("%s_resolution.ppm" % name)
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    image = resolution(image)
+    path = "%s_resolution.ppm" % name
+    image.to_netpbm(path)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:

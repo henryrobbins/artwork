@@ -37,11 +37,11 @@ pieces = [('road_day', 8),
 
 works = []
 for name, k in pieces:
-    file_path = "%s_mod_%d.pgm" % (name, k)
-    ppm_path = '%s.ppm' % name
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     f=mod, k=k, scale=1000)
-    works.append("%s_mod_%d.pgm" % (name, k))
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    image = mod(image, k)
+    path = "%s_mod_%d.pgm" % (name, k)
+    image.to_netpbm(path)
+    works.append(path)
 
 # animations
 
@@ -49,12 +49,11 @@ pieces = [('faces',1,150),
           ('water_cup',1,140)]
 
 for name, lb, ub in pieces:
-    path = '%s.ppm' % name
-    M = netpbm.read_netpbm(path)
-    frames = [mod(M,k).M * (255/k) for k in range(lb,ub+1)]
-    file_name = '%s_mod_animation.mp4' % name
-    animation(frames=frames, path=file_name, fps=10, s=4)
-    works.append("%s_mod_animation.mp4" % name)
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    frames = [mod(image,k).M * (255/k) for k in range(lb,ub+1)]
+    path = '%s_mod_animation.mp4' % name
+    animation(frames=frames, path=path, fps=10, s=4)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:

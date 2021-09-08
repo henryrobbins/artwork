@@ -114,7 +114,7 @@ for name, R, G, B in pieces:
     f_R, f_R_s = R
     f_G, f_G_s = G
     f_B, f_B_s = B
-    file_path = "%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
-    ppm_path = '%s.ppm' % name
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     f=channel, f_R=f_R, f_B=f_B, f_G=f_G)
+    image = netpbm.read_netpbm("%s.ppm" % name)
+    image = channel(image, f_R, f_G, f_B)
+    path = "%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
+    image.to_netpbm(path)

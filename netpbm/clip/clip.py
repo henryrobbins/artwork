@@ -47,11 +47,11 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
 
 works = []
 for name, k, lb, ub, b, c in pieces:
-    file_path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
-    ppm_path = '%s.ppm' % name
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     f=clip, k=k, lb=lb, ub=ub, b=b, c=c, scale=1000)
-    works.append("%s_clip_%d_%d.pgm" % (name, lb, ub))
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
+    path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
+    image.to_netpbm(name)
+    works.append(name)
 
 with open("works.txt", "w") as f:
     for work in works:

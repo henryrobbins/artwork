@@ -75,15 +75,15 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
+base_image = netpbm.read_netpbm('beebe_trail.ppm')
 
 works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
 for piece in pieces:
+    image = dissolve(base_image, piece)
     modification = ''.join([op[0] + str(op[1]) for op in piece])
-    file_path = 'beebe_trail_%s.pgm' % modification
-    ppm_path = 'beebe_trail.ppm'
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     f=dissolve, scale=1000, modifications=piece)
-    works.append("beebe_trail_%s.pgm" % modification)
+    path = 'beebe_trail_%s.pgm' % modification
+    image.to_netpbm(path)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:

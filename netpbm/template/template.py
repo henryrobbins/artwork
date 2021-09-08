@@ -1,4 +1,4 @@
-import numpy as np
+from os import terminal_size
 from dmtools import netpbm
 import logging
 logging.basicConfig(filename='template.log',
@@ -16,7 +16,7 @@ def template(image:netpbm.Netpbm) -> netpbm.Netpbm:
     Returns:
         netpbm.Netpbm: TODO: Add description
     """
-    # TODO: Implement something new!
+    # TODO: Implement an interesting transformation!
     return image
 
 
@@ -26,11 +26,11 @@ pieces = [('beebe_trail')]
 
 works = []
 for name in pieces:
-    file_path = "%s_template.pgm" % name
-    ppm_path = '%s.ppm' % name
-    netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     magic_number=2, f=template, scale=1000)
-    works.append("%s_template.pgm" % name)
+    image = netpbm.read_netpbm('%s.ppm' % name)
+    image = template(image)
+    path = "%s_template.pgm" % name
+    image.to_netpbm(path)
+    works.append(path)
 
 # TODO: uncomment this
 # with open("works.txt", "w") as f:
