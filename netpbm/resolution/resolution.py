@@ -73,7 +73,7 @@ for name, p in pieces:
     file_path = "%s_resolution.ppm" % name
     ppm_path = '%s.ppm' % name
     file_log = netpbm.transform(in_path=ppm_path, out_path=file_path,
-                                magic_number=p, f=resolution, scale=-1)
+                                f=resolution, scale=-1)
     works.append("%s_resolution.ppm" % name)
 
 with open("works.txt", "w") as f:

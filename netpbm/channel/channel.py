@@ -27,21 +27,21 @@ def channel(image:netpbm.Netpbm, f_R:Callable,
     k = image.k
     M = image.M
 
-    # M = colorspace.normalize(M, 'RGB', True)
-    # M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
-    # M = colorspace.normalize(M, 'RGB', False)
+    M = colorspace.normalize(M, 'RGB')
+    M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    M = colorspace.denormalize(M, 'RGB')
 
     # M = colorspace.RGB_to_Lab(M)
-    # M = colorspace.normalize(M, 'Lab', True)
+    # M = colorspace.normalize(M, 'Lab')
     # M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
-    # M = colorspace.normalize(M, 'Lab', False)
+    # M = colorspace.denormalize(M, 'Lab')
     # M = colorspace.Lab_to_RGB(M)
 
-    M = colorspace.RGB_to_YUV(M)
-    M = colorspace.normalize(M, 'YUV', True)
-    M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
-    M = colorspace.normalize(M, 'YUV', False)
-    M = colorspace.YUV_to_RGB(M)
+    # M = colorspace.RGB_to_YUV(M)
+    # M = colorspace.normalize(M, 'YUV')
+    # M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    # M = colorspace.denormalize(M, 'YUV')
+    # M = colorspace.YUV_to_RGB(M)
 
     return netpbm.Netpbm(P=image.P, w=image.w, h=image.h, k=k, M=M)
 
@@ -114,8 +114,7 @@ for name, R, G, B in pieces:
     f_R, f_R_s = R
     f_G, f_G_s = G
     f_B, f_B_s = B
-    file_path = "%s/%s_channel_%s_%s_%s.ppm" % (name,
-                                                f_R_s, f_G_s, f_B_s)
-    ppm_path = '%s/%s.ppm' % (name)
+    file_path = "%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
+    ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
                      f=channel, f_R=f_R, f_B=f_B, f_G=f_G)

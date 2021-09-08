@@ -1,5 +1,6 @@
 import numpy as np
 from dmtools import netpbm
+from dmtools import colorspace
 import logging
 logging.basicConfig(filename='clip.log',
                     level=logging.INFO,
@@ -21,7 +22,10 @@ def clip(image:netpbm.Netpbm,
     Returns:
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
-    image = netpbm.change_gradient(image, k)
+    M = colorspace.RGB_to_gray(image.M)
+    h,w = M.shape
+    image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+    image.set_max_color_value(k)
     h,w = image.M.shape
     M_lb = np.where(lb <= image.M, 1, 0)
     M_ub = np.where(image.M <= ub, 1, 0)
@@ -48,8 +52,7 @@ for name, k, lb, ub, b, c in pieces:
     file_path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
     ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     magic_number=2, f=clip, k=k, lb=lb, ub=ub, b=b,
-                     c=c, scale=1000)
+                     f=clip, k=k, lb=lb, ub=ub, b=b, c=c, scale=1000)
     works.append("%s_clip_%d_%d.pgm" % (name, lb, ub))
 
 with open("works.txt", "w") as f:

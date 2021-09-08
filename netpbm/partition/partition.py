@@ -1,5 +1,6 @@
 import numpy as np
 from dmtools import netpbm
+from dmtools import colorspace
 import logging
 logging.basicConfig(filename='partition.log',
                     level=logging.INFO,
@@ -18,22 +19,24 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
     Returns:
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
-    image = netpbm.change_gradient(image, k)
+    M = colorspace.RGB_to_gray(image.M)
+    h,w = M.shape
+    image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
+    image.set_max_color_value(k)
     P = image.P
-    h,w = image.M.shape
     layers = []
     for i in range(k):
         M = np.where(image.M == i,k,0)
-        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,k)
-        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,i,0)
-        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
     for i in range(k):
         M = np.where(image.M == i,0,i)
-        layers.append(netpbm.Netpbm(P=P, w=w, h=h, k=k, M=M))
+        layers.append(netpbm.Netpbm(P=2, w=w, h=h, k=k, M=M))
     return netpbm.image_grid(layers,k,4,b)
 
 
@@ -57,8 +60,7 @@ for name, k, b in pieces:
     file_path = "%s_partition_%d.pgm" % (name, k)
     ppm_path = '%s.ppm' % name
     netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     magic_number=2, f=partition, k=k, b=b,
-                     scale=2000)
+                     f=partition, k=k, b=b, scale=2000)
     works.append("%s_partition_%d.pgm" % (name, k))
 
 with open("works.txt", "w") as f:

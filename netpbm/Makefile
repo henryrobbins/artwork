@@ -7,5 +7,5 @@ netpbm-works:
 	cd clip && python clip.py
 	cd channel && python channel.py
 	cd resolution && python resolution.py
-#	cd conway && python conway.py
+	cd conway && python conway.py
 # TODO: uncomment this after testing

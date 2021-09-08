@@ -1,6 +1,7 @@
 import numpy as np
 from typing import List
 from dmtools import netpbm
+from dmtools import colorspace
 import logging
 logging.basicConfig(filename='dissolve.log',
                     level=logging.INFO,
@@ -53,14 +54,15 @@ def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
     Returns:
         netpbm.Netpbm: NumPy matrix representing the dissolved image.
     """
-    image = netpbm.change_gradient(image, 8)
+    image.set_max_color_value(8)
+    M = colorspace.RGB_to_gray(image.M)
     for direction, i in modifications:
         if direction == 'h':
-            M = np.vstack((image.M[:i], dissolve_vector(image.M[i])))
+            M = np.vstack((M[:i], dissolve_vector(M[i])))
         elif direction == 'v':
-            M = np.hstack((image.M[:,:i], dissolve_vector(image.M[:,i]).T))
+            M = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
         h,w = M.shape
-        image = netpbm.Netpbm(P=image.P, w=w, h=h, k=image.k, M=M)
+        image = netpbm.Netpbm(P=2, w=w, h=h, k=image.k, M=M)
     return image
 
 
@@ -80,8 +82,7 @@ for piece in pieces:
     file_path = 'beebe_trail_%s.pgm' % modification
     ppm_path = 'beebe_trail.ppm'
     netpbm.transform(in_path=ppm_path, out_path=file_path,
-                     magic_number=2, f=dissolve, scale=1000,
-                     modifications=piece)
+                     f=dissolve, scale=1000, modifications=piece)
     works.append("beebe_trail_%s.pgm" % modification)
 
 with open("works.txt", "w") as f:
