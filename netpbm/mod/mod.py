@@ -1,7 +1,7 @@
 import numpy as np
 from dmtools import netpbm
 from dmtools import colorspace
-from dmtools.animation import animation
+from dmtools.animation import to_mp4
 import logging
 logging.basicConfig(filename='mod.log',
                     level=logging.INFO,
@@ -52,7 +52,7 @@ for name, lb, ub in pieces:
     image = netpbm.read_netpbm('%s.ppm' % name)
     frames = [mod(image,k).M * (255/k) for k in range(lb,ub+1)]
     path = '%s_mod_animation.mp4' % name
-    animation(frames=frames, path=path, fps=10, s=4)
+    to_mp4(frames=frames, path=path, fps=10, s=4)
     works.append(path)
 
 with open("works.txt", "w") as f:

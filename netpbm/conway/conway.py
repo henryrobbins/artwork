@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import convolve2d
 from dmtools import netpbm, colorspace
-from dmtools.animation import animation
+from dmtools.animation import to_mp4
 import logging
 logging.basicConfig(filename='conway.log',
                     level=logging.INFO,
@@ -53,12 +53,12 @@ for name, g in pieces:
     frames = [base_M * np.where(f == 1,0,1) for f in frames]
 
     file_name = '%s_conway_animation.mp4' % name
-    animation(frames=frames, path=file_name, fps=45, s=8)
+    to_mp4(frames=frames, path=file_name, fps=45, s=8)
     works.append("%s_conway_animation.mp4" % name)
 
     frames = frames[::-1]
     file_name = '%s_reverse_conway_animation.mp4' % name
-    animation(frames=frames, path=file_name, fps=45, s=8)
+    to_mp4(frames=frames, path=file_name, fps=45, s=8)
     works.append("%s_reverse_conway_animation.mp4" % name)
 
 with open("works.txt", "w") as f:

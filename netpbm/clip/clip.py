@@ -50,8 +50,8 @@ for name, k, lb, ub, b, c in pieces:
     image = netpbm.read_netpbm('%s.ppm' % name)
     image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
     path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
-    image.to_netpbm(name)
-    works.append(name)
+    image.to_netpbm(path)
+    works.append(path)
 
 with open("works.txt", "w") as f:
     for work in works:
