@@ -1,8 +1,8 @@
-beebe_trail
-road_day
-creek
-tree_light
-buildings_night
-porch
-wall_light
-laundry
+beebe_trail_clip_0_0.pgm
+road_day_clip_0_0.pgm
+creek_clip_0_0.pgm
+tree_light_clip_1_2.pgm
+buildings_night_clip_2_3.pgm
+porch_clip_4_8.pgm
+wall_light_clip_5_6.pgm
+laundry_clip_0_1.pgm

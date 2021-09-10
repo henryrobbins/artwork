@@ -169,4 +169,6 @@ for frames, name, audio, fps in animations:
     to_mp4(frames=frames, audio=audio, path=path, fps=fps, s=3)
 
 with open("works.txt", "w") as f:
-    f.writelines(works)
+    for work in works:
+        f.write("%s\n" % work)
+
