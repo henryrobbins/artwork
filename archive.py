@@ -48,6 +48,9 @@ for root, _, files in os.walk('.'):
                     assert work in videos
                 elif file_extension in ['.pbm', '.pgm', '.ppm']:
                     image = netpbm.read_netpbm(path)
+                    max_dim = max(image.w, image.h)
+                    if max_dim < 1000:
+                        image.rescale(int(1000 / max_dim))
                     image.to_png('archive' / path.with_suffix('.png'))
                 else:
                     raise ValueError('Unknown file extension.')
