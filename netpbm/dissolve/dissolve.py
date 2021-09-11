@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from typing import List
 from dmtools import netpbm
 from dmtools import colorspace
@@ -54,16 +55,15 @@ def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
     Returns:
         netpbm.Netpbm: NumPy matrix representing the dissolved image.
     """
-    image.set_max_color_value(8)
-    M = colorspace.RGB_to_gray(image.M)
+    new_image = copy.copy(image)
+    new_image.set_max_color_value(8)
+    M = colorspace.RGB_to_gray(new_image.M)
     for direction, i in modifications:
         if direction == 'h':
             M = np.vstack((M[:i], dissolve_vector(M[i])))
         elif direction == 'v':
             M = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
-        h,w = M.shape
-        image = netpbm.Netpbm(P=2, k=image.k, M=M)
-    return image
+    return netpbm.Netpbm(P=2, k=8, M=M)
 
 
 # COMPILE PIECES | 2021-03-02
