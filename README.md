@@ -1,18 +1,31 @@
 ![banner](banner.png)
 *water_cup_mod_7*
 
-# Archive of Works
+# Archive of Artwork
 
-To compile the complete archive of work, use the following commands.
+The complete archive of work can be compiled with
 
 ```
-git clone git@github.com:henryrobbins/art-3699.git
-cd art-3699
-python compile.py
+git clone git@github.com:henryrobbins/artwork.git
+cd artwork
+make all-works
 ```
 
-Instructions for compiling specific works can be found in the corresponding
-README. If no instructions are found, there is no work to compile.
+Once compiled, an archive directory can be created with
+
+```
+make archive
+```
+
+Additionally, the `netpbm-works`, `animation-works`, and `ascii-works` targets
+can be used to compile a subset of the work. Furthermore, individual series of
+work can be compiled by navigating to the corresponding directory and running
+the python script. The example below compiles the mod series.
+
+```
+cd netpbm/mod
+python mod.py
+```
 
 | Title | Date | Work | Description |
 |-------|------|------|-------------|
@@ -26,11 +39,15 @@ README. If no instructions are found, there is no work to compile.
 | drunk_walk | 2021-03-17 | [drunk_walk](netpbm/drunk_walk) | [README.md](netpbm/drunk_walk/README.md) |
 | partition | 2021-03-20 | [partition](netpbm/partition) | [README.md](netpbm/partition/README.md) |
 | clip | 2021-03-23 | [clip](netpbm/clip) | [README.md](netpbm/clip/README.md) |
-| channel (WIP) | 2021-03-29 | [channel](netpbm/channel) | [README.md](netpbm/channel/README.md) |
+| channel | 2021-03-29 | [channel](netpbm/channel) | [README.md](netpbm/channel/README.md) |
 | resolution | 2021-04-04 | [resolution](netpbm/resolution) | [README.md](netpbm/resolution/README.md) |
 | stewart (WIP) | 2021-04-14 | [stewart](animation/stewart) | [README.md](animation/stewart/README.md) |
 | conway | 2021-05-02 | [conway](netpbm/conway) | [README.md](netpbm/conway/README.md) |
 | steal_your_face | 2021-05-12 | [steal_your_face](ascii/steal_your_face) | [README.md](ascii/steal_your_face/README.md) |
+
+**NOTE:** Work dated between 2021-02-08 and 2021-05-12 was created for
+[ART-3699](https://classes.cornell.edu/browse/roster/SP21/class/ART/3699), a
+special topics photography class in which the topic was "Images and Algorithms".
 
 ## License
 

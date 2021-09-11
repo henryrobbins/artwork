@@ -12,3 +12,8 @@ ascii-works:
 
 # Compile all works
 all-works: netpbm-works animation-works ascii-works
+
+# Create archive directory
+.PHONY: archive
+archive:
+	python archive.py
