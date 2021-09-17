@@ -1,6 +1,5 @@
 import numpy as np
-from dmtools import netpbm
-from dmtools import colorspace
+from dmtools import netpbm, colorspace, arrange
 import logging
 logging.basicConfig(filename='partition.log',
                     level=logging.INFO,
@@ -25,18 +24,16 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
     P = image.P
     layers = []
     for i in range(k):
-        M = np.where(image.M == i,k,0)
-        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
+        layers.append(np.where(image.M == i,k,0))
     for i in range(k):
-        M = np.where(image.M == i,0,k)
-        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
+        layers.append(np.where(image.M == i,0,k))
     for i in range(k):
-        M = np.where(image.M == i,i,0)
-        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
+        layers.append(np.where(image.M == i,i,0))
     for i in range(k):
-        M = np.where(image.M == i,0,i)
-        layers.append(netpbm.Netpbm(P=2, k=k, M=M))
-    return netpbm.image_grid(layers,k,4,b)
+        layers.append(np.where(image.M == i,0,i))
+
+    image_grid = arrange.image_grid(layers,k,4,b,k=k)
+    return netpbm.Netpbm(P=2, k=k, M=image_grid)
 
 
 # COMPILE PIECES | 2021-03-20

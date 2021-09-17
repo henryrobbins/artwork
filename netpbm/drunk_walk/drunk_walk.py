@@ -1,5 +1,5 @@
 import numpy as np
-from dmtools import netpbm
+from dmtools import netpbm, arrange
 import logging
 logging.basicConfig(filename='drunk_walk.log',
                     level=logging.INFO,
@@ -48,7 +48,7 @@ def drunk_walk_image(n:int, k:int, d:int):
     # This implementation makes more sense but not as interesting..
     # M = np.clip(M, 0, k)
     M = np.array(list(map(lambda x: x % k, M)))
-    return netpbm.Netpbm(P=2, k=k, M=M.astype(int))
+    return M.astype(int)
 
 
 def drunk_walk_series(n:int, k:int, d:int,
@@ -67,7 +67,8 @@ def drunk_walk_series(n:int, k:int, d:int,
         netpbm.Netpbm: Image of the series of drunk walks.
     """
     images = [drunk_walk_image(n,k,d) for i in range(w*h)]
-    return netpbm.image_grid(images,w,h,b)
+    grid_image = arrange.image_grid(images,w,h,b,k=k)
+    return netpbm.Netpbm(P=2, k=k, M=grid_image)
 
 
 # COMPILE PIECES | 2021-03-17

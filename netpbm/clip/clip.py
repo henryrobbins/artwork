@@ -1,6 +1,5 @@
 import numpy as np
-from dmtools import netpbm
-from dmtools import colorspace
+from dmtools import netpbm, colorspace, arrange
 import logging
 logging.basicConfig(filename='clip.log',
                     level=logging.INFO,
@@ -28,8 +27,8 @@ def clip(image:netpbm.Netpbm,
     M_lb = np.where(lb <= image.M, 1, 0)
     M_ub = np.where(image.M <= ub, 1, 0)
     M = np.where(M_lb + M_ub == 2, 0, 1)
-    image = netpbm.Netpbm(P=image.P, k=1, M=M)
-    return netpbm.border(image, b, c)
+    bordered_image = arrange.border(M, b, c, k=k)
+    return netpbm.Netpbm(P=image.P, k=1, M=bordered_image)
 
 
 # COMPILE PIECES | 2021-03-23
