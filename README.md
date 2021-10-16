@@ -44,9 +44,10 @@ python mod.py
 | stewart (WIP) | 2021-04-14 | [stewart](animation/stewart) | [README.md](animation/stewart/README.md) |
 | conway | 2021-05-02 | [conway](netpbm/conway) | [README.md](netpbm/conway/README.md) |
 | steal_your_face | 2021-05-12 | [steal_your_face](ascii/steal_your_face) | [README.md](ascii/steal_your_face/README.md) |
+| weierstrass | WIP | [weierstrass](weierstrass) | [README.md](weierstrass/README.md) |
 
 **NOTE:** Work dated between 2021-02-08 and 2021-05-12 was created for
-[ART-3699](https://classes.cornell.edu/browse/roster/SP21/class/ART/3699), a
+[ART 3699](https://classes.cornell.edu/browse/roster/SP21/class/ART/3699), a
 special topics photography class in which the topic was "Images and Algorithms".
 
 ## License

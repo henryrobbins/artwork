@@ -198,5 +198,12 @@ ascii/steal_your_face/*.pgm
 ascii/steal_your_face/*.txt
 ascii/steal_your_face/*.png
 
+# weierstrass
+weierstrass/*.png
+weierstrass/*.mp4
+!weierstrass/sunset.png
+!weierstrass/trees_sunset.png
+!weierstrass/abey.png
+
 # Archive
 archive
