@@ -145,7 +145,7 @@ dmypy.json
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 # netpbm templates
-netpbm/templates
+templates
 
 # log files
 *.log
@@ -154,49 +154,49 @@ netpbm/templates
 # COMPILED WORKS
 
 # template
-netpbm/template/*.pgm
+template/*.pgm
 
 # dissolve
-netpbm/dissolve/beebe_trail*.pgm
+dissolve/beebe_trail*.pgm
 
 # mod
-netpbm/mod/*.pgm
-netpbm/mod/*.mp4
+mod/*.pgm
+mod/*.mp4
 
 # drunk_walk
-netpbm/drunk_walk/*.pgm
+drunk_walk/*.pgm
 
 # partition
-netpbm/partition/*.pgm
+partition/*.pgm
 
 # clip
-netpbm/clip/*.pgm
+clip/*.pgm
 
 # channel
-netpbm/channel/*.ppm
-netpbm/channel/test_sample*
-!netpbm/channel/math.ppm
-!netpbm/channel/barn_plain.ppm
+channel/*.ppm
+channel/test_sample*
+!channel/math.ppm
+!channel/barn_plain.ppm
 
 # resolution
-netpbm/resolution/*.ppm
-netpbm/resolution/*.pgm
-!netpbm/resolution/florida.ppm
-!netpbm/resolution/paper.ppm
+resolution/*.ppm
+resolution/*.pgm
+!resolution/florida.ppm
+!resolution/paper.ppm
 
 # conway
-netpbm/conway/*/
-netpbm/conway/*.pbm
-netpbm/conway/*.pgm
-netpbm/conway/*.mp4
+conway/*/
+conway/*.pbm
+conway/*.pgm
+conway/*.mp4
 
 # stewart
-animation/stewart/*.mp4
+stewart/*.mp4
 
 # steal_your_face
-ascii/steal_your_face/*.pgm
-ascii/steal_your_face/*.txt
-ascii/steal_your_face/*.png
+steal_your_face/*.pgm
+steal_your_face/*.txt
+steal_your_face/*.png
 
 # weierstrass
 weierstrass/*.png
