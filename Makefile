@@ -10,6 +10,7 @@ work:
 	cd resolution && python resolution.py
 	cd stewart && python stewart.py
 	cd steal_your_face && python steal_your_face.py
+	cd weierstrass && python weierstrass.py
 # cd conway && python conway.py
 # TODO: uncomment this after testing
 
