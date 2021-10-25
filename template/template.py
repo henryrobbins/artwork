@@ -26,10 +26,10 @@ pieces = [('beebe_trail')]
 
 works = []
 for name in pieces:
-    image, k = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     image = template(image)
     path = "%s_template.pgm" % name
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, 255, path)
     works.append(path)
 
 # TODO: uncomment this

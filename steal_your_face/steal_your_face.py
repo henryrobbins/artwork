@@ -6,7 +6,7 @@ logging.basicConfig(filename='steal_your_face.log',
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
 
-image, _ = dmtools.read_netpbm("steal_your_face.ppm")
+image = dmtools.read_netpbm("steal_your_face.ppm")
 image = colorspace.RGB_to_gray(image)
 ascii_img = ascii.image_to_ascii(image)
 ascii_img.to_png("steal_your_face.png")

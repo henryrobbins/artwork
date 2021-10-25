@@ -54,7 +54,7 @@ pieces = [('road_day', 8, 30),
           ('island', 8, 30)]
 works = []
 for name, k, b in pieces:
-    image, _ = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     image = partition(image, k, b)
     path = "%s_partition_%d.pgm" % (name, k)
     dmtools.write_netpbm(image, k, path)

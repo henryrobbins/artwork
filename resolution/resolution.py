@@ -68,10 +68,10 @@ pieces = [('paper', 2),
 
 works = []
 for name, p in pieces:
-    image, k = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     image = resolution(image)
     path = "%s_resolution.ppm" % name
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, 255, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

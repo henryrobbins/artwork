@@ -75,7 +75,7 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
-base_image, _ = dmtools.read_netpbm('beebe_trail.ppm')
+base_image = dmtools.read_netpbm('beebe_trail.ppm')
 
 works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
 for piece in pieces:

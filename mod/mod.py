@@ -39,7 +39,7 @@ pieces = [('road_day', 8),
 
 works = []
 for name, k in pieces:
-    image, _ = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     image = mod(image, k)
     path = "%s_mod_%d.pgm" % (name, k)
     dmtools.write_netpbm(image, k, path)
@@ -51,7 +51,7 @@ pieces = [('faces',1,150),
           ('water_cup',1,140)]
 
 for name, lb, ub in pieces:
-    image, _ = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     frames = [mod(image,k) * 255 for k in range(lb,ub+1)]
     path = '%s_mod_animation.mp4' % name
     to_mp4(frames=frames, path=path, fps=10, s=4)

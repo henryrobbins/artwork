@@ -46,7 +46,7 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
 
 works = []
 for name, k, lb, ub, b, c in pieces:
-    image, _ = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('%s.ppm' % name)
     image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
     path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
     dmtools.write_netpbm(image, k, path)
