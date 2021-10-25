@@ -56,13 +56,14 @@ def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
         netpbm.Netpbm: NumPy matrix representing the dissolved image.
     """
     new_image = copy.copy(image)
-    new_image.set_max_color_value(8)
     M = colorspace.RGB_to_gray(new_image.M)
+    M = np.mod((M * 8).astype(int), 8)
     for direction, i in modifications:
         if direction == 'h':
             M = np.vstack((M[:i], dissolve_vector(M[i])))
         elif direction == 'v':
             M = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
+    M = M / 8
     return netpbm.Netpbm(P=2, k=8, M=M)
 
 

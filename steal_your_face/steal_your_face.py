@@ -8,6 +8,7 @@ logging.basicConfig(filename='steal_your_face.log',
 image = netpbm.read_netpbm("steal_your_face.ppm")
 M = colorspace.RGB_to_gray(image.M)
 image = netpbm.Netpbm(P=2, k=image.k, M=M)
+print(image.M)
 ascii_img = ascii.netpbm_to_ascii(image)
 ascii_img.to_png("steal_your_face.png")
 

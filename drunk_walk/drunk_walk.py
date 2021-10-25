@@ -66,8 +66,8 @@ def drunk_walk_series(n:int, k:int, d:int,
     Returns:
         netpbm.Netpbm: Image of the series of drunk walks.
     """
-    images = [drunk_walk_image(n,k,d) for i in range(w*h)]
-    grid_image = arrange.image_grid(images,w,h,b,k=k)
+    images = [drunk_walk_image(n,k,d) / k for i in range(w*h)]
+    grid_image = arrange.image_grid(images,w,h,b)
     return netpbm.Netpbm(P=2, k=k, M=grid_image)
 
 

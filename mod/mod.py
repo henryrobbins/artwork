@@ -20,7 +20,9 @@ def mod(image:netpbm.Netpbm, k:int) -> netpbm.Netpbm:
         netpbm.Netpbm: NumPy matrix representing the mod image.
     """
     M_prime = colorspace.RGB_to_gray(image.M)
-    M_prime = np.array(list(map(lambda x: x % k, M_prime)))
+    M_prime = M_prime * 255
+    M_prime = np.mod(M_prime, k)
+    M_prime = M_prime / k
     return netpbm.Netpbm(P=2, k=k, M=M_prime)
 
 
@@ -50,7 +52,7 @@ pieces = [('faces',1,150),
 
 for name, lb, ub in pieces:
     image = netpbm.read_netpbm('%s.ppm' % name)
-    frames = [mod(image,k).M * (255/k) for k in range(lb,ub+1)]
+    frames = [mod(image,k).M * 255 for k in range(lb,ub+1)]
     path = '%s_mod_animation.mp4' % name
     to_mp4(frames=frames, path=path, fps=10, s=4)
     works.append(path)
