@@ -1,5 +1,6 @@
 import numpy as np
 import dmtools
+from dmtools import colorspace
 import logging
 logging.basicConfig(filename='resolution.log',
                     level=logging.INFO,
@@ -31,20 +32,18 @@ def shrink(M:np.ndarray, d:int) -> np.ndarray:
 
 
 def resolution(image:np.ndarray) -> np.ndarray:
-    """TODO
+    """Return image with resolution based on brightness.
 
     Args:
-        image (np.ndarray): TODO
+        image (np.ndarray): Image to alter.
 
     Returns:
-        np.ndarray: TODO
+        np.ndarray: NumPy matrix representing the altered image.
     """
     M = image
-    if len(image.shape) == 3:
-        n,m,*_ = M.shape
-        M = M.reshape(n,m*3)
-    else:
-        n,m = M.shape
+    M = colorspace.RGB_to_gray(M)
+    M = M * 255
+    n,m = M.shape
     assert n % 256 == 0
     assert m % 256 == 0
     for i in range(int(n/256)):
@@ -58,8 +57,7 @@ def resolution(image:np.ndarray) -> np.ndarray:
             else:
                 B = shrink(A, 32)
             M[256*i:256*(i+1), 256*j:256*(j+1)] = B
-    if len(image.shape) == 3:
-        M = M.reshape(n,m,3)
+    M = M / 255
     return M
 
 
