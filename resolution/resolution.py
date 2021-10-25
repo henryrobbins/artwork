@@ -1,5 +1,5 @@
 import numpy as np
-from dmtools import netpbm
+import dmtools
 import logging
 logging.basicConfig(filename='resolution.log',
                     level=logging.INFO,
@@ -30,17 +30,17 @@ def shrink(M:np.ndarray, d:int) -> np.ndarray:
     return M
 
 
-def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
+def resolution(image:np.ndarray) -> np.ndarray:
     """TODO
 
     Args:
-        image (netpbm.Netpbm): TODO
+        image (np.ndarray): TODO
 
     Returns:
-        netpbm.Netpbm: TODO
+        np.ndarray: TODO
     """
-    M = image.M
-    if image.P == 3:
+    M = image
+    if len(image.shape) == 3:
         n,m,*_ = M.shape
         M = M.reshape(n,m*3)
     else:
@@ -58,9 +58,9 @@ def resolution(image:netpbm.Netpbm) -> netpbm.Netpbm:
             else:
                 B = shrink(A, 32)
             M[256*i:256*(i+1), 256*j:256*(j+1)] = B
-    if image.P == 3:
+    if len(image.shape) == 3:
         M = M.reshape(n,m,3)
-    return netpbm.Netpbm(P=image.P, k=image.k, M=M)
+    return M
 
 
 # COMPILE PIECES | 2021-04-04
@@ -70,10 +70,10 @@ pieces = [('paper', 2),
 
 works = []
 for name, p in pieces:
-    image = netpbm.read_netpbm('%s.ppm' % name)
+    image, k = dmtools.read_netpbm('%s.ppm' % name)
     image = resolution(image)
     path = "%s_resolution.ppm" % name
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

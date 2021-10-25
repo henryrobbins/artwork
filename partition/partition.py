@@ -1,5 +1,6 @@
 import numpy as np
-from dmtools import netpbm, colorspace, arrange
+import dmtools
+from dmtools import colorspace, arrange
 import logging
 logging.basicConfig(filename='partition.log',
                     level=logging.INFO,
@@ -7,18 +8,18 @@ logging.basicConfig(filename='partition.log',
                     datefmt='%m-%d-%Y %I:%M')
 
 
-def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
+def partition(image:np.ndarray, k:int, b:int) -> np.ndarray:
     """Return the Netpbm image mod k.
 
     Args:
-        image (netpbm.Netpbm): Netpbm image to mod.
+        image (np.ndarray): Image to mod.
         k (int): Number of gradients.
         b (int): Width of the border in pixels.
 
     Returns:
-        netpbm.Netpbm: NumPy matrix representing the mod image.
+       np.ndarray: NumPy matrix representing the mod image.
     """
-    M = colorspace.RGB_to_gray(image.M)
+    M = colorspace.RGB_to_gray(image)
     image = np.mod((M * k).astype(int), k)
 
     layers = []
@@ -33,7 +34,7 @@ def partition(image:netpbm.Netpbm, k:int, b:int) -> netpbm.Netpbm:
 
     layers = [layer / k for layer in layers]
     image_grid = arrange.image_grid(layers,k,4,b)
-    return netpbm.Netpbm(P=2, k=k, M=image_grid)
+    return image_grid
 
 
 # COMPILE PIECES | 2021-03-20
@@ -53,10 +54,10 @@ pieces = [('road_day', 8, 30),
           ('island', 8, 30)]
 works = []
 for name, k, b in pieces:
-    image = netpbm.read_netpbm('%s.ppm' % name)
+    image, _ = dmtools.read_netpbm('%s.ppm' % name)
     image = partition(image, k, b)
     path = "%s_partition_%d.pgm" % (name, k)
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

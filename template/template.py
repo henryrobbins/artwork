@@ -1,4 +1,5 @@
-from dmtools import netpbm
+import dmtools
+import numpy as np
 import logging
 logging.basicConfig(filename='template.log',
                     level=logging.INFO,
@@ -6,7 +7,7 @@ logging.basicConfig(filename='template.log',
                     datefmt='%m-%d-%Y %I:%M')
 
 
-def template(image:netpbm.Netpbm) -> netpbm.Netpbm:
+def template(image:np.ndarray) -> np.ndarray:
     """TODO: Add description
 
     Args:
@@ -25,10 +26,10 @@ pieces = [('beebe_trail')]
 
 works = []
 for name in pieces:
-    image = netpbm.read_netpbm('%s.ppm' % name)
+    image, k = dmtools.read_netpbm('%s.ppm' % name)
     image = template(image)
     path = "%s_template.pgm" % name
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 # TODO: uncomment this

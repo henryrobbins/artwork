@@ -1,17 +1,18 @@
 import numpy as np
-from dmtools import netpbm, colorspace, arrange
+import dmtools
+from dmtools import colorspace, arrange
 import logging
 logging.basicConfig(filename='clip.log',
                     level=logging.INFO,
                     format='%(asctime)s | %(message)s',
                     datefmt='%m-%d-%Y %I:%M')
 
-def clip(image:netpbm.Netpbm,
-         k:int, lb:int, ub:int, b:int, c:str) -> netpbm.Netpbm:
+def clip(image:np.ndarray,
+         k:int, lb:int, ub:int, b:int, c:str) -> np.ndarray:
     """Return the Netpbm image mod k.
 
     Args:
-        image (netpbm.Netpbm): Netpbm image to mod.
+        image (np.ndarray): Image to mod.
         k (int): Number of gradients.
         lb (int): Lower bound of gradients to show.
         ub (int): Upper bound of gradients to show.
@@ -19,15 +20,15 @@ def clip(image:netpbm.Netpbm,
         c (str): Color of the border {'white', 'black'}
 
     Returns:
-        netpbm.Netpbm: NumPy matrix representing the mod image.
+        np.ndarray: NumPy matrix representing the mod image.
     """
-    M = colorspace.RGB_to_gray(image.M)
+    M = colorspace.RGB_to_gray(image)
     image = np.mod((M * k).astype(int), k)
     M_lb = np.where(lb <= image, 1, 0)
     M_ub = np.where(image <= ub, 1, 0)
     M = np.where(M_lb + M_ub == 2, 0, 1)
     bordered_image = arrange.border(M, b, c)
-    return netpbm.Netpbm(P=2, k=1, M=bordered_image)
+    return bordered_image
 
 
 # COMPILE PIECES | 2021-03-23
@@ -45,10 +46,10 @@ pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
 
 works = []
 for name, k, lb, ub, b, c in pieces:
-    image = netpbm.read_netpbm('%s.ppm' % name)
+    image, _ = dmtools.read_netpbm('%s.ppm' % name)
     image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
     path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

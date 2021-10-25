@@ -1,7 +1,7 @@
 import numpy as np
 import copy
 from typing import List
-from dmtools import netpbm
+import dmtools
 from dmtools import colorspace
 import logging
 logging.basicConfig(filename='dissolve.log',
@@ -45,18 +45,18 @@ def dissolve_vector(v:np.ndarray) -> np.ndarray:
     return np.array(v_hist)
 
 
-def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
+def dissolve(image:np.ndarray, modifications:List) -> np.ndarray:
     """Dissolve the Netpbm image.
 
     Args:
-        image (netpbm.Netpbm): Netpbm image to dissolve.
+        image (np.ndarray): Image to dissolve.
         modifications (List): List of modifications ({'h','v'}, int) to apply.
 
     Returns:
-        netpbm.Netpbm: NumPy matrix representing the dissolved image.
+        np.ndarray: NumPy matrix representing the dissolved image.
     """
     new_image = copy.copy(image)
-    M = colorspace.RGB_to_gray(new_image.M)
+    M = colorspace.RGB_to_gray(new_image)
     M = np.mod((M * 8).astype(int), 8)
     for direction, i in modifications:
         if direction == 'h':
@@ -64,8 +64,7 @@ def dissolve(image:netpbm.Netpbm, modifications:List) -> netpbm.Netpbm:
         elif direction == 'v':
             M = np.hstack((M[:,:i], dissolve_vector(M[:,i]).T))
     M = M / 8
-    return netpbm.Netpbm(P=2, k=8, M=M)
-
+    return M
 
 # COMPILE PIECES | 2021-03-02
 
@@ -76,14 +75,14 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
-base_image = netpbm.read_netpbm('beebe_trail.ppm')
+base_image, _ = dmtools.read_netpbm('beebe_trail.ppm')
 
 works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
 for piece in pieces:
     image = dissolve(base_image, piece)
     modification = ''.join([op[0] + str(op[1]) for op in piece])
     path = 'beebe_trail_%s.pgm' % modification
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, 8, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

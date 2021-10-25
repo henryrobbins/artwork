@@ -1,5 +1,6 @@
 import numpy as np
-from dmtools import netpbm, arrange
+import dmtools
+from dmtools import arrange
 import logging
 logging.basicConfig(filename='drunk_walk.log',
                     level=logging.INFO,
@@ -52,7 +53,7 @@ def drunk_walk_image(n:int, k:int, d:int):
 
 
 def drunk_walk_series(n:int, k:int, d:int,
-                      w:int, h:int, b:int) -> netpbm.Netpbm:
+                      w:int, h:int, b:int) -> np.ndarray:
     """Create a series of d*d drunk walk with n steps on k gradients.
 
     Args:
@@ -64,11 +65,11 @@ def drunk_walk_series(n:int, k:int, d:int,
         b (int): width of the border/margin.
 
     Returns:
-        netpbm.Netpbm: Image of the series of drunk walks.
+        np.ndarray: Image of the series of drunk walks.
     """
     images = [drunk_walk_image(n,k,d) / k for i in range(w*h)]
     grid_image = arrange.image_grid(images,w,h,b)
-    return netpbm.Netpbm(P=2, k=k, M=grid_image)
+    return grid_image
 
 
 # COMPILE PIECES | 2021-03-17
@@ -84,7 +85,7 @@ works = []
 for n, k, d, w, h, b in pieces:
     image = drunk_walk_series(n, k, d, w, h, b)
     path = '%d_step_drunk_walk.pgm' % n
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 with open("works.txt", "w") as f:

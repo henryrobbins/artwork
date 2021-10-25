@@ -1,7 +1,7 @@
 import numpy as np
 from math import pi
 from typing import Callable
-from dmtools import netpbm
+import dmtools
 from dmtools import colorspace
 import logging
 logging.basicConfig(filename='channel.log',
@@ -11,25 +11,24 @@ logging.basicConfig(filename='channel.log',
 
 
 # Adapted from code provided by Dan Torop
-def channel(image:netpbm.Netpbm, f_R:Callable,
-            f_G:Callable, f_B:Callable) -> netpbm.Netpbm:
+def channel(image:np.ndarray, f_R:Callable,
+            f_G:Callable, f_B:Callable) -> np.ndarray:
     """Return the Netpbm image after applying the functions to each channel.
 
     Args:
-        image (netpbm.Netpbm): Netpbm image to modify.
+        image (np.ndarray): Image to modify.
         f_R (Callable): Function to apply to the red channel.
         f_G (Callable): Function to apply to the green channel.
         f_B (Callable): Function to apply to the blue channel.
 
     Returns:
-        netpbm.Netpbm: NumPy matrix with modified channels.
+        np.ndarray: NumPy matrix with modified channels.
     """
-    M = image.M
+    M = image
     M = colorspace.normalize(M, 'RGB')
     M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
     M = colorspace.denormalize(M, 'RGB')
-
-    return netpbm.Netpbm(P=image.P, k=image.k, M=M)
+    return M
 
 
 # COMPILE PIECES | 2021-03-29
@@ -78,10 +77,10 @@ for name, R, G, B in pieces:
     f_R, f_R_s = R
     f_G, f_G_s = G
     f_B, f_B_s = B
-    image = netpbm.read_netpbm("%s.ppm" % name)
+    image, k = dmtools.read_netpbm("%s.ppm" % name)
     image = channel(image, f_R, f_G, f_B)
     path = "%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
-    image.to_netpbm(path)
+    dmtools.write_netpbm(image, k, path)
     works.append(path)
 
 with open("works.txt", "w") as f:
