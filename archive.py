@@ -1,5 +1,6 @@
 import os
-from dmtools import netpbm
+import dmtools
+from dmtools import transform
 from pathlib import Path
 from shutil import copyfile
 
@@ -47,10 +48,12 @@ for root, _, files in os.walk('.'):
                 elif file_extension == '.mp4':
                     assert work in videos
                 elif file_extension in ['.pbm', '.pgm', '.ppm']:
-                    image = netpbm.read_netpbm(path)
-                    max_dim = max(image.w, image.h)
+                    image = dmtools.read_netpbm(path)
+                    h, w, *_ = image.shape
+                    max_dim = max(w,h)
                     if max_dim < 1000:
-                        image.rescale(int(1000 / max_dim))
-                    image.to_png('archive' / path.with_suffix('.png'))
+                        image = transform.rescale(image, int(1000 / max_dim))
+                    path = 'archive' / path.with_suffix('.png')
+                    dmtools.write_png(image, path)
                 else:
                     raise ValueError('Unknown file extension.')
