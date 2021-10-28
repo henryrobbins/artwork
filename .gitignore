@@ -204,6 +204,9 @@ weierstrass/*.mp4
 !weierstrass/sunset.png
 !weierstrass/trees_sunset.png
 !weierstrass/abey.png
+!weierstrass/circuit_1.png
+!weierstrass/circuit_2.png
+!weierstrass/circuit_3.png
 
 # Archive
 archive

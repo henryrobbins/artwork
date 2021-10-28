@@ -1,2 +1,5 @@
 sunset_weierstrass_10.png
 sunset_weierstrass_20.png
+circuit_1_weierstrass_20.png
+circuit_2_weierstrass_20.png
+circuit_3_weierstrass_20.png

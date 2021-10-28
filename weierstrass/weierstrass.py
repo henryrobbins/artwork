@@ -37,7 +37,11 @@ def f(x):
 # COMPILE PIECES | 2021-XX-XX
 
 pieces = [('sunset', 0.5, 3, 0.5, 10),
-          ('sunset', 0.5, 3, 0.5, 20)]
+          ('sunset', 0.5, 3, 0.5, 20),
+          ('circuit_1', 0.5, 3, 0.5, 20),
+          ('circuit_2', 0.5, 3, 0.5, 20),
+          ('circuit_3', 0.5, 3, 0.5, 20)]
+
 
 works = []
 for name, a, b, k, support in pieces:
@@ -47,11 +51,10 @@ for name, a, b, k, support in pieces:
 
     f = lambda x: weierstrass(x, a, b)
     image = transform.rescale(image, k=k, weighting_function=f, support=support)
-    image = transform.wraparound(image).astype(np.uint8)
-    # TODO: the latest change to wraparound changes the look of these images
+    image = np.mod(image, 1)
 
     image = transform.rescale(image, k=(1/k), filter="point")
-    image = transform.clip(image).astype(np.uint8)
+    image = transform.clip(image)
 
     path = "%s_weierstrass_%d.png" % (name, support)
     dmtools.write_png(image, path)
