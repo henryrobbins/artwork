@@ -52,6 +52,7 @@ for name, a, b, k, support in pieces:
     f = lambda x: weierstrass(x, a, b)
     image = transform.rescale(image, k=k, weighting_function=f, support=support)
     image = np.mod(image, 1)
+    image = image[support:-support, support:-support]
 
     image = transform.rescale(image, k=(1/k), filter="point")
     image = transform.clip(image)
