@@ -1,5 +1,5 @@
 import dmtools
-from dmtools import ascii, colorspace
+from dmtools import colorspace
 import logging
 logging.basicConfig(filename='steal_your_face.log',
                     level=logging.INFO,
@@ -8,8 +8,7 @@ logging.basicConfig(filename='steal_your_face.log',
 
 image = dmtools.read_netpbm("steal_your_face.ppm")
 image = colorspace.RGB_to_gray(image)
-ascii_img = ascii.image_to_ascii(image)
-ascii_img.to_png("steal_your_face.png")
+dmtools.write_ascii(image, "steal_your_face.png")
 
 works = ['steal_your_face.png']
 with open("works.txt", "w") as f:
