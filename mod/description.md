@@ -1,7 +1,3 @@
-**Henry Robbins and Ella Clemons**<br/>
-*mod* (2021-03-07)<br/>
-Netpbm (P2) and MPEG-4
-
 The images sky (2021-02-24), faces (2021-03-07), and stomp (2021-03-07)
 were photographed by Ella Clemons.
 

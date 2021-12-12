@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import dmtools
 from dmtools import colorspace
@@ -37,13 +38,12 @@ pieces = [('road_day', 8),
           ('stomp', 25),
           ('water_cup', 7)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, k in pieces:
-    image = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = mod(image, k)
-    path = "%s_mod_%d.pgm" % (name, k)
+    path = "output/%s_mod_%d.pgm" % (name, k)
     dmtools.write_netpbm(image, k, path)
-    works.append(path)
 
 # animations
 
@@ -51,12 +51,7 @@ pieces = [('faces',1,150),
           ('water_cup',1,140)]
 
 for name, lb, ub in pieces:
-    image = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('input/%s.ppm' % name)
     frames = [mod(image,k) * 255 for k in range(lb,ub+1)]
-    path = '%s_mod_animation.mp4' % name
+    path = 'output/%s_mod_animation.mp4' % name
     to_mp4(frames=frames, path=path, fps=10, s=4)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)

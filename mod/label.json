@@ -1,0 +1,20 @@
+{
+    "author": "Henry Robbins and Ella Clemons",
+    "title": "mod",
+    "date": "2021-03-07",
+    "medium": "Netpbm (P2) and MPEG-4",
+    "works": [
+        "road_day_mod_8.pgm",
+        "sky_mod_8.pgm",
+        "faces_mod_12.pgm",
+        "beebe_trail_mod_8.pgm",
+        "stomp_mod_25.pgm",
+        "water_cup_mod_7.pgm",
+        "faces_mod_animation.mp4",
+        "water_cup_mod_animation.mp4"
+    ],
+    "vimeo": {
+        "faces_mod_animation.mp4": 544012195,
+        "water_cup_mod_animation.mp4": 544012231
+    }
+}
