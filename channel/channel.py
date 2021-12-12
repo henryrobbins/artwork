@@ -1,8 +1,9 @@
+import os
 import numpy as np
 from math import pi
 from typing import Callable
 import dmtools
-from dmtools import colorspace
+from dmtools import colorspace, adjustments
 import logging
 logging.basicConfig(filename='channel.log',
                     level=logging.INFO,
@@ -26,7 +27,9 @@ def channel(image:np.ndarray, f_R:Callable,
     """
     M = image
     M = colorspace.normalize(M, 'RGB')
-    M = colorspace.apply_to_channels(M, f_R, f_G, f_B)
+    M = adjustments.apply_curve(M, f_R, 0)
+    M = adjustments.apply_curve(M, f_G, 1)
+    M = adjustments.apply_curve(M, f_B, 2)
     M = colorspace.denormalize(M, 'RGB')
     return M
 
@@ -72,17 +75,12 @@ pieces = [('math', abs_sin(5), identity, identity),
           ('math', invert, identity, identity),
           ('math', invert, invert, invert)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, R, G, B in pieces:
     f_R, f_R_s = R
     f_G, f_G_s = G
     f_B, f_B_s = B
-    image = dmtools.read_netpbm("%s.ppm" % name)
+    image = dmtools.read_netpbm("input/%s.ppm" % name)
     image = channel(image, f_R, f_G, f_B)
-    path = "%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
+    path = "output/%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
     dmtools.write_netpbm(image, 255, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)

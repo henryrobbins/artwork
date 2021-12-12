@@ -1,0 +1,18 @@
+{
+    "author": "Henry Robbins",
+    "title": "channel",
+    "date": "2021-03-29",
+    "medium": "Netpbm (P3)",
+    "works": [
+        "math_channel_abs(sin(x*5))_x_x.ppm",
+        "math_channel_abs(sin(x*10))_x_x.ppm",
+        "math_channel_x_abs(sin(x*5))_x.ppm",
+        "math_channel_x_x_abs(sin(x*10)).ppm",
+        "math_channel_abs(sin(x*10))_x_abs(sin(x*10+10)).ppm",
+        "math_channel_ceil(x*5)_over_5_x_x.ppm",
+        "math_channel_triangle_1.0_0.4_x_x.ppm",
+        "math_channel_x_x_triangle_1.0_0.4.ppm",
+        "math_channel_1-x_x_x.ppm",
+        "math_channel_1-x_1-x_1-x.ppm"
+    ]
+}
