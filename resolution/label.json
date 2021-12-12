@@ -4,7 +4,7 @@
     "date": "2021-04-04",
     "medium": "Netpbm (P2 and P3)",
     "works": [
-        "florida_resolution.png",
-        "paper_resolution.png"
+        "florida_resolution.pgm",
+        "paper_resolution.pgm"
     ]
 }

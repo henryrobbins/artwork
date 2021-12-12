@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import dmtools
 from dmtools import colorspace
@@ -66,14 +67,9 @@ def resolution(image:np.ndarray) -> np.ndarray:
 pieces = [('paper', 2),
           ('florida', 3)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, p in pieces:
-    image = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = resolution(image)
-    path = "%s_resolution.ppm" % name
+    path = "output/%s_resolution.pgm" % name
     dmtools.write_netpbm(image, 255, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)
