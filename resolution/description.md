@@ -1,7 +1,3 @@
-**Henry Robbins and River Chavez**<br/>
-*resolution* (2021-04-04)<br/>
-Netpbm (P2 and P3)
-
 The images paper and florida were photographed by River Chavez.
 
 This work aims to draw a strong connection between properties of a source image
