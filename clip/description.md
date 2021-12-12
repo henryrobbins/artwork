@@ -1,7 +1,3 @@
-**Henry Robbins**<br/>
-*clip* (2021-03-23)<br/>
-Netpbm (P2)
-
 The image creek (2021-03-21) was used with permission from the artist:
 River Chavez.
 

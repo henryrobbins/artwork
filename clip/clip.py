@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
@@ -35,23 +36,18 @@ def clip(image:np.ndarray,
 
 # single prints
 
-pieces = [('beebe_trail', 8, 0, 0, 75, "black"),
-          ('road_day', 8, 0, 0, 75, "black"),
-          ('creek', 8, 0, 0, 75, "black"),
-          ('tree_light', 8, 1, 2, 75, "black"),
-          ('buildings_night', 8, 2, 3, 75, "black"),
-          ('porch', 8, 4, 8, 75, "black"),
-          ('wall_light', 8, 5, 6, 75, "black"),
-          ('laundry', 8, 0, 1, 75, "black")]
+pieces = [('beebe_trail', 8, 0, 0, 75, 0),
+          ('road_day', 8, 0, 0, 75, 0),
+          ('creek', 8, 0, 0, 75, 0),
+          ('tree_light', 8, 1, 2, 75, 0),
+          ('buildings_night', 8, 2, 3, 75, 0),
+          ('porch', 8, 4, 8, 75, 0),
+          ('wall_light', 8, 5, 6, 75, 0),
+          ('laundry', 8, 0, 1, 75, 0)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, k, lb, ub, b, c in pieces:
-    image = dmtools.read_netpbm('%s.ppm' % name)
+    image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
-    path = "%s_clip_%d_%d.pgm" % (name, lb, ub)
+    path = "output/%s_clip_%d_%d.pgm" % (name, lb, ub)
     dmtools.write_netpbm(image, k, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)
