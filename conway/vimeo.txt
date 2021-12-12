@@ -1,4 +1,0 @@
-node_conway_animation.mp4=544390242
-node_reverse_conway_animation.mp4=544390256
-rhizomes_conway_animation.mp4=544645491
-rhizomes_reverse_conway_animation.mp4=544649676

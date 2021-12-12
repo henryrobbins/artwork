@@ -1,6 +1,8 @@
+import os
 import numpy as np
 from scipy.signal import convolve2d
-from dmtools import netpbm, colorspace
+import dmtools
+from dmtools import colorspace
 from dmtools.animation import to_mp4
 import logging
 logging.basicConfig(filename='conway.log',
@@ -35,16 +37,14 @@ def conway(M:np.ndarray) -> np.ndarray:
 pieces = [('node', 4700),
           ('rhizomes', 4750)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, g in pieces:
-    path = '%s.ppm' % (name)
+    path = 'input/%s.ppm' % (name)
 
-    image = netpbm.read_netpbm(path)
-    base_M = colorspace.RGB_to_gray(image.M)
-    M = colorspace.RGB_to_gray(image.M)
-    image = netpbm.Netpbm(P=2, k=image.k, M=M)
-    image.set_max_color_value(1)
-    M = image.M
+    image = dmtools.read_netpbm(path)
+    base_M = colorspace.RGB_to_gray(image)
+    M = colorspace.RGB_to_gray(image)
+    M = np.where(M > 0.5, 1, 0)
 
     frames = [conway(M)]
     for i in range(g):
@@ -52,15 +52,9 @@ for name, g in pieces:
     base_M = base_M * np.where(frames[0] == 1,0,1)
     frames = [base_M * np.where(f == 1,0,1) for f in frames]
 
-    file_name = '%s_conway_animation.mp4' % name
+    file_name = 'output/%s_conway_animation.mp4' % name
     to_mp4(frames=frames, path=file_name, fps=45, s=8)
-    works.append("%s_conway_animation.mp4" % name)
 
     frames = frames[::-1]
-    file_name = '%s_reverse_conway_animation.mp4' % name
+    file_name = 'output/%s_reverse_conway_animation.mp4' % name
     to_mp4(frames=frames, path=file_name, fps=45, s=8)
-    works.append("%s_reverse_conway_animation.mp4" % name)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)

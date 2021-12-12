@@ -185,7 +185,6 @@ resolution/*.pgm
 !resolution/paper.ppm
 
 # conway
-conway/*/
 conway/*.pbm
 conway/*.pgm
 conway/*.mp4

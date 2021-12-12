@@ -1,7 +1,3 @@
-**Henry Robbins and River Chavez**<br/>
-*conway* (2021-05-02)<br/>
-MPEG-4
-
 The images node (2021-05-02) and rhizomes (2021-05-02) were photographed by
 River Chavez.
 
