@@ -1,0 +1,19 @@
+{
+    "author": "Henry Robbins and River Chavez",
+    "title": "partition",
+    "date": "2021-03-20",
+    "medium": "Netpbm (P2)",
+    "works": [
+        "sky_partition_8.pgm",
+        "waterfall_partition_8.pgm",
+        "old_man_partition_8.pgm",
+        "risley_partition_8.pgm",
+        "island_partition_8.pgm",
+        "tree_partition_8.pgm",
+        "beebe_day_partition_8.pgm",
+        "creek_partition_8.pgm",
+        "wading_partition_8.pgm",
+        "road_day_partition_8.pgm",
+        "fallen_tree_partition_8.pgm"
+    ]
+}

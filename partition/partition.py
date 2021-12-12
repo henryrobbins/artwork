@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
@@ -52,14 +53,10 @@ pieces = [('road_day', 8, 30),
           ('old_man', 8, 30),
           ('wading', 8, 30),
           ('island', 8, 30)]
-works = []
-for name, k, b in pieces:
-    image = dmtools.read_netpbm('%s.ppm' % name)
-    image = partition(image, k, b)
-    path = "%s_partition_%d.pgm" % (name, k)
-    dmtools.write_netpbm(image, k, path)
-    works.append(path)
 
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)
+os.makedirs('output', exist_ok=True)
+for name, k, b in pieces:
+    image = dmtools.read_netpbm('input/%s.ppm' % name)
+    image = partition(image, k, b)
+    path = "output/%s_partition_%d.pgm" % (name, k)
+    dmtools.write_netpbm(image, k, path)
