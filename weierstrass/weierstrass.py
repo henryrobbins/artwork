@@ -1,3 +1,4 @@
+import os
 import dmtools
 from dmtools import transform, animation
 from functools import lru_cache
@@ -43,9 +44,9 @@ pieces = [('sunset', 0.5, 3, 0.5, 10),
           ('circuit_3', 0.5, 3, 0.5, 20)]
 
 
-works = []
+os.makedirs('output', exist_ok=True)
 for name, a, b, k, support in pieces:
-    image = dmtools.read_png("%s.png" % name)
+    image = dmtools.read_png("input/%s.png" % name)
     # image = transform.rescale(image, k=0.5, filter="triangle")
     # image = transform.blur(image, 2)
 
@@ -57,10 +58,5 @@ for name, a, b, k, support in pieces:
     image = transform.rescale(image, k=(1/k), filter="point")
     image = transform.clip(image)
 
-    path = "%s_weierstrass_%d.png" % (name, support)
+    path = "output/%s_weierstrass_%d.png" % (name, support)
     dmtools.write_png(image, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)
