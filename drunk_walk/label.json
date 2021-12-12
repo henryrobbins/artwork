@@ -1,0 +1,14 @@
+{
+    "author": "Henry Robbins",
+    "title": "drunk_walk",
+    "date": "2021-03-17",
+    "medium": "Netpbm (P2)",
+    "works": [
+        "4096_step_drunk_walk.pgm",
+        "4_step_drunk_walk.pgm",
+        "1024_step_drunk_walk.pgm",
+        "256_step_drunk_walk.pgm",
+        "64_step_drunk_walk.pgm",
+        "16_step_drunk_walk.pgm"
+    ]
+}

@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import dmtools
 from dmtools import arrange
@@ -81,13 +82,8 @@ pieces = [(4096, 4, 128, 3, 3, 8),
           (64, 4, 8, 3, 3, 2),
           (16, 4, 4, 3, 3, 1)]
 
-works = []
+os.makedirs('output', exist_ok=True)
 for n, k, d, w, h, b in pieces:
     image = drunk_walk_series(n, k, d, w, h, b)
-    path = '%d_step_drunk_walk.pgm' % n
+    path = 'output/%d_step_drunk_walk.pgm' % n
     dmtools.write_netpbm(image, k, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)

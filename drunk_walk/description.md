@@ -1,7 +1,3 @@
-**Henry Robbins**<br/>
-*drunk_walk* (2021-03-17)<br/>
-Netpbm (P2)
-
 In mathematics, the Drunkard's walk most often refers to a point in the
 euclidean plane iteratively moving in a random cardinal direction. This work is
 generated via a Drunkard's walk. In each image, the grid depicts 9 different
