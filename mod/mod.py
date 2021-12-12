@@ -52,6 +52,6 @@ pieces = [('faces',1,150),
 
 for name, lb, ub in pieces:
     image = dmtools.read_netpbm('input/%s.ppm' % name)
-    frames = [mod(image,k) * 255 for k in range(lb,ub+1)]
+    frames = [mod(image,k) for k in range(lb,ub+1)]
     path = 'output/%s_mod_animation.mp4' % name
     to_mp4(frames=frames, path=path, fps=10, s=4)
