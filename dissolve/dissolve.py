@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import copy
 from typing import List
@@ -75,16 +76,11 @@ pieces = [[('h',70)],
           [('h',60),('v',47)],
           [('h',71),('v',251)]]
 
-base_image = dmtools.read_netpbm('beebe_trail.ppm')
+base_image = dmtools.read_netpbm('input/beebe_trail.ppm')
 
-works = ["dissolve.pgm", "dissolve2.pgm", "dissolve3.pgm"]
+os.makedirs('output', exist_ok=True)
 for piece in pieces:
     image = dissolve(base_image, piece)
     modification = ''.join([op[0] + str(op[1]) for op in piece])
-    path = 'beebe_trail_%s.pgm' % modification
+    path = 'output/beebe_trail_%s.pgm' % modification
     dmtools.write_netpbm(image, 8, path)
-    works.append(path)
-
-with open("works.txt", "w") as f:
-    for work in works:
-        f.write("%s\n" % work)

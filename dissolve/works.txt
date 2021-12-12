@@ -1,9 +1,0 @@
-dissolve.pgm
-dissolve2.pgm
-dissolve3.pgm
-beebe_trail_h70.pgm
-beebe_trail_h100.pgm
-beebe_trail_h140.pgm
-beebe_trail_v80.pgm
-beebe_trail_h60v47.pgm
-beebe_trail_h71v251.pgm
