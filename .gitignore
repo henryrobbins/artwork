@@ -156,59 +156,18 @@ templates
 # template
 template/*.pgm
 
-# dissolve
-dissolve/beebe_trail*.pgm
+# ignore all image/video
+*.pbm
+*.pgm
+*.ppm
+*.png
+*.mp4
 
-# mod
-mod/*.pgm
-mod/*.mp4
+# ignore all ouput
+*/output
 
-# drunk_walk
-drunk_walk/*.pgm
-
-# partition
-partition/*.pgm
-
-# clip
-clip/*.pgm
-
-# channel
-channel/*.ppm
-channel/test_sample*
-!channel/math.ppm
-!channel/barn_plain.ppm
-
-# resolution
-resolution/*.ppm
-resolution/*.pgm
-!resolution/florida.ppm
-!resolution/paper.ppm
-
-# conway
-conway/*.pbm
-conway/*.pgm
-conway/*.mp4
-
-# stewart
-stewart/*.mp4
-
-# steal_your_face
-steal_your_face/*.pgm
-steal_your_face/*.txt
-steal_your_face/*.png
-
-# weierstrass
-weierstrass/*.png
-weierstrass/*.mp4
-!weierstrass/sunset.png
-!weierstrass/trees_sunset.png
-!weierstrass/abey.png
-!weierstrass/circuit_1.png
-!weierstrass/circuit_2.png
-!weierstrass/circuit_3.png
+# include all input
+!input/*
 
 # Archive
 archive
-
-# image output
-*/output
