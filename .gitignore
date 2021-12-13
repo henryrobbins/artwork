@@ -167,7 +167,7 @@ template/*.pgm
 */output
 
 # include all input
-!input/*
+!*/input/*
 
 # Archive
 archive
