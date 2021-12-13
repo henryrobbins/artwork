@@ -4,7 +4,7 @@
     "date": "2021-03-02",
     "medium": "Netpbm (P2)",
     "works": [
-        "dissolve.pgm,",
+        "dissolve.pgm",
         "dissolve2.pgm",
         "dissolve3.pgm",
         "beebe_trail_h70.pgm",
