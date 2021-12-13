@@ -2,11 +2,6 @@ import dmtools
 from dmtools import transform, arrange, colorspace
 import numpy as np
 from concorde.tsp import TSPSolver
-import logging
-logging.basicConfig(filename='template.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 def template(image:np.ndarray) -> np.ndarray:

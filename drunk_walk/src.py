@@ -2,11 +2,6 @@ import os
 import numpy as np
 import dmtools
 from dmtools import arrange
-import logging
-logging.basicConfig(filename='drunk_walk.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 import random
 random.seed(3699)
 

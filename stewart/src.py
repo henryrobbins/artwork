@@ -5,11 +5,7 @@ from scipy import signal
 from dmtools import colorspace, adjustments
 from dmtools.animation import clip, to_mp4
 from dmtools import sound
-import logging
-logging.basicConfig(filename='stewart.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
+
 
 def mod(M,k):
     M = colorspace.RGB_to_gray(M)

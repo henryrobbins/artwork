@@ -3,11 +3,7 @@ import dmtools
 from dmtools import transform, animation
 from functools import lru_cache
 import numpy as np
-import logging
-logging.basicConfig(filename='weierstrass.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
+
 
 # NOTES:
 # For scale factor k, the period of samples from weighting function f is

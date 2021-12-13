@@ -4,11 +4,6 @@ import copy
 from typing import List
 import dmtools
 from dmtools import colorspace
-import logging
-logging.basicConfig(filename='dissolve.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:

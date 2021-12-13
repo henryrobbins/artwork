@@ -4,11 +4,6 @@ from scipy.signal import convolve2d
 import dmtools
 from dmtools import colorspace
 from dmtools.animation import to_mp4
-import logging
-logging.basicConfig(filename='conway.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 # This code was provided by Dan Torop for ART 3699
 COUNT_NEIGHBORS = np.array([[1,1,1],

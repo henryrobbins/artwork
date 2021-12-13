@@ -2,11 +2,6 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
-import logging
-logging.basicConfig(filename='partition.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 def partition(image:np.ndarray, k:int, b:int) -> np.ndarray:

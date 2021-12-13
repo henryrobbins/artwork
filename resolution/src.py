@@ -2,11 +2,6 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace
-import logging
-logging.basicConfig(filename='resolution.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:

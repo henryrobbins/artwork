@@ -3,11 +3,6 @@ import numpy as np
 import dmtools
 from dmtools import colorspace
 from dmtools.animation import to_mp4
-import logging
-logging.basicConfig(filename='mod.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 def mod(image:np.ndarray, k:int) -> np.ndarray:

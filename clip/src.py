@@ -2,11 +2,7 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
-import logging
-logging.basicConfig(filename='clip.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
+
 
 def clip(image:np.ndarray,
          k:int, lb:int, ub:int, b:int, c:str) -> np.ndarray:

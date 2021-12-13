@@ -4,11 +4,6 @@ from math import pi
 from typing import Callable
 import dmtools
 from dmtools import colorspace, adjustments
-import logging
-logging.basicConfig(filename='channel.log',
-                    level=logging.INFO,
-                    format='%(asctime)s | %(message)s',
-                    datefmt='%m-%d-%Y %I:%M')
 
 
 # Adapted from code provided by Dan Torop
