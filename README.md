@@ -8,6 +8,7 @@ The complete archive of work can be compiled with
 ```
 git clone git@github.com:henryrobbins/artwork.git
 cd artwork
+pip install -e assistant
 make work
 ```
 
