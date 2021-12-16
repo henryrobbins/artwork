@@ -4,6 +4,7 @@ from math import pi
 from typing import Callable
 import dmtools
 from dmtools import colorspace, adjustments
+from assistant.help import get_metadata
 
 
 # Adapted from code provided by Dan Torop
@@ -78,4 +79,4 @@ for name, R, G, B in pieces:
     image = dmtools.read_netpbm("input/%s.ppm" % name)
     image = channel(image, f_R, f_G, f_B)
     path = "output/%s_channel_%s_%s_%s.ppm" % (name, f_R_s, f_G_s, f_B_s)
-    dmtools.write_netpbm(image, 255, path)
+    dmtools.write_netpbm(image, 255, path, metadata=get_metadata())

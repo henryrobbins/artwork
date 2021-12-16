@@ -2,7 +2,7 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
-
+from assistant.help import get_metadata
 
 def partition(image:np.ndarray, k:int, b:int) -> np.ndarray:
     """Return the Netpbm image mod k.
@@ -54,4 +54,4 @@ for name, k, b in pieces:
     image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = partition(image, k, b)
     path = "output/%s_partition_%d.pgm" % (name, k)
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, k, path, metadata=get_metadata())

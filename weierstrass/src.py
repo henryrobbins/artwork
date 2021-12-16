@@ -3,6 +3,7 @@ import dmtools
 from dmtools import transform, animation
 from functools import lru_cache
 import numpy as np
+from assistant.help import get_metadata
 
 
 # NOTES:
@@ -55,4 +56,4 @@ for name, a, b, k, support in pieces:
     image = transform.clip(image)
 
     path = "output/%s_weierstrass_%d.png" % (name, support)
-    dmtools.write_png(image, path)
+    dmtools.write_png(image, path, metadata=get_metadata())

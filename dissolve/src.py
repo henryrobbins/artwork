@@ -4,6 +4,7 @@ import copy
 from typing import List
 import dmtools
 from dmtools import colorspace
+from assistant.help import get_metadata
 
 
 def dissolve_iter(v:np.ndarray) -> np.ndarray:
@@ -78,4 +79,4 @@ for piece in pieces:
     image = dissolve(base_image, piece)
     modification = ''.join([op[0] + str(op[1]) for op in piece])
     path = 'output/beebe_trail_%s.pgm' % modification
-    dmtools.write_netpbm(image, 8, path)
+    dmtools.write_netpbm(image, 8, path, metadata=get_metadata())

@@ -2,7 +2,7 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace
-
+from assistant.help import get_metadata
 
 def shrink(M:np.ndarray, d:int) -> np.ndarray:
     """Return the matrix M at the resolution d x d.
@@ -67,4 +67,4 @@ for name, p in pieces:
     image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = resolution(image)
     path = "output/%s_resolution.pgm" % name
-    dmtools.write_netpbm(image, 255, path)
+    dmtools.write_netpbm(image, 255, path, metadata=get_metadata())

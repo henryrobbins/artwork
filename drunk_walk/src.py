@@ -2,6 +2,7 @@ import os
 import numpy as np
 import dmtools
 from dmtools import arrange
+from assistant.help import get_metadata
 import random
 random.seed(3699)
 
@@ -81,4 +82,4 @@ os.makedirs('output', exist_ok=True)
 for n, k, d, w, h, b in pieces:
     image = drunk_walk_series(n, k, d, w, h, b)
     path = 'output/%d_step_drunk_walk.pgm' % n
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, k, path, metadata=get_metadata())

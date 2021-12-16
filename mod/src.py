@@ -3,7 +3,7 @@ import numpy as np
 import dmtools
 from dmtools import colorspace
 from dmtools.animation import to_mp4
-
+from assistant.help import get_metadata
 
 def mod(image:np.ndarray, k:int) -> np.ndarray:
     """Return the Netpbm image mod k.
@@ -38,7 +38,7 @@ for name, k in pieces:
     image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = mod(image, k)
     path = "output/%s_mod_%d.pgm" % (name, k)
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, k, path, metadata=get_metadata())
 
 # animations
 

@@ -2,7 +2,7 @@ import os
 import numpy as np
 import dmtools
 from dmtools import colorspace, arrange
-
+from assistant.help import get_metadata
 
 def clip(image:np.ndarray,
          k:int, lb:int, ub:int, b:int, c:str) -> np.ndarray:
@@ -46,4 +46,4 @@ for name, k, lb, ub, b, c in pieces:
     image = dmtools.read_netpbm('input/%s.ppm' % name)
     image = clip(image, k=k, lb=lb, ub=ub, b=b, c=c)
     path = "output/%s_clip_%d_%d.pgm" % (name, lb, ub)
-    dmtools.write_netpbm(image, k, path)
+    dmtools.write_netpbm(image, k, path, metadata=get_metadata())
