@@ -170,4 +170,4 @@ template/*.pgm
 !*/input/*
 
 # Archive
-archive
+web_archive

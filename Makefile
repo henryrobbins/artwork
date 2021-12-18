@@ -13,6 +13,5 @@ work:
 	cd conway && python src.py
 
 # Create archive directory
-.PHONY: archive
-archive:
-	python archive.py
+web-archive:
+	python web_archive.py
