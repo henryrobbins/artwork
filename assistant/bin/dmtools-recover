@@ -1,0 +1,14 @@
+import dmtools
+import argparse
+
+
+def main(image_path, script_path):
+    return dmtools.recreate_script_from_png(image_path, script_path)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--image_path', help="Path to image")
+    parser.add_argument('-s', '--script_path', help="Path to write script to")
+    args = parser.parse_args()
+    main(args.image_path, args.script_path)

@@ -8,5 +8,6 @@ setup(
     author_email='hw.robbins@gmail.com',
     description='A package to help organize my artwork.',
     packages=find_packages(),
+    scripts=['bin/dmtools-recover'],
     install_requires=[],
 )
