@@ -15,6 +15,7 @@
         "stewart",
         "conway",
         "steal_your_face",
-        "weierstrass"
+        "weierstrass",
+        "tsp"
     ]
 }

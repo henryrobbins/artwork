@@ -11,6 +11,7 @@ work:
 	cd steal_your_face && python src.py
 	cd weierstrass && python src.py
 	cd conway && python src.py
+	cd tsp && python src.py
 
 # Create archive directory
 web-archive:
