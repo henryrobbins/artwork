@@ -45,6 +45,7 @@ python mod.py
 | steal_your_face     | 2021-05-12 | [steal_your_face](steal_your_face)         |
 | weierstrass         | 2021-10-14 | [weierstrass](weierstrass)                 |
 | tsp                 | 2021-10-31 | [tsp](tsp)                                 |
+| memory (WIP)        | 2021-01-06 | [memory](memory)                           |
 
 **NOTE:** Work dated between 2021-02-08 and 2021-05-12 was created for
 [ART 3699](https://classes.cornell.edu/browse/roster/SP21/class/ART/3699), a
