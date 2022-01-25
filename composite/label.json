@@ -1,8 +1,16 @@
 {
     "author": "Henry Robbins",
-    "title": "template",
-    "date": "XXXX-XX-XX",
-    "medium": "medium",
-    "works": [],
+    "title": "composite",
+    "date": "2021-12-19",
+    "medium": "PNG",
+    "works": [
+        "road_2_road_sunset_clip_composite.png",
+        "road_2_road_sunset_composite.png",
+        "peeling_erosion_clip_composite.png",
+        "erosion_peeling_clip_composite.png",
+        "road_sunset_taughannock_1_clip_composite.png",
+        "taughannock_1_road_sunset_normalize_composite.png",
+        "taughannock_1_peeling_clip_composite.png"
+    ],
     "vimeo": {}
 }
