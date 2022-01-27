@@ -25,17 +25,17 @@ for series in json.load(open("series.json"))["series"]:
         if not from_path.is_file():
             from_path = to_path
         file_extension = from_path.suffix
-        if file_extension == '.png':
-            copyfile(from_path, 'web_archive' / to_path)
-        elif file_extension == '.mp4':
-            assert work in lbl_json['vimeo']
-        elif file_extension in ['.pbm', '.pgm', '.ppm']:
-            image = dmtools.read_netpbm(str(from_path))
+        if file_extension in ['.png', '.pbm', '.pgm', '.ppm']:
+            image = dmtools.read(str(from_path))
             h, w, *_ = image.shape
             max_dim = max(w,h)
-            if max_dim < 1000:
-                image = transform.rescale(image, int(1000 / max_dim))
+            if max_dim < 1028:
+                image = transform.rescale(image, k=(1028 / max_dim))
+            if max_dim > 2048:
+                image = transform.rescale(image, k=(2048 / max_dim))
             to_path = 'web_archive' / to_path.with_suffix('.png')
             dmtools.write_png(image, str(to_path))
+        elif file_extension == '.mp4':
+            assert work in lbl_json['vimeo']
         else:
             raise ValueError('Unknown file extension.')
