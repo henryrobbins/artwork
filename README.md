@@ -46,7 +46,7 @@ python mod.py
 | weierstrass         | 2021-10-14 | [weierstrass](weierstrass)                 |
 | tsp                 | 2021-10-31 | [tsp](tsp)                                 |
 | composite           | 2021-12-19 | [composite](composite)                     |
-| memory (WIP)        | 2021-01-06 | [memory](memory)                           |
+| memory (WIP)        | 2022-01-06 | [memory](memory)                           |
 
 **NOTE:** Work dated between 2021-02-08 and 2021-05-12 was created for
 [ART 3699](https://classes.cornell.edu/browse/roster/SP21/class/ART/3699), a

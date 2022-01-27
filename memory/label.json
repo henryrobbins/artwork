@@ -1,9 +1,17 @@
 {
     "author": "Henry Robbins",
     "title": "memory",
-    "date": "2021-01-06",
+    "date": "2022-01-06",
     "medium": "PNG",
     "works": [
-        "test.png"
+        "fence_glitched_memory_101.png",
+        "fence_glitched_memory_110.png",
+        "fence_house_memory_110.png",
+        "lost_cat_memory_100.png",
+        "lost_cat_memory_101.png",
+        "lost_cat_memory_110.png",
+        "street_light_1_memory_010.png",
+        "street_light_1_memory_100.png",
+        "street_light_2_memory_110.png"
     ]
 }

@@ -1,20 +1,14 @@
 #include <stdio.h>
 
-#define N 128
-#define M 128
-
-unsigned char garbage();
+#define N 32768
 
 int main()
 {
     int i;
-    unsigned char arr[N*M];
+    unsigned char arr[N];
 
-    for (i = 0; i < N*M; ++i)
-        printf("%d,", arr[i]);   // garbage from uninitialized variable
-        // printf("%d,", garbage());   // garbage from function with no return value
+    for (i = 0; i < N; ++i)
+        printf("%d,", arr[i]);
 
     return 0;
 }
-
-unsigned char garbage() {}

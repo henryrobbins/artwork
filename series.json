@@ -17,6 +17,7 @@
         "steal_your_face",
         "weierstrass",
         "composite",
-        "tsp"
+        "tsp",
+        "memory"
     ]
 }
