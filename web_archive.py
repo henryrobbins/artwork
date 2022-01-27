@@ -2,13 +2,14 @@ import os
 import json
 import dmtools
 from dmtools import transform
+import argparse
 from pathlib import Path
 from shutil import copyfile
 
 
-os.makedirs('web_archive', exist_ok=True)
-for series in json.load(open("series.json"))["series"]:
-    # create subdirectory of archive
+def archive_series(series: str):
+    """Archive [series] in the web_archive directory."""
+    # make subdirectory of archive
     os.makedirs('web_archive' / Path(series), exist_ok=True)
     lbl_json = json.load(open("%s/label.json" % series))
 
@@ -39,3 +40,20 @@ for series in json.load(open("series.json"))["series"]:
             assert work in lbl_json['vimeo']
         else:
             raise ValueError('Unknown file extension.')
+
+
+def main(series: str = None):
+    """Create a web archive for [series] or all series if [None]."""
+    if series is not None:
+        archive_series(series)
+    else:
+        os.makedirs('web_archive', exist_ok=True)
+        for series in json.load(open("series.json"))["series"]:
+            archive_series(series)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--series', help="Name of series.")
+    args = parser.parse_args()
+    main(series=args.series)
