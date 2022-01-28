@@ -5,5 +5,5 @@ In [C](https://en.wikipedia.org/wiki/C_(programming_language)), the value of an
 is unspecified. In some cases, the value will be the "contents of [the] memory...
 [occupying] those addresses." A C program was used to generate 32,768
 uninitialized bytes. The program was compiled with Apple clang 12.0.5 on a
-MacBookPro (15-inch, 2018) running macOS 11.4.0. These uninitialized bytes were
+MacBookPro (2018) running macOS 11.4.0. These uninitialized bytes were
 then interpreted as grayscale image data and layed atop other images.
