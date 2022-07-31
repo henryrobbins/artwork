@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 from shutil import copyfile
 
+JPEG_QUALITY = 75
 
 def archive_series(series: str):
     """Archive [series] in the web_archive directory."""
@@ -36,6 +37,11 @@ def archive_series(series: str):
                 image = transform.rescale(image, k=(2048 / max_dim))
             to_path = "web_archive" / to_path.with_suffix(".png")
             dmtools.write_png(image, str(to_path))
+            jpg_path = to_path.with_suffix(".jpeg")
+            # convert to JPEG
+            os.system(f"magick '{to_path}' -quality {JPEG_QUALITY} '{jpg_path}'")
+            os.system(f"rm '{to_path}'")
+
         elif file_extension == ".mp4":
             assert work in lbl_json["vimeo"]
         else:
