@@ -22,11 +22,9 @@ for name_1, name_2 in pieces:
     name_2 = os.path.splitext(name_2)[0]
 
     img_1 = dmtools.read('input/%s.png' % name_1)
-    img_1 = dmtools.transform.rescale(img_1, 0.5, filter="triangle")
     img_1 = dmtools.colorspace.RGB_to_gray(img_1)
 
     img_2 = dmtools.read('input/%s.png' % name_2)
-    img_2 = dmtools.transform.rescale(img_2, 0.5, filter="triangle")
     img_2 = dmtools.colorspace.RGB_to_gray(img_2)
 
     image = f(img_1, img_2)
