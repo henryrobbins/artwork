@@ -2,7 +2,7 @@
   "author": "Henry Robbins",
   "title": "pieces",
   "date": "2019-12-01",
-  "medium": "Nylon Yarn",
+  "medium": "Hand-knit yarn",
   "works": [
     "piece_1.png",
     "piece_2.png",
@@ -14,5 +14,16 @@
     "piece_8.png",
     "piece_9.png"
   ],
-  "vimeo": {}
+  "vimeo": {},
+  "physical": {
+    "piece_1": {"dimension": "12 x 7.5 in"},
+    "piece_2": {"dimension": "13 x 3.5 in"},
+    "piece_3": {"dimension": "18 x 4 in"},
+    "piece_4": {"dimension": "2.5 x 5.5 in"},
+    "piece_5": {"dimension": "1 x 2.5 in"},
+    "piece_6": {"dimension": "4 x 9 in"},
+    "piece_7": {"dimension": "5 x 5 in"},
+    "piece_8": {"dimension": "3.5 x 10 in"},
+    "piece_9": {"dimension": "5 x 4 in"}
+  }
 }
