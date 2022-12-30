@@ -18,6 +18,7 @@
         "weierstrass",
         "composite",
         "tsp",
-        "memory"
+        "memory",
+        "pieces"
     ]
 }

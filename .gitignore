@@ -165,6 +165,7 @@ template/*.pgm
 
 # ignore all ouput
 */output
+!pieces/**
 
 # include all input
 !*/input/*
